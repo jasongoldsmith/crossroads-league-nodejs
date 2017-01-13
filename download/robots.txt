@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /
+Disallow: /js
+Disallow: /images
+Disallow: /iOS
+Disallow: /css
+Disallow: /android
+Disallow: /download/
+Disallow: /download/js
+Disallow: /download/images
+Disallow: /download/iOS
+Disallow: /download/css
+Disallow: /download/android

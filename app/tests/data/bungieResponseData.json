@@ -1,0 +1,366 @@
+[
+  {
+    "consoleId": "sreeharshadasa",
+    "consoleType": "PS4",
+    "bungieResponse": {
+      "Response": {
+        "destinyAccounts": [
+          {
+            "userInfo": {
+              "iconPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+              "membershipType": 2,
+              "membershipId": "4611686018459149267",
+              "displayName": "sreeharshadasa"
+            },
+            "grimoireScore": 35,
+            "characters": [
+              {
+                "characterId": "2305843009376124114",
+                "raceHash": 3887404748,
+                "genderHash": 3111576190,
+                "classHash": 3655393761,
+                "emblemHash": 1723894001,
+                "race": {
+                  "raceHash": 3887404748,
+                  "raceType": 0,
+                  "raceName": "Human",
+                  "raceNameMale": "Human Male",
+                  "raceNameFemale": "Human Female",
+                  "raceDescription": "Human",
+                  "hash": 3887404748,
+                  "index": 0,
+                  "redacted": false
+                },
+                "gender": {
+                  "genderHash": 3111576190,
+                  "genderType": 0,
+                  "genderName": "Male",
+                  "genderDescription": "",
+                  "hash": 3111576190,
+                  "index": 0,
+                  "redacted": false
+                },
+                "characterClass": {
+                  "classHash": 3655393761,
+                  "classType": 0,
+                  "className": "Titan",
+                  "classNameMale": "Titan",
+                  "classNameFemale": "Titan",
+                  "classIdentifier": "CLASS_TITAN",
+                  "mentorVendorIdentifier": "VENDOR_TITAN_MENTOR",
+                  "hash": 3655393761,
+                  "index": 0,
+                  "redacted": false
+                },
+                "emblemPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+                "backgroundPath": "/common/destiny_content/icons/0c0e86ad2241092882096eaa574add4f.jpg",
+                "level": 1,
+                "powerLevel": 5,
+                "dateLastPlayed": "2016-04-13T19:04:20Z",
+                "membershipId": "4611686018459149267",
+                "membershipType": 2,
+                "levelProgression": {
+                  "dailyProgress": 0,
+                  "weeklyProgress": 0,
+                  "currentProgress": 0,
+                  "level": 1,
+                  "step": 0,
+                  "progressToNextLevel": 0,
+                  "nextLevelAt": 900,
+                  "progressionHash": 1716568313
+                },
+                "isPrestigeLevel": false,
+                "genderType": 0,
+                "classType": 0,
+                "percentToNextLevel": 0,
+                "currentActivityHash": 0
+              }
+            ],
+            "lastPlayed": "0001-01-01T00:00:00Z",
+            "versions": 1
+          }
+        ],
+        "bungieNetUser": {
+          "membershipId": "13172709",
+          "uniqueName": "13172709",
+          "displayName": "sreeharshadasa",
+          "profilePicture": 0,
+          "profileTheme": 0,
+          "userTitle": 0,
+          "successMessageFlags": "0",
+          "isDeleted": false,
+          "about": "",
+          "firstAccess": "2016-04-13T19:06:44.732Z",
+          "lastUpdate": "2016-10-27T19:08:01.962Z",
+          "psnDisplayName": "sreeharshadasa",
+          "showActivity": true,
+          "locale": "en",
+          "localeInheritDefault": true,
+          "showGroupMessaging": true,
+          "profilePicturePath": "/img/profile/avatars/default_avatar.gif",
+          "profileThemeName": "septagon",
+          "userTitleDisplay": "Newbie",
+          "statusText": "",
+          "statusDate": "0001-01-01T00:00:00Z"
+        },
+        "clans": [],
+        "relatedGroups": {},
+        "destinyAccountErrors": []
+      },
+      "ErrorCode": 1,
+      "ThrottleSeconds": 0,
+      "ErrorStatus": "Success",
+      "Message": "Ok",
+      "MessageData": {}
+    }
+  },
+  {
+    "consoleId": "CrossroadsTina",
+    "consoleType": "PS4",
+    "bungieResponse":{
+      "Response": {
+        "destinyAccounts": [
+          {
+            "userInfo": {
+              "iconPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+              "membershipType": 1,
+              "membershipId": "4611686018460848431",
+              "displayName": "CrossroadsTina"
+            },
+            "grimoireScore": 30,
+            "characters": [
+              {
+                "characterId": "2305843009396316217",
+                "raceHash": 898834093,
+                "genderHash": 2204441813,
+                "classHash": 3655393761,
+                "emblemHash": 1723894001,
+                "race": {
+                  "raceHash": 898834093,
+                  "raceType": 2,
+                  "raceName": "Exo",
+                  "raceNameMale": "Exo Male",
+                  "raceNameFemale": "Exo Female",
+                  "raceDescription": "Self-aware machines built for a long-forgotten war.",
+                  "hash": 898834093,
+                  "index": 0,
+                  "redacted": false
+                },
+                "gender": {
+                  "genderHash": 2204441813,
+                  "genderType": 1,
+                  "genderName": "Female",
+                  "genderDescription": "",
+                  "hash": 2204441813,
+                  "index": 0,
+                  "redacted": false
+                },
+                "characterClass": {
+                  "classHash": 3655393761,
+                  "classType": 0,
+                  "className": "Titan",
+                  "classNameMale": "Titan",
+                  "classNameFemale": "Titan",
+                  "classIdentifier": "CLASS_TITAN",
+                  "mentorVendorIdentifier": "VENDOR_TITAN_MENTOR",
+                  "hash": 3655393761,
+                  "index": 0,
+                  "redacted": false
+                },
+                "emblemPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+                "backgroundPath": "/common/destiny_content/icons/0c0e86ad2241092882096eaa574add4f.jpg",
+                "level": 1,
+                "powerLevel": 5,
+                "dateLastPlayed": "2016-08-02T23:27:36Z",
+                "membershipId": "4611686018460848431",
+                "membershipType": 1,
+                "levelProgression": {
+                  "dailyProgress": 0,
+                  "weeklyProgress": 0,
+                  "currentProgress": 0,
+                  "level": 1,
+                  "step": 0,
+                  "progressToNextLevel": 0,
+                  "nextLevelAt": 900,
+                  "progressionHash": 1716568313
+                },
+                "isPrestigeLevel": false,
+                "genderType": 1,
+                "classType": 0,
+                "percentToNextLevel": 0,
+                "currentActivityHash": 0
+              }
+            ],
+            "lastPlayed": "2016-08-02T23:27:36Z",
+            "versions": 15
+          },
+          {
+            "userInfo": {
+              "iconPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+              "membershipType": 2,
+              "membershipId": "4611686018460848698",
+              "displayName": "CrossroadsTina"
+            },
+            "grimoireScore": 145,
+            "characters": [
+              {
+                "characterId": "2305843009395716244",
+                "raceHash": 898834093,
+                "genderHash": 2204441813,
+                "classHash": 3655393761,
+                "emblemHash": 1723894001,
+                "race": {
+                  "raceHash": 898834093,
+                  "raceType": 2,
+                  "raceName": "Exo",
+                  "raceNameMale": "Exo Male",
+                  "raceNameFemale": "Exo Female",
+                  "raceDescription": "Self-aware machines built for a long-forgotten war.",
+                  "hash": 898834093,
+                  "index": 0,
+                  "redacted": false
+                },
+                "gender": {
+                  "genderHash": 2204441813,
+                  "genderType": 1,
+                  "genderName": "Female",
+                  "genderDescription": "",
+                  "hash": 2204441813,
+                  "index": 0,
+                  "redacted": false
+                },
+                "characterClass": {
+                  "classHash": 3655393761,
+                  "classType": 0,
+                  "className": "Titan",
+                  "classNameMale": "Titan",
+                  "classNameFemale": "Titan",
+                  "classIdentifier": "CLASS_TITAN",
+                  "mentorVendorIdentifier": "VENDOR_TITAN_MENTOR",
+                  "hash": 3655393761,
+                  "index": 0,
+                  "redacted": false
+                },
+                "emblemPath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+                "backgroundPath": "/common/destiny_content/icons/0c0e86ad2241092882096eaa574add4f.jpg",
+                "level": 25,
+                "powerLevel": 130,
+                "dateLastPlayed": "2016-10-26T23:31:51Z",
+                "membershipId": "4611686018460848698",
+                "membershipType": 2,
+                "levelProgression": {
+                  "dailyProgress": 0,
+                  "weeklyProgress": 0,
+                  "currentProgress": 193500,
+                  "level": 25,
+                  "step": 0,
+                  "progressToNextLevel": 500,
+                  "nextLevelAt": 9000,
+                  "progressionHash": 1716568313
+                },
+                "isPrestigeLevel": false,
+                "genderType": 1,
+                "classType": 0,
+                "percentToNextLevel": 5.555556,
+                "currentActivityHash": 0
+              }
+            ],
+            "lastPlayed": "2016-10-26T23:31:51Z",
+            "versions": 15
+          }
+        ],
+        "bungieNetUser": {
+          "membershipId": "13628045",
+          "uniqueName": "13628045",
+          "displayName": "CrossroadsTina",
+          "profilePicture": 0,
+          "profileTheme": 0,
+          "userTitle": 0,
+          "successMessageFlags": "0",
+          "isDeleted": false,
+          "about": "",
+          "firstAccess": "2016-08-02T23:48:33.676Z",
+          "lastUpdate": "2016-10-28T19:19:22.661Z",
+          "context": {
+            "isFollowing": false,
+            "ignoreStatus": {
+              "isIgnored": false,
+              "ignoreFlags": 0
+            }
+          },
+          "psnDisplayName": "CrossroadsTina",
+          "xboxDisplayName": "CrossroadsTina",
+          "showActivity": false,
+          "locale": "en",
+          "localeInheritDefault": true,
+          "showGroupMessaging": true,
+          "profilePicturePath": "/common/destiny_content/icons/9b31c79b6c0a7111d4abed8f8462b57d.jpg",
+          "profilePictureWidePath": "/common/destiny_content/icons/0c0e86ad2241092882096eaa574add4f.jpg",
+          "profileThemeName": "septagon",
+          "userTitleDisplay": "Newbie",
+          "statusText": "",
+          "statusDate": "0001-01-01T00:00:00Z"
+        },
+        "clans": [
+          {
+            "groupId": "1570656",
+            "platformType": 1
+          },
+          {
+            "groupId": "1570656",
+            "platformType": 2
+          }
+        ],
+        "relatedGroups": {
+          "1570656": {
+            "groupId": "1570656",
+            "name": "Crossroads App",
+            "membershipIdCreated": "13236427",
+            "creationDate": "2016-06-03T21:17:59.209Z",
+            "modificationDate": "2016-08-11T06:38:39.541Z",
+            "groupType": 0,
+            "about": "If you&#39;re looking for friends to play with on the Crossroads App, this is the place!",
+            "isDeleted": false,
+            "tags": [],
+            "rating": 0,
+            "ratingCount": 0,
+            "memberCount": 14,
+            "pendingMemberCount": 0,
+            "isPublic": true,
+            "isMembershipClosed": false,
+            "isMembershipReviewed": false,
+            "isPublicTopicAdminOnly": false,
+            "primaryAlliedGroupId": "0",
+            "motto": "Better with Friends",
+            "clanCallsign": "CRDS",
+            "allowChat": true,
+            "isDefaultPostPublic": false,
+            "isDefaultPostAlliance": false,
+            "chatSecurity": 0,
+            "locale": "en",
+            "avatarImageIndex": 60046,
+            "founderMembershipId": "13495568",
+            "homepage": 0,
+            "membershipOption": 1,
+            "defaultPublicity": 2,
+            "theme": "Group_HunterD",
+            "bannerPath": "/img/Themes/Group_HunterD/struct_images/group_top_banner.jpg",
+            "avatarPath": "/img/profile/avatars/group/avatars_groups_hunter.jpg",
+            "isAllianceOwner": false,
+            "conversationId": "16587811",
+            "clanReviewType": 0,
+            "enableInvitationMessagingForAdmins": false,
+            "banExpireDate": "2001-01-01T00:00:00Z"
+          }
+        },
+        "destinyAccountErrors": []
+      },
+      "ErrorCode": 1,
+      "ThrottleSeconds": 0,
+      "ErrorStatus": "Success",
+      "Message": "Ok",
+      "MessageData": {}
+    }
+  }
+]
+

@@ -1,0 +1,338 @@
+//Script to find out android xbox360 users
+//-----------BEGIN------------
+function createUserInstalls(){
+    var userIds = db.getCollection('users').find({'consoles.consoleType':'XBOX360'},{'_id':1})
+    var usersList = []
+    userIds.forEach(
+        function(u){
+            usersList.push(u._id)
+        })
+    var installationUsers = db.getCollection('installations').find({'user':{'$in':usersList},'deviceType':'gcm'},{'user':1,'_id':0})
+    var tCol =    db.getCollection('userinstallsarchive')
+    var instList = []
+    var tUsers = db.getCollection('users')
+    installationUsers.forEach(
+        function (d) {
+            instList.push(d.user)
+            tCol.insert(d);
+            //update user to xboxone
+            tUsers.update({'_id':d.user},{"$set":{'consoles.0.consoleType':'XBOXONE'}})
+        }
+    )
+
+    print(instList)
+}
+
+createUserInstalls();
+
+//Script to find out users based on console type
+//-----------BEGIN------------
+function createUserInstalls(){
+    var userIds = db.getCollection('users').find({'consoles.consoleType':'XBOX360', 'consoles.verifyStatus':'INITIATED'},{'_id':1})
+    var usersList = []
+    userIds.forEach(
+        function(u){
+            usersList.push(u._id)
+        })
+    var installationUsers = db.getCollection('installations').find({'user':{'$in':usersList},'deviceType':'gcm'},{'user':1,'_id':0})
+
+    var instList = []
+    installationUsers.forEach(
+        function (d) {
+            instList.push(d.user)
+        }
+    )
+
+    print(instList)
+}
+
+createUserInstalls();
+
+//-----------END------------
+
+//Script to create new notification trigger and notification
+//for eventexpiry and usertimeout
+//-----------BEGIN------------
+//---NOTIFICATION------
+{
+    "_id" : ObjectId("5761c35920793c73cdabf2a2"),
+    "name" : "EventExpiredNotification",
+    "messageTemplate" : "Apologies, Guardian! Not enough players joined #EVENT_NAME# so it was removed. If you're still looking, please add it again.",
+    "recipientType" : "eventMembers",
+    "isActive" : true,
+    "__v" : 0
+}
+
+{
+    "_id" : ObjectId("5769ab061df491f65f3ce67f"),
+    "name" : "UserTimedoutNotification",
+    "messageTemplate" : "Still there? We removed you from #EVENT_NAME# due to inactivity. If you're still interested, please rejoin.",
+    "recipientType" : "knownUsers",
+    "isActive" : true,
+    "__v" : 0
+}
+
+//------NOTIFICATIONTRIGGER-------
+{
+    "_id" : ObjectId("5761c3e820793c73cdabf2a3"),
+    "triggerName" : "eventExpiry",
+    "schedule" : "*/2 * * * *",
+    "type" : "schedule",
+    "isActive" : true,
+    "notifications" : [
+        ObjectId("5761c35920793c73cdabf2a2")
+    ],
+    "__v" : 0
+}
+
+/* 10 */
+{
+    "_id" : ObjectId("5763204ba49d9d0691cd39b3"),
+    "triggerName" : "userTimeout",
+    "schedule" : "*/2 * * * *",
+    "type" : "schedule",
+    "isActive" : true,
+    "notifications" : [
+        ObjectId("5769ab061df491f65f3ce67f")
+    ],
+    "__v" : 0
+}
+//-----------END------------
+
+//Script to create Sysconfig
+//for eventexpirytime and usertimeouttime
+//-----------BEGIN------------
+{
+    "_id" : ObjectId("57687e9cb7f58389cbd4737d"),
+    "key" : "eventExpiryTimeInMins",
+    "description" : "Time to expire events. Use - value.",
+    "value" : "-40",
+    "__v" : 0
+}
+
+{
+    "_id" : ObjectId("5769b0251df491f65f3ce682"),
+    "key" : "userTimeoutInMins",
+    "description" : "Timeout interval for user. Use - value.",
+    "value" : "-20",
+    "__v" : 0
+}
+//-----------END------------
+
+//Script to create notification for preUserTimeoutNotification
+//-----------BEGIN------------
+//-----------NOTIFICATION------------
+{
+    "_id" : ObjectId("576d7d567aa4b0116550ce17"),
+    "name" : "PreUserTimedoutNotification",
+    "messageTemplate" : "We are looking for #PLAYERS_NEEDED# #PLAYERS_NEEDED_TXT# for #EVENT_NAME#. If you are still interested, please tap to confirm.",
+    "recipientType" : "knownUsers",
+    "isActive" : true,
+    "__v" : 0
+}
+
+//-----------NOTIFICATIONTRIGGER------------
+{
+    "_id" : ObjectId("576d7d227aa4b0116550ce16"),
+    "triggerName" : "preUserTimeout",
+    "schedule" : "*/2 * * * *",
+    "type" : "schedule",
+    "isActive" : true,
+    "notifications" : [
+        ObjectId("576d7d567aa4b0116550ce17")
+    ],
+    "__v" : 0
+}
+//-----------END------------
+
+//Script to create Sysconfig
+//for preUserTimeoutNotification
+//-----------BEGIN------------
+{
+    "_id" : ObjectId("576d7bc57aa4b0116550ce15"),
+    "key" : "preUserTimeoutInMins",
+    "description" : "Time in mins before which user being timedout due to inactivity. Use - value.",
+    "value" : "-2",
+    "__v" : 0
+}
+//-----------END------------
+
+//-----------BEGIN----------
+//-----------SET isPrimary for all----------
+db.getCollection('users').update({},{ "$set": {"consoles.0.isPrimary":true}},{"upsert":true,'multi':true})
+//-----------END------------
+
+//-----------BEGIN----------
+//-----------Get group count for users after certain date----------
+function createUserGroupFlatmap(){
+    var usersList = db.getCollection('users').find({"date":{"$gt":ISODate("2016-04-22T00:00:00.000Z")}})
+
+    var tGroupsByUser = db.getCollection('groupsByUser')
+    usersList.forEach(
+        function (user) {
+        	var groups = user.groups
+        	groups.forEach(
+        		function(group){
+		        	var userGroup = {}
+		        	userGroup.userId = user._id
+		        	userGroup.userName= user.userName
+		        	userGroup.groupId = group.groupId
+		        	userGroup.clanId=user.clanId
+		        	userGroup.consoles=user.consoles
+		        	tGroupsByUser.insert(userGroup)
+        		}
+        	)
+        }
+    )
+
+   var groupCounts = db.getCollection('groupsByUser').aggregate([{
+    "$group": {"_id":  "$groupId",
+    "count": {"$sum": 1}}}])
+
+    groupCounts.forEach(
+        function(groupByUser){
+            print(groupByUser)
+        }
+    )
+}
+
+createUserGroupFlatmap()
+//-----------END------------
+
+//-----------BEGIN----------
+//-----------Update image url in console for all users----------
+function createUserGroupFlatmap(){
+    var usersList = db.getCollection('users').find({})
+    var tUsers = db.getCollection('users')
+    usersList.forEach(
+        function (user) {
+            tUsers.update({'_id':user._id},{"$set":{'consoles.0.imageUrl':user.imageUrl}},{"upsert":true,'multi':true})
+        }
+    )
+}
+
+//Script to get all dates of a particular event type
+function getWrathMachine() {
+    var activityIds = db.getCollection('activities').find({aSubType:'Wrath of the Machine'}, {_id:1})
+    var activityList = []
+    activityIds.forEach(
+        function(a){
+            activityList.push(a._id)
+        })
+    var events = db.getCollection('events').find({eType: {'$in':activityList}, consoleType:"PS4", launchStatus:"now"})
+    var eventsList = []
+    events.forEach(
+        function(d) {
+            var eventInfo = {
+                "launchDate" : d.launchDate,
+                "updated" : d.updated,
+                "created" : d.created,
+                "status": d.status,
+                "eType": d.eType
+            }
+            eventsList.push(eventInfo)
+        }
+    )
+    print(eventsList)
+}
+
+getWrathMachine();
+//---------------END--------------------
+createUserGroupFlatmap()
+//-----------END------------
+
+//-----------BEGIN----------
+//-----------Usercount by date----------
+
+db.getCollection('users').aggregate([{"$match":{"date":{"$gt":ISODate("2016-08-12 07:00:00.000Z")}}},
+        {"$group" : { "_id" :  { "$dateToString": { "format": "%Y-%m-%d 00:00:00", "date": "$date" }} , "userCount" : { $sum : 1 } }}
+])
+//-----------END------------
+
+//-----------BEGIN----------
+//-----------Activity Import----------
+db.getCollection('activities').update({},{"$set":{'isActive':false}},{"upsert":true,'multi':true})
+./mongorestore -h ds013173-a0.mlab.com:13173 -d travelerprod -u travelerprod -p travelerprod -c activities /Users/dasasr/projects/traveler/admin/travelerbackend/activities.bson
+
+##./mongorestore -h ds011893.mlab.com:11893 -d travelerdev -u travelerdev -p travelerdev -c activities /Users/dasasr/projects/traveler/admin/travelerbackend/activities.bson
+//-----------END------------
+
+//-------------BEGIN------------
+function removeUser(consoleId){
+    var usersList =db.getCollection('users').find({"consoles.consoleId":consoleId})
+    usersList.forEach(
+        function (user) {
+            db.getCollection('installations').find({"user":user._id})
+            db.getCollection('events').remove({"players":user._id})
+            db.getCollection('usergroups').remove({"user":user._id})
+            db.getCollection('users').remove({"consoles.consoleId":consoleId})
+        }
+    )
+}
+
+removeUser('')
+//-------------END--------------
+
+//------------BEGIN-------------
+//----Flatten users with group and console
+db.getCollection('users').aggregate([
+    {
+        "$unwind": "$groups"
+    },
+    {
+        "$unwind": "$consoles"
+    },
+    {
+        "$project": {
+            "_id": "$_id",
+            "groupId": "$groups.groupId",
+            "consoleId": "$consoles.consoleId",
+            "consoleType":"$consoles.consoleType",
+            "verifyStatus":"$consoles.verifyStatus"
+        }
+    }
+])
+//------------END-------------
+
+//------------BEGIN-------------
+//--------------EVENT INVITE NOTIFICATION----------
+{
+    "_id" : ObjectId("58093e3aea3c9f83c47b8a5e"),
+    "name" : "eventInviteAccept",
+    "messageTemplate" : "#PLAYER# has accepted invitation for #EVENT_NAME#",
+    "recipientType" : "knownUsers",
+    "isActive" : true,
+    "__v" : 0
+}
+
+//--------------EVENT INVITE NOTIFICATIONTRIGGER----------
+{
+    "_id" : ObjectId("58093de2ea3c9f83c47b8a5d"),
+    "triggerName" : "eventInviteAccept",
+    "schedule" : "*/2 * * * *",
+    "type" : "schedule",
+    "isActive" : true,
+    "notifications" : [
+        ObjectId("58093e3aea3c9f83c47b8a5e")
+    ],
+    "__v" : 0
+}
+//------------END-------------
+
+//-----------BEGIN----------
+//-----------Check for array length----------
+db.getCollection('usergroups').count( { $where: "this.groups.length > 0" })
+//-----------END----------
+
+//----------BEGIN---------
+function getArchiveEvents(){
+    var evtCursor = db.archiveevents.aggregate( [ { $project: { status: "$status", _id:"$_id",launchDate:"$launchDate",created:"$created",dateDifference: { $subtract: [ "$launchDate", "$created" ] } } } ] )
+        evtCursor.forEach(
+            function (evt) {
+                print(evt)
+            }
+    )
+}
+
+getArchiveEvents()
+//-----------END----------

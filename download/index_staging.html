@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Watchat Prototype Download</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="./css/styles.css" rel="stylesheet">
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-responsive.css" rel="stylesheet">
+
+
+    <style>
+        body { font: normal normal normal 10px/1.5 Arial, Helvetica, sans-serif; }
+
+        .ui-dialog-osx {
+            -moz-border-radius: 0 0 8px 8px;
+            -webkit-border-radius: 0 0 8px 8px;
+            border-radius: 0 0 8px 8px; border-width: 0 8px 8px 8px;
+        }
+
+    </style>
+
+</head>
+
+<body id="homepage" class="desktop" >
+<!--
+    <div id="progress_prompt1" title="App download is in progress.">
+        <p>Press Home Button to find the installed app on one of your home screens and follow the instructions below.</p>
+    </div>
+
+    <div id="progress_prompt2" title="File download is in progress.">
+        <p>Install app.apk file from Notification or Download History to INSTALL the app and follow instructions below.</p>
+    </div>
+-->
+    <div class="container">
+      <div class="text-lockup">
+        <div align="center"><img src="images/watchat_titleimage_ios.png" class="img-responsive" border="0" alt="Watchat"></div>
+
+      </div>
+    </div><!-- /.container -->
+
+
+    <!-- iOS & Android -->
+    <div  class="container">
+        
+        <!-- iOS & Android -->
+        <div class="container" align="center">
+          <img src="images/graphicDevice.png" class="img-responsive" border="0" alt="Watchat">
+        </div><!-- /.container -->
+
+        <!-- iOS -->
+        <div class="download-enabled hidden">
+            <div class="highlight"></div>
+            <a class="myiosappdownload" href="">
+                <img src="images/install_application_ios.png" alt="images/install_application_ios.png" width=60% height=60% style="border:0">
+            </a>
+
+            <section id="instructions_ios">
+                <div class="instructions1"></div>
+                <div class="container">
+                  <div class="text-lockup">
+                    <h4>INSTALLATION INSTRUCTIONS</h4>
+                      <br>
+                      <h5>
+                          <strong>1. Please confirm the installation dialog then press your Home button to see the installation progress.
+                          Note that the app can appear on any of your Home screens.
+                          </strong>
+                          <br><br>
+                          <strong>2. Go to iOS Settings > General > Profiles > Under 'ENTERPRISE APP' section, tap "[Company] Services Corp", then tap "Trust"
+                          </strong>
+                          <br><br>
+                          <div align="center">
+                              <img src="images/trust_enterprise_certificate.gif" class="img-responsive" border="0" alt="Trust Enterprisee Certificate" width="200" height="355"><br>
+                          </div>
+                          <br>
+                          <strong>3. Launch the App.
+                          </strong>
+                      </h5>
+
+
+                  </div>
+                </div><!-- /.container -->
+
+            </section>
+
+
+            <!-- move it down so only internal teams scroll down -->
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <div  id="beta" class="highlight"><a href='https://rink.hockeyapp.net/apps/200decf998fcdf79b049d7cf6ca4c9dd'>For internal team builds</div>
+
+
+        </div>
+        <!-- iOS end -->
+
+        <!-- Android -->
+        <div class="download-disabled hidden">
+            <div class="highlight"></div>
+            <a class="myandroidappdownload" href="">
+                <img src="images/install_application_android.png" alt="images/install_application_android.png" width=60% height=60% style="border:0">
+            </a>
+
+
+
+            <section id="instructions_android">
+                <div class="instructions2"></div>
+                <div class="container">
+                    <div class="text-lockup">
+
+                        <h4>INSTALLATION INSTRUCTIONS</h4>
+
+                        <h5>
+                            <strong>1. Please confirm the installation dialog then go to Settings on your device.
+                            </strong>
+                            <br>
+                            <strong>2. Find SECURITY or LOCK SCREEN & SECURITY section<br>
+                            </strong>
+
+                            <strong>3. Accept or check the box next to Unknown sources<br>
+                            </strong>
+
+                            <strong>4. Install app.apk file from Notification or Download History to INSTALL the app<br>
+                            </strong>
+
+                            <br>
+                        </h5>
+
+
+                        <div align="center"><img src="images/android_security_info.png" class="img-responsive" border="0"  width=60% height=60%  alt="Android Security Info"><br></div>
+                        </p>
+
+                    </div>
+                </div><!-- /.container -->
+
+            </section>
+
+            <!-- move it down so only internal teams scroll down -->
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <div class="highlight"><a href='https://rink.hockeyapp.net/apps/c8343bf1f774a910de5c2143b036e469'>For internal team builds</div>
+
+        </div>
+        <!-- Android end -->
+
+    </div>
+
+    <div class="container">
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <script type="text/javascript">
+      var isMobile = {
+        Android: function() {
+          return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+          return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+          return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+          return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+          return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+      };
+    </script>
+
+
+    <script type="text/javascript">
+      $(function(){
+          if ( isMobile.Android() ) {
+            $(document.body).addClass('android');
+          } else if( isMobile.iOS() ) {
+            $(document.body).addClass('ios');
+          }
+          if (!isMobile.any()) {
+            //desktop browser
+            $(document.body).addClass('desktop');
+          }
+          // $("#progress_prompt1").hide();
+          // $("#progress_prompt2").hide();
+      });
+    /*
+      $(document).scroll(function (e) {
+
+          if ($(".ui-widget-overlay")) //the dialog has popped up in modal view
+          {
+              //fix the overlay so it scrolls down with the page
+              $(".ui-widget-overlay").css({
+                  position: 'fixed',
+                  top: '0'
+              });
+
+              //get the current popup position of the dialog box
+              pos = $(".ui-dialog").position();
+
+              //adjust the dialog box so that it scrolls as you scroll the page
+              $(".ui-dialog").css({
+                  position: 'fixed',
+                  top: pos.y
+              });
+          }
+      });
+*/
+
+      $(document).ready(function() {
+          $(".myiosappdownload").on("click", function( e ) {
+
+              e.preventDefault();
+
+
+              $('html, body').animate({
+
+                  scrollTop: $(".instructions1").offset().top
+
+              }, 2000);
+              /*
+              $("#progress_prompt1").dialog({
+                  modal: true,
+                  position: ['center', 'top'],
+                  show: 'blind',
+                  hide: 'blind',
+                  width: 400,
+                  autoOpen: true,
+                  dialogClass: 'ui-dialog-osx',
+                  buttons: {
+                      "OK": function() {
+                          $(this).dialog("close");
+                      }
+                  }
+              });
+              */
+              $(location).attr('href', 'itms-services://?action=download-manifest&url=https://feighty-images-dev.s3.amazonaws.com/download/iOS-staging/feightyapp.plist');
+
+
+          });
+
+          $(".myandroidappdownload").on("click", function( e ) {
+
+              e.preventDefault();
+
+
+              $('html, body').animate({
+                  scrollTop: $(".instructions2").offset().top
+              }, 2000);
+
+              $(location).attr('href', 'http://feighty-images-dev.s3.amazonaws.com/download/android-staging/app-debug.apk');
+                /*
+              $("#progress_prompt2").dialog({
+                  modal: true,
+                  position: ['center', 'top'],
+                  show: 'blind',
+                  hide: 'blind',
+                  width: 400,
+                  scroll: true,
+                  autoOpen: true,
+                  dialogClass: 'ui-dialog-osx',
+                  buttons: {
+                      "OK": function() {
+                          $(this).dialog("close");
+                      }
+                  }
+              });
+
+                */
+          });
+      });
+
+
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-67388544-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>

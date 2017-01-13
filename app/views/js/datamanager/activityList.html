@@ -1,0 +1,177 @@
+<div class="alert alert-info" ng-show="loading">Loading</div>
+<div class="bs-component" ng-show="!loading">
+<div ng-controller="activityController">
+    <script type="text/ng-template" id="editActivityDetail.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Activity Details</h3>
+        </div>
+		<div class="row">
+        <div class="modal-body">
+				<form class="form-horizontal pull-left" role="form">
+					<div class="form-group">
+
+							<div class="col-md-6 element-container">
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">_id: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails._id" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aType: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aType" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aSubType: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.sSubType" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aCheckpoint: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aCheckpoint" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aDifficulty: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aDifficulty" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">aDisplayName: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aDisplayName" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">tag: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.tag" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">modifiers: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.modifiers" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">aLight: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aLight" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">minPlayers: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.minPlayers" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">maxPlayers: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.maxPlayers" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aIconUrl: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aIconUrl" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aLevel: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aLevel" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">adCard.isAdCard: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.adCard.isAdCard" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">adCard.adCardBaseUrl: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.adCard.adCardBaseUrl" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">adCard.adCardImagePath: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.adCard.adCardImagePath" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">adCard.adCardHeader: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.adCard.adCardHeader" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">adCard.adCardSubHeader: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.adCard.adCardSubHeader" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aImage.aImageBaseUrl: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aImage.aImageBaseUrl" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aImage.aImageImagePath: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aImage.aImageImagePath" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aImage.aImageHeader: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aImage.aImageHeader" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">aImage.aImageSubHeader: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.aImage.aImageSubHeader" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5 ">isFeatured: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.isFeatured" class="form-control" /></div>
+								</div>
+								<div  class="form-group">
+									<label class="control-label col-sm-offset-1 col-sm-5">isActive: </label>
+									<div class="col-sm-6"><input ng-model="activityDetails.isActive" class="form-control" /></div>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<pre class="pre-info" ng-bind="activityDetails | json"></pre>
+							</div>
+						</div>
+					<div class="form-group modal-footer">
+						<div class="col-sm-offset-2 col-sm-9">
+							<button type="submit" class="btn btn-default" ng-click="updateActivity()">Update Activity</button>
+							<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+						</div>
+					</div>
+				</form>
+
+		</div>
+		</div>
+<!--
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+-->
+    </script>
+</div>
+<div> <h3><span  class="label label-default">Activity Editor</span></h3></div>
+<table  class="table table-striped table-hover">
+	<tr>
+		<th>Icon</th>
+		<th>type</th>
+		<th>Subtype</th>
+		<th>Checkpoint</th>
+		<th>Difficulty</th>
+		<th>Light</th>
+		<th>Min Players</th>
+		<th>Max Players</th>
+		<th>Level</th>
+		<th>Adcard?</th>
+		<th>Featured?</th>
+		<th>Active?</th>
+		<th>ID</th>
+		<th>Action</th>
+	</tr>
+	<tr ng-repeat="item in activityList">
+		<td class="table-info">
+			<div>
+				<img src='{{item.aIconUrl}}' class="img-responsive" width="40%" height="40%"/>
+			</div>
+		</td>
+		<td>{{item.aType}}</td>
+		<td>{{item.aSubType}}</td>
+		<td>{{item.aCheckpoint}}</td>
+		<td>{{item.aDifficulty}}</td>
+		<td>{{item.aLight}}</td>
+		<td>{{item.minPlayers}}</td>
+		<td>{{item.maxPlayers}}</td>
+		<td>{{item.aLevel}}</td>
+		<td>{{activityDetails.adCard.isAdCard}}</td>
+		<td>{{item.isFeatured}}</td>
+		<td>{{item.isActive}}</td>
+		<td>{{item._id}}</td>
+		<td>
+			<a class="btn btn-primary badge badge-primary" href="#" ng-click="updateActivity(item._id,item)">
+				<span class="glyphicon glyphicon-shopping-ok"> </span>
+				 Update
+			</a>
+		</td>
+	</tr>
+</table>
+</div>

@@ -1,0 +1,261 @@
+.panel-heading {
+  background-color: #18303a;
+}
+
+.panel-footer {
+  background-color: #18303a;
+}
+
+.panel {
+  background-color: #18303a;
+
+}
+
+.badge-default {
+  background-color: #999999;
+}
+
+.badge-primary {
+  background-color: #428bca;
+}
+
+.badge-success {
+  background-color: #5cb85c;
+}
+
+.badge-info {
+  background-color: #5bc0de;
+}
+
+.badge-warning {
+  background-color: #f0ad4e;
+}
+
+.badge-danger {
+  background-color: #d9534f;
+}
+
+td {
+  font-size: .9em;
+}
+
+th {
+  font-weight: bold;
+  font-size: .9em;
+}
+
+.myrow {
+  font-size: 0;
+}
+.myrow > * {
+  float: none;
+  display: inline-block;
+  font-size: 14px; /* if using LESS it's quicker to just use @font-size-base */
+}
+.myrow > *:last-child {
+  vertical-align: bottom;
+}
+.myrow p:last-child {
+  margin-bottom: 0; /* optional */
+}
+
+body{
+  background-color: #18303a;
+}
+
+.appTitle{
+  font-family: HelveticaNeue-Bold;
+  font-size: 14px;
+  color: white;
+  line-height: 14px;
+  letter-spacing: -0.2px;
+}
+
+.appTitleSmPad{
+  padding-top: 14px;
+  font-family: HelveticaNeue-Bold;
+  font-size: 14px;
+  color: white;
+  line-height: 14px;
+  letter-spacing: -0.2px;
+}
+
+.msgLarge{
+  font-family: HelveticaNeue;
+  font-size: 20px;
+  color: white;
+  line-height: 28px;
+  width: 355px;
+}
+
+.labelSm{
+  font-family: HelveticaNeue;
+  font-size: 10px;
+  color: white;
+  line-height: 10px;
+  letter-spacing: 1px;
+  padding-top: 10px;
+}
+
+.txtSm{
+  font-family: ArialMT;
+  font-size: 20px;
+  line-height: 14px;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  border-bottom: 1px;
+  border-style: dotted;
+  border-color: #ffffff;
+  vertical-align: middle;
+  height: 50px;
+  width: 280px;
+}
+
+.pad{
+  padding-top: 30px;
+}
+.padSm{
+  padding-top: 10px;
+}
+.imgLogo{
+  padding-top: 54px;
+  padding-bottom: 26px;
+}
+
+.containerBox{
+  height:60px;
+  width:330px;
+  background-color:#0086D0;
+}
+
+.blueTerms{
+  font-family: HelveticaNeue;
+  font-size: 13px;
+  color: #0086D0;
+  text-decoration: underline;
+}
+.blueContact{
+  font-family: ArialMT;
+  font-size: 20px;
+  color: #0086D0;
+}
+.containerTerms{
+  height:47px;
+  width:307px;
+  font-family: HelveticaNeue;
+  font-size: 13px;
+  color: white;
+  padding-top: 10px;
+  align-self: left;
+}
+
+.containerTermsContact{
+  height:40px;
+  width:320px;
+  font-family: ArialMT;
+  font-size: 18px;
+  color: white;
+  padding-top: 10px;
+  align-self: left;
+}
+
+.containerTermsContent{
+  height:400px;
+  font-family: HelveticaNeue;
+  font-size: 12px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  align-self: left;
+  background-color:white;
+  overflow-y: scroll;
+
+}
+
+.lockContainer{
+  height: 66px;
+  width: 66px;
+  float:left;
+}
+
+.formContainer{
+  height: 66px;
+  width: 285px;
+  float:left;
+}
+
+.btnBlue{
+  font-family: HelveticaNeue-Bold;
+  font-size: 14px;
+  color: white;
+  border-left: 0px;
+  border-right: 0px;
+  border-top: 0px;
+  border-bottom: 0px;
+  background-color: #0086D0;
+  height: 50px;
+  width: 280px;
+}
+
+.linkBluePlain{
+  font-family: HelveticaNeue-Bold;
+  font-size: 16px;
+  color: white;
+  background: #0086D0;
+  line-height: 50px;
+  width: 355px;
+  text-align: center;
+}
+
+.linkBlue{
+  font-family: HelveticaNeue-Bold;
+  font-size: 16px;
+  color: white;
+  background: #0086D0;
+  height: 50px;
+  width: 355px;
+  display: block;
+}
+
+.linkBlueCenter{
+  font-family: HelveticaNeue-Bold;
+  font-size: 16px;
+  color: white;
+  background: #0086D0;
+  line-height: 60px;
+  border-radius: 2px;
+  width: 330px;
+  display: block;
+}
+
+.linkGreyBlueCenter{
+  font-family: HelveticaNeue-Bold;
+  font-size: 16px;
+  color: white;
+  background: #365D65;
+  line-height: 50px;
+  width: 330px;
+  display: block;
+}
+
+.linkGreyBlue{
+  font-family: HelveticaNeue-Bold;
+  font-size: 14px;
+  color: white;
+  background: #365D65;
+  height: 50px;
+  width: 355px;
+  display: block;
+  text-align: center;
+}
+
+a:hover, a:active {
+  color: white;
+}
+
+.jumbotron {
+  background-color:#18303a;
+}

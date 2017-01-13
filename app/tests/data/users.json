@@ -1,0 +1,140 @@
+{
+  "sreeharshadasa":{
+    "mpDistinctId": null,
+    "bungieMemberShipId": "13172709",
+    "imageUrl": "https://www.bungie.net//common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg",
+    "clanName": "Freelance Lobby",
+    "__v": 3,
+    "isInvited": false,
+    "mpDistinctIdRefreshed": false,
+    "stats": {
+      "eventsFull": 0,
+      "eventsLeft": 0,
+      "eventsJoined": 0,
+      "eventsCreated": 0
+    },
+    "legal": {
+      "privacyVersion": "0.1",
+      "termsVersion": "0.2"
+    },
+    "hasReachedMaxReportedComments": false,
+    "commentsReported": 0,
+    "notifStatus": [],
+    "isLoggedIn": true,
+    "lastActiveTime": "2017-01-05T19:06:06.890Z",
+    "groups": [],
+    "clanId": "clan_id_not_set",
+    "consoles": [
+      {
+        "clanTag": null,
+        "destinyMembershipId": "4611686018459149267",
+        "consoleType": "PS4",
+        "consoleId": "sreeharshadasa",
+        "imageUrl": "https://www.bungie.net//common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg",
+        "isPrimary": true,
+        "verifyStatus": "VERIFIED"
+      }
+    ],
+    "verifyStatus": "VERIFIED"
+  },
+  "tinacplays":{
+    "mpDistinctId": null,
+    "bungieMemberShipId": "12777673",
+    "imageUrl": "https://www.bungie.net//common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg",
+    "clanName": "Freelance Lobby",
+    "__v": 3,
+    "isInvited": false,
+    "mpDistinctIdRefreshed": false,
+    "stats": {
+      "eventsFull": 0,
+      "eventsLeft": 0,
+      "eventsJoined": 0,
+      "eventsCreated": 0
+    },
+    "legal": {
+      "privacyVersion": "0.1",
+      "termsVersion": "0.2"
+    },
+    "hasReachedMaxReportedComments": false,
+    "commentsReported": 0,
+    "notifStatus": [],
+    "isLoggedIn": true,
+    "lastActiveTime": "2017-01-05T19:06:06.890Z",
+    "groups": [],
+    "clanId": "clan_id_not_set",
+    "consoles": [
+      {
+        "clanTag": null,
+        "destinyMembershipId": "4611686018457509474",
+        "consoleType": "PS4",
+        "consoleId": "tinacplays",
+        "imageUrl": "https://www.bungie.net//common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg",
+        "isPrimary": true,
+        "verifyStatus": "VERIFIED"
+      }
+    ],
+    "verifyStatus": "VERIFIED"
+  },
+  "CrossroadsTina":{
+    "mpDistinctId" : "1A0C14BC-364C-4D39-A7FC-E4E54ADCE343",
+    "bungieMemberShipId" : "13628045",
+    "imageUrl" : "https://www.bungie.net/common/destiny_content/icons/c68cc7f07a25575fd86712f9453eb5f1.jpg",
+    "clanName" : "Crossroads App Beta",
+    "isInvited" : false,
+    "mpDistinctIdRefreshed" : true,
+    "stats" : {
+      "eventsFull" : 3,
+      "eventsLeft" : 11,
+      "eventsJoined" : 10,
+      "eventsCreated" : 12
+    },
+    "legal" : {
+      "privacyVersion" : "0.2",
+      "termsVersion" : "0.2"
+    },
+    "hasReachedMaxReportedComments" : false,
+    "commentsReported" : 0,
+    "notifStatus" : [
+      "preUserTimeout"
+    ],
+    "isLoggedIn" : true,
+    "groups" : [
+      {
+        "groupId" : "1570656",
+        "muteNotification" : false
+      },
+      {
+        "groupId" : "1570671",
+        "muteNotification" : false
+      },
+      {
+        "groupId" : "clan_id_not_set",
+        "muteNotification" : false
+      }
+    ],
+    "consoles" : [
+      {
+        "destinyMembershipId" : "4611686018460848698",
+        "clanTag" : "CRDS",
+        "consoleType" : "PS4",
+        "consoleId" : "CrossroadsTina",
+        "imageUrl" : "https://www.bungie.net/common/destiny_content/icons/c68cc7f07a25575fd86712f9453eb5f1.jpg",
+        "isPrimary" : true,
+        "verifyStatus" : "VERIFIED"
+      },
+      {
+        "destinyMembershipId" : "4611686018460848431",
+        "clanTag" : "CRDS",
+        "consoleType" : "XBOXONE",
+        "consoleId" : "CrossroadsTina",
+        "imageUrl" : "https://www.bungie.net//common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg",
+        "isPrimary" : false,
+        "verifyStatus" : "VERIFIED"
+      }
+    ],
+    "verifyStatus" : "VERIFIED",
+    "__v" : 240,
+    "clanId" : "1570671",
+    "clanImageUrl" : "https://www.bungie.net/img/profile/avatars/group/avatars_groups_racer.jpg"
+  }
+}

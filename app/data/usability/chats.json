@@ -1,0 +1,842 @@
+[
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000002,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000002,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Buzzfeed Video - If Disney Prices Were Real",
+    "parseid": "sSNAnBuBiE",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000002,,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "text",
+    "message": "an oldie but a goodie",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000001,4081000002,4081000003",
+    "groupname": "Best Friends",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Buzzfeed Video - If Di`sney Prices Were Real",
+    "parseid": "sSNAnBuBiE",
+    "momentstart":"169", "momentend":"218"
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000001,4081000002,4081000003",
+    "groupname": "Best Friends",
+    "messagetype": "text",
+    "message": "lololol the best part!!",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000002,4081000003,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "text",
+    "message": "why is he shirtless and wearing a cardigan?? Hahaha",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000001,4081000002,4081000003",
+    "groupname": "Best Friends",
+    "messagetype": "text",
+    "message": "haha hilarious",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000002,4081000003,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "text",
+    "message": "have you seen this one? Its soooo funny!!",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000002,4081000003,4088373617",
+    "groupname": "Best Friends",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Key & Peele - Substitute Teacher",
+    "parseid": "sRtgnYVtgw",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Buzzfeed - Three Easy Ways to Cook Eggs in the Microwave",
+    "parseid": "XvrvhS6dwf",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "so hangry! ready to do this",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000005,
+    "recipients": ",4081000004,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "where should we get lunch?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "what are you thinking?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "we could get something delivered or we can eat there",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000004,
+    "recipients": "4081000005,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "cafeteria? eh maybe burger and fries",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000005,4081000004,4081000006",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "ooo a burger and fries sounds good",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000005,
+    "recipients": "4081000004,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "drive thru at In-N-Out?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000005,
+    "recipients": "4081000004,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "Five guys??",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000005,4081000004,4081000006",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "either is fine",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000005,4081000004,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Buzzfeed - Fast Food Burger Taste Test",
+    "parseid": "XLctLqtQdl",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000004,
+    "recipients": "4081000005,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "haha that guy is a burger pro",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000005,
+    "recipients": "4081000004,4081000006,4088373617",
+    "groupname": "Lunch Crew",
+    "messagetype": "text",
+    "message": "wait so who won?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "VEVO - One Direction - Drag Me Down",
+    "parseid": "9o9GmE16g2",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "\"real music\"",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000007,4081000008",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "any new a cappella songs lately?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "hmm not sure",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "maybe Pentatonix, they've been a pretty big hit since The Sing-Off",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000007,4081000008",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "whose that?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Pentatonix Official - Daft Punk - Pentatonix",
+    "parseid": "hgs9UB3UAj",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "they're from Texas",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000007,
+    "recipients": "4081000008,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "yeah they're really good",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000007,
+    "recipients": "4081000008,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Pentatonix Official - Cheerleader - Pentatonix (OMI Cover)",
+    "parseid": "628vAOGP4K",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000007,
+    "recipients": "4081000008,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "man such a great cover",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000007,
+    "recipients": "4081000008,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "a more recent song they just released",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000007,4081000008",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "ok cool I'll check it out",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000008,
+    "recipients": "4081000007,4088373617",
+    "groupname": "Music Lovers",
+    "messagetype": "text",
+    "message": "I saw them on tour and they were amazing!",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617"  ,
+    "groupname": "Chat with Craig",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Nature on PBS - Three-toed Sloth: The Slowest Mammal on Earth",
+    "parseid": "ABJfKSipUS",
+    "momentstart":"95", "momentend":"109"
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "me currently",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000009",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "lol",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000009",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "did you see Mad Max?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "ya it was awesome",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000009",
+    "groupname": "Chat with Craig",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Screen Junkies - Honest Trailers - Mad Max: Fury Road",
+    "parseid": "JfkcFE2pDj",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000009",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "this is so funny!!",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "HAHA",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Honest Trailers - Mad Max: Fury Road",
+    "parseid": "JfkcFE2pDj",
+    "momentstart":"81", "momentend":"95"
+  },
+  {
+    "sender": 4081000009,
+    "recipients": "4088373617",
+    "groupname": "Chat with Craig",
+    "messagetype": "text",
+    "message": "when they dared to turn left! HAHAHA best part",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "ESPN - Epic Frisbee Trick Shots",
+    "parseid": "Ur7HjfP3R1",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000001,
+    "recipients": "4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "this is ridiculous",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000014,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "wow so over the top",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "why does he keep celebrating??",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000001,4081000005,4081000010,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Epic Frisbee Trick Shots",
+    "parseid": "Ur7HjfP3R1",
+    "momentstart":"57", "momentend":"65"
+  },
+  {
+    "sender": 4081000006,
+    "recipients": "4081000001,4081000005,4081000010,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "high five!! *jump into the water while doing flips* ???",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000001,4081000005,4081000006,4081000011,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "they were hiking and just happened to find a basketball hoop?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000011,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "he's a famous trick shooter and pro Frisbee player",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000011,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000012,4081000013,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "definitely a little excessive tho",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "mosh pit??",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000003,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000011,4081000012,4081000013,4081000014,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Epic Frisbee Trick Shots",
+    "parseid": "Ur7HjfP3R1",
+    "momentstart":"162", "momentend":"179"
+  },
+  {
+    "sender": 4081000013,
+    "recipients": "4081000001,4081000005,4081000006,4081000010,4081000011,4081000012,4081000014,4081000003,4088373617",
+    "groupname": "Frisbee Team",
+    "messagetype": "text",
+    "message": "when's our next game?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000015,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000015,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Key & Peele - Substitute Teacher",
+    "parseid": "sRtgnYVtgw",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000015,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "text",
+    "message": "haha he reminds me of Ms. Johnson from chemistry",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000015,
+    "recipients": "4081000010,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "text",
+    "message": "love those guys, they're so funny hahaha",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000015,
+    "recipients": "4081000010,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "moment",
+    "message": "",
+    "contentid": "Key & Peele - Substitute Teacher",
+    "parseid": "sRtgnYVtgw",
+    "momentstart":"75", "momentend":"105"
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000015,4081000010",
+    "groupname": "SF High School Friends",
+    "messagetype": "text",
+    "message": "lol",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000015,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "text",
+    "message": "poor clipboard haha",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000015,4081000010",
+    "groupname": "SF High School Friends",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Nature on PBS - Three-toed Sloth: The Slowest Mammal on Earth",
+    "parseid": "ABJfKSipUS",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000015,
+    "recipients": "4081000010,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Funny or Die - Kristen Stewart & Jesse Eisenberg's Awkward",
+    "parseid": "wcovrcOYAf",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000010,
+    "recipients": "4081000015,4088373617",
+    "groupname": "SF High School Friends",
+    "messagetype": "text",
+    "message": "Levi the designer! Hah",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000016,
+    "recipients": "4081000017,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "chat",
+    "message": "hi",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000016,
+    "recipients": "4081000017,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "20th Century Fox - The Martian Official Trailer",
+    "parseid": "Ctz9Iym9xG",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000016,
+    "recipients": "4081000017,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "the trailer looks good! anyone seen it yet?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000017,
+    "recipients": "4081000016,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "it comes out next month",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000017,
+    "recipients": "4081000016,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "reminds me of Interstellar",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000017,
+    "recipients": "4081000016,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "Warner Bros. Pictures - Suicide Squad Comic Con",
+    "parseid": "3GqZMo4R3x",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000017,
+    "recipients": "4081000016,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "pumped for this one!",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4088373617,
+    "recipients": "4081000016,4081000017,4081000013,4081000014",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "looks like Gravity",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000013,
+    "recipients": "4081000016,4081000017,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "I wish this was a real movie hahaha",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000013,
+    "recipients": "4081000016,4081000017,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "content",
+    "message": "",
+    "contentid": "EA SPORTS - Madden NFL 16",
+    "parseid": "tkbhUFgC7r",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000017,
+    "recipients": "4081000016,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "random Bollywood?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  },
+  {
+    "sender": 4081000016,
+    "recipients": "4081000017,4081000013,4081000014,4088373617",
+    "groupname": "Co-Workers",
+    "messagetype": "text",
+    "message": "random dinosaur?",
+    "contentid": "",
+    "parseid": "",
+    "momentstart":"", "momentend":""
+  }
+]

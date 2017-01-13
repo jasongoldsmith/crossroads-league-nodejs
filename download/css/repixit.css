@@ -1,0 +1,16 @@
+
+.ios .download-enabled{
+  display:block;
+  visibility:visible;
+}
+
+.android .download-disabled{
+  display:block;
+  visibility:visible;
+}
+
+.desktop .go-to-mobile{
+  display:block;
+  visibility:visible;
+}
+

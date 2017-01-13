@@ -1,0 +1,26 @@
+<table  class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th scope="col">USERS</th>
+        <th ng-repeat="item in userMetricsList | filter:{'_id':{'verifyStatus':'VERIFIED'}}" scope="col">
+            {{item._id.consoleType[0]}}</th>
+        <th scope="col">TOTAL</th>
+    </tr>
+    </thead>
+    <tbody ng-init="columnTotal = []">
+    <tr ng-repeat="status in statusList" ng-init="rowTotal = 0" >
+        <th scope="row">{{status}}</th>
+        <td ng-repeat="userMetric in userMetricsList | filter: {'_id': {'verifyStatus': status}}"
+            ng-init="$parent.rowTotal = $parent.rowTotal + userMetric.count;
+            $parent.columnTotal[$index] = $parent.columnTotal[$index] + userMetric.count">
+            {{userMetric.count}}</td>
+        <td>{{rowTotal}}</td>
+    </tr>
+    <tr ng-init="rowTotal = 0">
+        <th scope="row">TOTAL</th>
+        <td ng-repeat="value in columnTotal" ng-init="$parent.rowTotal = $parent.rowTotal + value">
+            {{value}}</td>
+        <td>{{rowTotal}}</td>
+    </tr>
+    </tbody>
+</table>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0,  minimum-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/traveler.css">
+    </head>
+    <body>
+    <div class="container" align="center">
+        <div class="padSm"/>
+        <div class="appTitle">ACCOUNT VERIFICATION</div>
+        <div class="imgLogo"> <img align="center" src="/img/imgLogoBadge.png"/></div>
+        <div align="center">
+            <div class="msgLarge">Welcome to Crossroads,</div>
+            <div class="msgLarge">Destiny Fireteam Finder!</div>
+            <%if(verifyStatus != 'VERIFIED'){%>
+                <div class="msgLarge pad">Verify your <%=consoleType%> <%= consoleId %> on Crossroads?</div>
+            <%}else{%>
+                <div class="msgLarge pad">You have verified your <%=consoleType%> <%= consoleId %> on Crossroads.</div>
+            <%}%>
+        </div>
+        <div class="pad"/>
+        <%if(verifyStatus != 'VERIFIED'){%>
+
+        <a href="/api/v1/auth/verifyconfirm/<%= token %>" class="linkBlueCenter">
+            <div>YES, VERIFY ME!</div>
+        </a>
+        <div class="padSm"/>
+        <a href="/api/v1/auth/verifyReject/<%= token %>" class="linkGreyBlueCenter">
+            <div>No, that's not me.</div>
+        </a>
+        <%}%>
+
+        <div class="containerTerms" align="center">
+            <a href="http://crossroadsapp.co"><span class="blueTerms">Find out more about Crossroads</span></a>
+        </div>
+    </div>
+    </body>
+
+</html>

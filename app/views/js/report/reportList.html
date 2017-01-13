@@ -1,0 +1,108 @@
+<div class="alert alert-info" ng-show="loading">Loading</div>
+<div class="bs-component" ng-show="!loading">
+<div ng-controller="reportManager">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Offer Details</h3>
+        </div>
+        <div class="modal-body">
+			<div class="row">
+				<div class="col-xs-2">
+					<img src='{{offerDetails.offer.itemImage}}'/>
+				</div>
+				<div class="col-sm-10">
+					<div>
+						<div><strong>{{offerDetails.offer.itemTitle}}</strong></div>
+						<div >{{offerDetails.offer.itemDesc}}</div>
+						<div>&nbsp;</div>
+						<div ><a href="#" ng-click='openProductWindow(offerDetails.offer.itemId)'>Click Here to order on Amazon ({{offerDetails.offer.itemId}})</a></div>
+					</div>
+					<div>
+						<div><br><strong>Customer</strong> </div>
+						<div>
+							<div class="col-sm-offset-2">{{offerDetails.customer.shipping.name}}</div>
+							<div class="col-sm-offset-2"><address>
+								{{offerDetails.customer.shipping.address.line1}},{{offerDetails.customer.shipping.address.line2}}<br>
+								{{offerDetails.customer.shipping.address.city}}, {{offerDetails.customer.shipping.address.state}}&nbsp;{{offerDetails.customer.shipping.address.postal_code}}<br>
+								<abbr title="Phone">P:</abbr> (123) 456-7890
+								</address>
+							</div>
+						</div>
+					</div>
+					<div>
+						<form class="form-horizontal pull-left" role="form">
+							<div class="form-group">
+								<label  class="col-sm-5 control-label"
+										for="inputOrder3">Amazon Order #: </label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control"
+										   id="inputOrder3" ng-model="inputOrder3" ng-value="offerDetails.offer.amazonOrderNum" placeholder="Amazon Order #"/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-5 control-label"
+									   for="inputTrack3" >Tracking #</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control"
+										   id="inputTrack3" ng-model="inputTrack3" placeholder="Tracking Number"/>
+								</div>
+							</div>
+							<div class="form-group modal-footer">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-default" ng-click="updateOffer()">Update Offer</button>
+									<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+<!--
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+-->
+    </script>
+</div>
+<table  class="table table-striped table-hover">
+	<tr>
+		<th>Reporter</th>
+		<th>Report Type</th>
+		<th>Details</th>
+		<th>PSN ID</th>
+		<th>Reporter Email</th>
+		<th>Reported Date</th>
+		<th>Status</th>
+		<th>Action</th>
+	</tr>
+	<tr ng-repeat="item in reportList">
+		<td>
+			<div>
+				<img src='{{item.reporter.imageUrl}}' class="img-circle" width="10%" height="20%"/>
+				{{item.reporter.userName}}
+			</div>
+		</td>
+		<td>{{item.reportType}}</td>
+		<td>{{item.reportDetails}}</td>
+		<td>{{item.reporter.consoles[0].consoleId}}</td>
+		<td>{{item.reporterEmail}}</td>
+		<td>{{item.createdDate}}</td>
+		<td>{{item.reportStatus}}</td>
+		<td><!-- <button id="placeSupplierOrder"
+			ng-click="listSuppliers('listSuppliers',item.productId,item.hubZoneId)">Place
+			Supplier Order</button> -->
+			<div ng-show="item.offerStatus != 'Fulfilled'">
+				<a class="btn btn-primary badge badge-primary" href="#" ng-click="updateReport(item._id,item)">
+					<span class="glyphicon glyphicon-shopping-ok"> </span>
+					 Resolve
+					<!-- <span class="sr-only">(current)</span> -->
+				</a>
+			</div>
+			<div ng-show="item.reportStatus == 'resolved'">
+				<span class="label label-success">Complete</span></a>
+			</div>
+		</td>
+	</tr>
+</table>

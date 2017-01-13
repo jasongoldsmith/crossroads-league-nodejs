@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Watchat Prototype Download</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="./css/styles.css" rel="stylesheet">
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/bootstrap-responsive.css" rel="stylesheet">
+
+
+</head>
+
+<body id="homepage" class="desktop" >
+    <div class="container">
+      <div class="text-lockup">
+        <div align="center"><img src="images/watchat_titleimage_ios.png" class="img-responsive" border="0" alt="Watchat"></div>
+
+      </div>
+    </div><!-- /.container -->
+
+
+    <!-- iOS & Android -->
+    <div  class="container">
+        
+        <!-- iOS & Android -->
+        <div class="container" align="center">
+          <img src="images/graphicDevice.png" class="img-responsive" border="0" alt="Watchat">
+        </div><!-- /.container -->
+
+        <!-- iOS -->
+        <div class="download-enabled hidden">
+            <div class="highlight"></div>
+            <a class="myiosappdownload" href="">
+                <img src="images/install_application_ios.png" alt="images/install_application_ios.png" width=60% height=60% style="border:0">
+            </a>
+
+            <section id="instructions_ios">
+                <div class="instructions1"></div>
+                <div class="container">
+                  <div class="text-lockup">
+                    <h3>INSTALLATION INSTRUCTIONS</h3>
+                      <div align="center"><img src="images/trust_enterprise_certificate.gif" class="img-responsive" border="0" alt="Trust Enterprisee Certificate"><br></div>
+                    <p class="lead"><br>
+                    <strong>1.</strong> Download the App.<br>
+                    <strong>2.</strong> Go to iOS Settings > General > Profiles > Under 'ENTERPRISE APP' section, tap "[Company] Services Corp", then tap "Trust"<br>
+                    <strong>3.</strong> Go to Home and launch the App<br></p>
+
+                  </div>
+                </div><!-- /.container -->
+
+            </section>
+
+
+            <!-- move it down so only internal teams scroll down -->
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <div  id="beta" class="highlight"><a href='https://rink.hockeyapp.net/apps/200decf998fcdf79b049d7cf6ca4c9dd'>For internal team builds</div>
+
+        </div>
+        <!-- iOS end -->
+
+        <!-- Android -->
+        <div class="download-disabled hidden">
+            <div class="highlight"></div>
+            <a class="myandroidappdownload" href="">
+                <img src="images/install_application_android.png" alt="images/install_application_android.png" width=60% height=60% style="border:0">
+            </a>
+
+            <section id="instructions_android">
+                <div class="instructions2"></div>
+                <div class="container">
+                    <div class="text-lockup">
+                        <h3>INSTALLATION INSTRUCTIONS</h3>
+                        <p class="lead">(Applicable for most android phones)<br>
+                        <div align="center"><img src="images/android_security_info.png" class="img-responsive" border="0"  width=60% height=60%  alt="Android Security Info"><br></div>
+                        <br><strong>1.</strong> Open up SETTINGS on your device<br>
+                            <strong>2.</strong> Find SECURITY or LOCK SCREEN <br>& SECURITY section<br>
+                            <strong>3.</strong> Accept or check the box next to <br>Unknown sources<br>
+                            <strong>4.</strong> Install app.apk file from Notification <br>or Download History to INSTALL the app<br>
+                            </p>
+
+                    </div>
+                </div><!-- /.container -->
+
+            </section>
+
+            <!-- move it down so only internal teams scroll down -->
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br>
+            <div class="highlight"><a href='https://rink.hockeyapp.net/apps/c8343bf1f774a910de5c2143b036e469'>For internal team builds</div>
+
+        </div>
+        <!-- Android end -->
+
+    </div>
+
+    <div class="container">
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="./js/jquery.min.js"></script>
+
+    <script src="./js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      var isMobile = {
+        Android: function() {
+          return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+          return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+          return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+          return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+          return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+          return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+      };
+    </script>
+
+
+    <script type="text/javascript">
+      $(function(){
+          if ( isMobile.Android() ) {
+            $(document.body).addClass('android');
+          } else if( isMobile.iOS() ) {
+            $(document.body).addClass('ios');
+          }
+          if (!isMobile.any()) {
+            //desktop browser
+            $(document.body).addClass('desktop');
+
+          }
+
+      });
+
+      $(document).ready(function() {
+          $(".myiosappdownload").on("click", function( e ) {
+
+              e.preventDefault();
+
+              $('html, body').animate({
+                  scrollTop: $(".instructions1").offset().top
+              }, 2000);
+
+              $(location).attr('href', 'itms-services://?action=download-manifest&url=https://feighty-images-dev.s3.amazonaws.com/download/iOS/feightyapp.plist');
+
+
+          });
+
+          $(".myandroidappdownload").on("click", function( e ) {
+
+              e.preventDefault();
+
+              $('html, body').animate({
+                  scrollTop: $(".instructions2").offset().top
+              }, 2000);
+
+              $(location).attr('href', 'http://feighty-images-dev.s3.amazonaws.com/download/android/app-release.apk');
+
+
+          });
+      });
+
+
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-67388544-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</body>
+</html>

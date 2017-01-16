@@ -873,6 +873,14 @@ function subscribeUserNotifications(user,forceUpdate,callback){
   })
 }
 
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+function createNewUser(data, callback) {
+  models.user.createUserFromData(data, callback)
+}
+
+
 module.exports = {
   userTimeout: userTimeout,
   preUserTimeout: preUserTimeout,
@@ -897,5 +905,10 @@ module.exports = {
   subscribeUserNotifications:subscribeUserNotifications,
   updateGroupStats:updateGroupStats,
   refreshGroups:refreshGroups,
-  subscribeUsersForGroup:subscribeUsersForGroup
+  subscribeUsersForGroup:subscribeUsersForGroup,
+
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+
+  createNewUser: createNewUser
 }

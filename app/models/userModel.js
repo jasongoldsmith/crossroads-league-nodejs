@@ -74,23 +74,19 @@ function save(user, callback) {
       user.save(function(err, c, numAffected) {
         if (err) {
           utils.l.s("Got error on saving user", {err: err, user: user})
+          return callback(err, c)
         } else if (!c) {
           utils.l.s("Got null on saving user", {user: user})
+          return callback(err, c)
         }
-        return callback(err, c)
+        return callback(null, c)
       })
-    }/*,
-    function(c, callback) {
-      getById(c._id, callback)
-    }*/
+    }
   ],
   function(err, user) {
     if(err) {
       if(utils.format.isDuplicateMongoKeyError(err)) {
-        var field = utils.format.getDuplicateMongoErrorKey(err)
-        var errmsgTemplate = "An account already exists for #FIELD#." +
-          "Check your Bungie messages for instructions on how to finish signing up."
-        return callback({error: errmsgTemplate.replace("#FIELD#", field)}, user)
+        return callback({error: "An account already exists for this user"}, user)
       }
       return callback(err, user)
     } else {
@@ -135,20 +131,6 @@ function handleMissingImageUrl(data, callback) {
       return callback(null, data)
     })
 		}else return callback(null,data)
-}
-
-function createUserFromData(data, callback) {
-  utils.async.waterfall([
-    function(callback) {
-      handleMissingImageUrl(data, callback)
-    },
-    function(data, callback) {
-      var user = new User(data)
-      utils.l.d("image Url assigned: " + data.imageUrl)
-      save(user, callback)
-    }
-  ], callback)
-
 }
 
 function getUserByData(data, callback) {
@@ -382,6 +364,36 @@ function updateUserConsoles(user,callback){
   callback)
 }
 
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+function getUserBySummonerProfile(summonerName, summonerId, callback) {
+  var query = null
+
+  if(utils._.isInvalidOrBlank(summonerId)) {
+    query = {
+      summonerName: {$regex : new RegExp(["^", summonerName, "$"].join("")), $options:"i"}
+    }
+  } else {
+    query = {
+      summonerId: summonerId
+    }
+  }
+  User.find(query).exec(utils.firstInArrayCallback(function (err, users) {
+    if(err) {
+      utils.l.s("Something went wrong in getting summonerProfile from DB", err)
+      return callback({error: "Something went wrong. Please try again later"}, null)
+    } else {
+      return callback (err, users)
+    }
+  }))
+}
+
+function createUserFromData(data, callback) {
+  var user = new User(data)
+  save(user, callback)
+}
+
 module.exports = {
   model: User,
   getUserById: getUserById,
@@ -406,5 +418,8 @@ module.exports = {
   findUsersPaginated:findUsersPaginated,
   findUserCount:findUserCount,
   updateUserConsoles:updateUserConsoles,
-  getUserByConsole:getUserByConsole
+  getUserByConsole:getUserByConsole,
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+  getUserBySummonerProfile: getUserBySummonerProfile
 }

@@ -239,7 +239,7 @@ switch(command) {
         "tag" : ""
       }]
     activityService.createActivitiesWithConverter("/Users/dasasr/projects/traveler/admin/activities.csv",
-      "/Users/dasasr/projects/traveler/admin/modifiers.csv",adCards,
+      "",adCards,
       function(err,data){
         utils.l.d("Done with activities")
       })

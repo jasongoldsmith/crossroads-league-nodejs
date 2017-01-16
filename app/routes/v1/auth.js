@@ -509,13 +509,6 @@ function reqLoginWrapper(req, reason) {
   }
 }
 
-function signup(req, res) {
-  var errorResponse = {
-    error: "Our signup has changed. Please update to the latest version to sign up."
-  }
-  routeUtils.handleAPIError(req, res, errorResponse, errorResponse)
-}
-
 function verifyAccount(req,res){
 /*
   var token = req.param("token")
@@ -772,52 +765,59 @@ function home(req,res){
   res.end()
 }
 
-function checkBungieAccount(req, res) {
-/*
-  utils.l.d("consoleId:: " + req.body.consoleId + ", consoleType:: " + req.body.consoleType)
-  utils.l.d("checkBungieAccount", req.body)
-  req.body.consoleId = utils._.isValidNonBlank(req.body.consoleId)?req.body.consoleId.trim():req.body.consoleId
-  utils.async.waterfall([
-    function(callback) {
-      models.user.getByQuery({
-        consoles: {
-          $elemMatch: {
-            consoleType: req.body.consoleType,
-            consoleId: {$regex : new RegExp(["^", req.body.consoleId, "$"].join("")), $options:"i"}
-          }
-        }
-      }, utils.firstInArrayCallback(callback))
-    },
-    function (user, callback) {
-      if(utils._.isValidNonBlank(user)) {
-        var errMsgTemplate = "The #CONSOLE_GENERICS# #CONSOLE_ID# is already taken"
-        var error = {
-          error: errMsgTemplate
-            .replace("#CONSOLE_GENERICS#", utils._.get(utils.constants.consoleGenericsId, req.body.consoleType))
-            .replace("#CONSOLE_ID#", req.body.consoleId)
-        }
-        return callback(error, null)
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+function validateUserInPlatform(req, res) {
+  var body = req.body
+  utils.l.d("Validate User in Platform request: ", JSON.stringify(body))
+
+  if(!body.summonerName || !body.region) {
+    utils.l.s("Bad signup request")
+    var err = {error: "One or more input fields missing."}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.authService.validateSummonerName(body.summonerName, body.region, function (err, summonerInfoResponse) {
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      var summonerInfo = summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
+      var result = {
+        summonerName: summonerInfo.name,
+        summonerId: summonerInfo.id,
+        region : body.region
       }
-      service.userService.checkBungieAccount(req.body, true, callback)
+      routeUtils.handleAPISuccess(req, res, result)
     }
-  ],
-    function(err, bungieMember) {
+  })
+}
+
+function signup(req, res) {
+  var body = req.body
+  utils.l.d("Signup user request: ", JSON.stringify(body))
+
+  if(!body.summonerName || !body.summonerId || !body.region || !body.userName || !body.passWord) {
+    utils.l.s("Bad signup request")
+    var err = {error: "One or more input fields missing."}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.authService.registerUser(req, body.summonerName, body.summonerId, body.region,
+    body.userName, body.passWord, function (err, result) {
       if (err) {
         routeUtils.handleAPIError(req, res, err, err)
       } else {
-        routeUtils.handleAPISuccess(req, res, bungieMember)
+        routeUtils.handleAPISuccess(req, res, result)
       }
-    }
-  )
-*/
-  var err = {error: "Our signup has changed. Please update to the latest version to sign up."}
-  routeUtils.handleAPIError(req,res,err,err)
+    })
 }
 
 /** Routes */
 routeUtils.rGetPost(router, '/login', 'Login', login, login)
 routeUtils.rGetPost(router, '/bo/login', 'BOLogin', boLogin, boLogin)
-routeUtils.rPost(router, '/register', 'Signup', signup)
 routeUtils.rPost(router, '/logout', 'Logout', logout)
 //routeUtils.rGet(router, '/verifyconfirm/:token', 'AccountVerification', verifyConfirm)
 //routeUtils.rGet(router, '/verifyReject/:token', 'verifyReject', verifyReject)
@@ -826,7 +826,13 @@ routeUtils.rGet(router, '/verify/:token', 'AccountVerification', verifyAccount)
 routeUtils.rPost(router, '/request/resetPassword', 'requestResetPassword', requestResetPassword, requestResetPassword)
 //routeUtils.rPost(router, '/resetPassword/:token', 'resetPassword', resetPassword, resetPassword)
 routeUtils.rGet(router,'/','homePage',home,home)
-routeUtils.rPost(router, '/checkBungieAccount', 'checkBungieAccount', checkBungieAccount)
 routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUserLogin)
+
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+routeUtils.rPost(router, '/validateUserInPlatform', 'validateUserInPlatform', validateUserInPlatform)
+routeUtils.rPost(router, '/register', 'Signup', signup)
+
 module.exports = router
 

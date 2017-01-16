@@ -636,8 +636,28 @@ var notificationQueueTypeEnum = {
   eventInviteAccept: "sendInviteAcceptNotification"
 }
 
-var serviceTypes = {PUSHNOTIFICATION:'PUSHNOTIFICATION',
-  EMAIL:'EMAIL'}
+var serviceTypes = {
+  PUSHNOTIFICATION:'PUSHNOTIFICATION',
+  EMAIL: 'EMAIL'
+}
+
+// ------------------------------------------------------------------------------------------------------------------
+// New Code
+
+var LoLRegions = {
+  "Brazil": "BR",
+  "EU Nordic & East": "EUNE",
+  "EU West": "EUW",
+  "Japan": "JP",
+  "Korea": "KR",
+  "Latin America North": "LAN",
+  "Latin America South": "LAS",
+  "North America": "NA",
+  "Oceania": "OCE",
+  "Russia": "RU",
+  "Turkey": "TR"
+
+}
 
 module.exports = {
   l: lodash,
@@ -661,5 +681,10 @@ module.exports = {
   existingUserInstallData:existingUserInstallData,
   newGenConsoleType:newGenConsoleType,
   invitedUserInstallData:invitedUserInstallData,
-  serviceTypes:serviceTypes
+  serviceTypes:serviceTypes,
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // New Code
+
+  LoLRegions: LoLRegions
 }

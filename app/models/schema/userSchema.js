@@ -1,7 +1,11 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var Mixed = Schema.Types.Mixed
-var consoleTypeEnum = {type: String, enum: ['PS4','XBOX360','XBOXONE','PS3']}
+var consoleTypeEnum = {
+  type: String,
+  enum: ['PS4','XBOX360','XBOXONE','PS3', 'PC'],
+  default: "PC"
+}
 var acctVerifyEnum = {
   type: String,
   enum: ['VERIFIED','INITIATED','FAILED_INITIATION','NOT_INITIATED','INVALID_GAMERTAG','INVITED','INVITATION_MSG_FAILED'],
@@ -16,7 +20,7 @@ var reviewPromptCardStatusEnum = {
 var UserSchema = new Schema({
   name: String,
   profileUrl: String,
-  userName: {type: String},
+  userName: {type: String, lowercase: true, trim: true},
   date: {type: Date, required: true},
   passWord: {type: String},
   uniqueID: String,
@@ -32,7 +36,7 @@ var UserSchema = new Schema({
     imageUrl: String,
     isPrimary: {type: Boolean, default: false}
   }],
-  clanId: {type: String, default: "clan_id_not_set"},
+  clanId: {type: String},
   clanName: String,
   clanImageUrl: String,
   imageUrl: String,
@@ -63,14 +67,18 @@ var UserSchema = new Schema({
   isInvited: {type: Boolean, default: false},
   reviewPromptCard: {
     status: reviewPromptCardStatusEnum,
-    cardId: { type: Schema.Types.ObjectId, ref: 'ReviewPromptCard'}
-  }
+    cardId: {type: Schema.Types.ObjectId, ref: 'ReviewPromptCard'}
+  },
+
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+
+  summonerName: {type: String, required: true},
+  summonerId: {type: String, required: true},
+  summonerLevel: Number
 })
 
-UserSchema.index({'userName': 1})
-UserSchema.index({'consoles.consoleId': 1})
-UserSchema.index({'consoles.verifyToken': 1})
-UserSchema.index({'verifyToken': 1})
+UserSchema.index({'userName': 1}, {unique: true})
 UserSchema.index({'date': 1})
 UserSchema.index({"groups.groupId": 1})
 

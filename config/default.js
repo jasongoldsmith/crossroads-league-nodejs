@@ -1,14 +1,14 @@
 
-var path = require('path');
-var lodash = require('lodash');
+var path = require('path')
+var lodash = require('lodash')
 
-var development = require('./env/development');
-var production = require('./env/production');
-var staging = require('./env/staging');
-var prodURL = require('./env/prodURL');
+var development = require('./env/development')
+var production = require('./env/production')
+var staging = require('./env/staging')
+var prodURL = require('./env/prodURL')
 var mongoUri = process.env.MONGOLAB_URI ||
   process.env.MONGOHQ_URL || process.env.MONGO_URL ||
-  'mongodb://localhost/LoL';
+  'mongodb://localhost/LoL'
 
 
 
@@ -23,11 +23,11 @@ var defaults = {
   tinyUrlHost:'http://dev.crsrd.co/',
   testHostUrl:'http://localhost:3000',
   hostUrl: function() {
-    var url = this.hostName;
+    var url = this.hostName
     if (this.portNum !== -1) {
-      url = url + ':' + this.portNum;
+      url = url + ':' + this.portNum
     }
-    return url;
+    return url
   },
   confirmNavigation: false,
   mixpanelKey: process.env.mixpanelKey || "0181296a3a01e24e61b79b82f936f77f",
@@ -43,11 +43,11 @@ var defaults = {
   environment: process.env.NODE_ENV || 'development',
   skipMPRequestTracking: process.env.SKIP_MP_REQ_TRACKING || "YES",
   show: function() {
-    console.log('environment: ' + this.environment);
-    console.log('hostUrl: ' + this.hostUrl());
-    console.log('devMode: ' + this.devMode);
-    console.log('enforceSSL: ' + this.enforceSSL);
-    console.log('logLevel: ' + this.logLevel);
+    console.log('environment: ' + this.environment)
+    console.log('hostUrl: ' + this.hostUrl())
+    console.log('devMode: ' + this.devMode)
+    console.log('enforceSSL: ' + this.enforceSSL)
+    console.log('logLevel: ' + this.logLevel)
   },
   awsKey: {accessKeyId: process.env.awsAccessKeyId, secretAccessKey: process.env.awsSecretAccessKey, region: "us-east-1"},
   awsSNSKey:{
@@ -83,7 +83,7 @@ var defaults = {
   bungieCrsRdAppId:"13495568",
   bungieAPIToken:"b5518df2a3a04cafb16c1d34a5f4295e",
   bungieCSRFToken:"7968073564440830385",
-  bungieCookie:"__cfduid=d7916e1319d1b63480db79a260d9257381464308262; bungledid=B8uuB7AKbFVNuFwvMkcmLrUp+MNSxIXTCAAA; _ga=GA1.2.1210193906.1464308265; bungleloc=lc=en&lcin=true; bungled=2672157280055555322; sto-id-sg_www.bungie.net=OJAKHPAK; _gat=1; bungleRedir=L2VuL1Byb2ZpbGUvMjU0LzEzMTcyNzA5; bungles=WebView=False; bunglefrogblastventcore=1469139034; bunglesony=2jgU.12Odhu22Z2DUeh5ZdMVr-XuU4JbLim5kvL0RQeAAAAAVfDloD6mVVhdCI4QygwD9Rtmwz2wt43O9a2PJVF4FxQc-xWXhWiO6s7L0rfDFxan0RCRgPI7OcNEj6m70Jdpbm4N6P3qcTMWOmnAuMI6i2QuvjekBRUCOaXcUujae8xPgyB5LK.dgBOJtNSBHHsdKtTAj3WXSf5LAGnI8p8K46A_; bungleatk=wa=z0LwajUZyVh7.1iCuU8E53KOL.vWcsuTyV2.3UOICj3gAAAAvJabiPc6bIlOTNuOclNOAMm2RG8aejirDL9hdofaSxzR47hx9KG27Mx5bx7YMZtD-ZTDx4CXid2sfj7lsQjK5SrtFcCQJ6tlY3we4IwZ0q28J2-pX7BS-g.48asQqEnObWjNzUgLASlKNqPCs38nAJft5EsIZ9HSAQhOV1qx-7XpGE14tQZKYOtfo7rfVVmMdY1aIKMmbkvQATp6lypvjsMenmchSq34Jznw8Q1tJKl.GGsq9vLJy-IPBWoVawx87INfIUEYzQH-xPBlDOaJgOVyER.q47IaY79-9HxVtfk_&tk=YAAAAGKZqB6o6aIYeKHuhy8nasMSRH9LesKUIn1UU.r1Fipb0Y9T9F8IMUo36pk.Z3e4lw-AW06V4hPMoLee7pi5b2kjBNOM2SbR5TGRIyOJWTEVZgW2XqFiH8mX1Ld6uN5QTCAAAAD8wQGRUIpnmQFE57dk-bWn5WYdOGgvngUw5UKsNEPPaQ__; bungleme=13495568",
+  bungieCookie:"__cfduid=d7916e1319d1b63480db79a260d9257381464308262 bungledid=B8uuB7AKbFVNuFwvMkcmLrUp+MNSxIXTCAAA _ga=GA1.2.1210193906.1464308265 bungleloc=lc=en&lcin=true bungled=2672157280055555322 sto-id-sg_www.bungie.net=OJAKHPAK _gat=1 bungleRedir=L2VuL1Byb2ZpbGUvMjU0LzEzMTcyNzA5 bungles=WebView=False bunglefrogblastventcore=1469139034 bunglesony=2jgU.12Odhu22Z2DUeh5ZdMVr-XuU4JbLim5kvL0RQeAAAAAVfDloD6mVVhdCI4QygwD9Rtmwz2wt43O9a2PJVF4FxQc-xWXhWiO6s7L0rfDFxan0RCRgPI7OcNEj6m70Jdpbm4N6P3qcTMWOmnAuMI6i2QuvjekBRUCOaXcUujae8xPgyB5LK.dgBOJtNSBHHsdKtTAj3WXSf5LAGnI8p8K46A_ bungleatk=wa=z0LwajUZyVh7.1iCuU8E53KOL.vWcsuTyV2.3UOICj3gAAAAvJabiPc6bIlOTNuOclNOAMm2RG8aejirDL9hdofaSxzR47hx9KG27Mx5bx7YMZtD-ZTDx4CXid2sfj7lsQjK5SrtFcCQJ6tlY3we4IwZ0q28J2-pX7BS-g.48asQqEnObWjNzUgLASlKNqPCs38nAJft5EsIZ9HSAQhOV1qx-7XpGE14tQZKYOtfo7rfVVmMdY1aIKMmbkvQATp6lypvjsMenmchSq34Jznw8Q1tJKl.GGsq9vLJy-IPBWoVawx87INfIUEYzQH-xPBlDOaJgOVyER.q47IaY79-9HxVtfk_&tk=YAAAAGKZqB6o6aIYeKHuhy8nasMSRH9LesKUIn1UU.r1Fipb0Y9T9F8IMUo36pk.Z3e4lw-AW06V4hPMoLee7pi5b2kjBNOM2SbR5TGRIyOJWTEVZgW2XqFiH8mX1Ld6uN5QTCAAAAD8wQGRUIpnmQFE57dk-bWn5WYdOGgvngUw5UKsNEPPaQ__ bungleme=13495568",
   bungieBaseURL:"https://www.bungie.net",
   bungieDestinySearchURL:"https://www.bungie.net/Platform/Destiny/SearchDestinyPlayer/-1/",
   bungieDestinySearchByPSNURL:"https://www.bungie.net/Platform/Destiny/%MEMBERSHIPTYPE%/Stats/GetMembershipIdByDisplayName/%MEMBERSHIPID%?ignorecase=true",
@@ -103,20 +103,25 @@ var defaults = {
   userLastActiveUpdateInterval:2,
   disableEnvetUpdateForComments: process.env.DISABLE_EVENT_UPDATE_COMMENTS || true,
   defaultHelmetUrl: 'https://www.bungie.net/common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg',
-  minUsersForGroupNotification: 2
-};
+  minUsersForGroupNotification: 2,
+
+  // ------------------------------------------------------------------------------------------------------------------
+  // New Code
+
+  riotGamesAPIKey: process.env.riotGamesAPIKey || "RGAPI-0dbb58f1-5652-43a9-ba57-746323393d5d"
+}
 
 /**
  * Expose
  */
 
-var currentEnvironment = process.env.NODE_ENV || 'development';
-console.log("Current environment: " + currentEnvironment);
+var currentEnvironment = process.env.NODE_ENV || 'development'
+console.log("Current environment: " + currentEnvironment)
 
 
 function myConfig(myConfig) {
-  var mergedConfig = lodash.extend(lodash.clone(defaults), myConfig);
-  return mergedConfig;
+  var mergedConfig = lodash.extend(lodash.clone(defaults), myConfig)
+  return mergedConfig
 }
 
 module.exports = {
@@ -124,4 +129,4 @@ module.exports = {
   production: myConfig(production),
   staging: myConfig(staging),
   prodURL: myConfig(prodURL)
-}[currentEnvironment];
+}[currentEnvironment]

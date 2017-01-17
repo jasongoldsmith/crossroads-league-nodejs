@@ -1,20 +1,22 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var Mixed = Schema.Types.Mixed
+var utils = require('../../utils')
+
 var consoleTypeEnum = {
   type: String,
-  enum: ['PS4','XBOX360','XBOXONE','PS3', 'PC'],
-  default: "PC"
+  enum: utils._.values(utils.constants.consoleTypes),
+  default: utils.constants.consoleTypes.PC
 }
 var acctVerifyEnum = {
   type: String,
-  enum: ['VERIFIED','INITIATED','FAILED_INITIATION','NOT_INITIATED','INVALID_GAMERTAG','INVITED','INVITATION_MSG_FAILED'],
-  default: "NOT_INITIATED"
+  enum: utils._.values(utils.constants.accountVerificationStatusTypes),
+  default: utils.constants.accountVerificationStatusTypes.NOT_INITIATED
 }
 var reviewPromptCardStatusEnum = {
   type: String,
-  enum: ['COMPLETED', 'REFUSED', 'NEVER_SHOWN', 'TO_BE_SHOWN'],
-  default: "NEVER_SHOWN"
+  enum: utils._.values(utils.constants.reviewPromptCardStatusTypes),
+  default: utils.constants.reviewPromptCardStatusTypes.NEVER_SHOWN
 }
 
 var UserSchema = new Schema({

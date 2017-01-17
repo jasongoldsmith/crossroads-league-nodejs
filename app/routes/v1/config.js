@@ -23,14 +23,11 @@ function listConfigs(req, res) {
         return callback({error: "Something went wrong. Please try again later"}, null)
       }
 
-      getBungieUrls(callback)
+      getLoLRegions(callback)
     },
-    function(bungieUrls, callback) {
+    function(LoLRegions, callback) {
       var configs = {
-        mixpanelToken: utils.config.mixpanelKey,
-        playerDetailsURL: bungieUrls.value.playerDetailsURL,
-        xboxLoginURL: bungieUrls.value.xboxLoginURL,
-        psnLoginURL: bungieUrls.value.psnLoginURL
+        LolRegions: LoLRegions.value
       }
 
       return callback(null, configs)
@@ -45,8 +42,8 @@ function listConfigs(req, res) {
   })
 }
 
-function getBungieUrls(callback) {
-  models.sysConfig.getSysConfig('bungieUrls', callback)
+function getLoLRegions(callback) {
+  models.sysConfig.getSysConfig('LoLRegions', callback)
 }
 
 routeUtils.rGet(router, '/', 'listConfigs', listConfigs)

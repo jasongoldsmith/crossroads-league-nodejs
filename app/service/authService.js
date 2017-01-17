@@ -222,7 +222,12 @@ function registerUser(req, summonerName, summonerId, region, userName, password,
 				userName: userName,
 				passWord: passwordHash.generate(password),
 				summonerName: summonerName,
-				summonerId: summonerId
+				summonerId: summonerId,
+				consoles:[{
+					consoleType: "PC",
+					consoleId: summonerName,
+					isPrimary: true
+				}]
 			}
 			userService.createNewUser(data, callback)
 		}

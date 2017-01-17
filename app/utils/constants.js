@@ -641,6 +641,7 @@ var serviceTypes = {
   EMAIL: 'EMAIL'
 }
 
+
 // ------------------------------------------------------------------------------------------------------------------
 // New Code
 
@@ -656,6 +657,31 @@ var LoLRegions = {
   "Oceania": "OCE",
   "Russia": "RU",
   "Turkey": "TR"
+}
+
+var consoleTypes = {
+  PS4: 'PS4',
+  XBOX360: 'XBOX360',
+  XBOXONE: 'XBOXONE',
+  PS3: 'PS3',
+  PC: 'PC'
+}
+
+var accountVerificationStatusTypes = {
+  VERIFIED: 'VERIFIED',
+  INITITATED: 'INITIATED',
+  FAILED_INITIATION: 'FAILED_INITIATION',
+  NOT_INITIATED: 'NOT_INITIATED',
+  INVALID_GAMERTAG: 'INVALID_GAMERTAG',
+  INVITED: 'INVITED',
+  INVITATION_MSG_FAILED: 'INVITATION_MSG_FAILED'
+}
+
+var reviewPromptCardStatusTypes = {
+  COMPLETED: 'COMPLETED',
+  REFUSED: 'REFUSED',
+  NEVER_SHOWN: 'NEVER_SHOWN',
+  TO_BE_SHOWN: 'TO_BE_SHOWN'
 }
 
 module.exports = {
@@ -685,5 +711,8 @@ module.exports = {
   // ------------------------------------------------------------------------------------------------------------------
   // New Code
 
-  LoLRegions: LoLRegions
+  LoLRegions: LoLRegions,
+  consoleTypes: consoleTypes,
+  accountVerificationStatusTypes: accountVerificationStatusTypes,
+  reviewPromptCardStatusTypes: reviewPromptCardStatusTypes
 }

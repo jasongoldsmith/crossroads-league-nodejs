@@ -656,7 +656,6 @@ var LoLRegions = {
   "Oceania": "OCE",
   "Russia": "RU",
   "Turkey": "TR"
-
 }
 
 module.exports = {

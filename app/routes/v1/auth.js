@@ -9,64 +9,6 @@ var service = require('../../service/index')
 var passport = require('passport')
 var passwordHash = require('password-hash')
 
-function login (req, res) {
-  utils.l.d("Login request", req.body)
-/*  var outerUser = null
-    utils.async.waterfall(
-    [
-      helpers.req.handleVErrorWrapper(req),
-      function(callback) {
-        if(req.body.consoles) {
-          req.body.consoles.consoleType = req.body.consoles.consoleType.toString().toUpperCase()
-          req.body.consoles.consoleId = req.body.consoles.consoleId.toString().trim()
-        }
-        if(!req.body.userName) {
-          req.body.userName = req.body.consoles.consoleId
-        }
-        utils.l.d('calling passport...')
-        var passportHandler = passport.authenticate('local', function(err, user) {
-          utils.l.d('passport.authenticate',user)
-          if (err) {
-            return callback(err, null)
-          } else if (!user) {
-            return callback({error: "Our signup has changed. Please update to the latest version to sign up."},null)
-            //handleNewUser(req, callback)
-          } else {
-            return callback(null, user)
-          }
-        })
-        passportHandler(req, res)
-      },
-      function (user, callback) {
-        handlePostLogin(req, user, callback)
-      },
-      function(user,callback) {
-        service.authService.addLegalAttributes(user, function(err, data) {
-          outerUser = data
-          return callback(null, user)
-        })
-      },
-      reqLoginWrapper(req, "auth.login")
-    ],
-      function (err) {
-        if (err) {
-          return routeUtils.handleAPIError(req, res, err, err)
-        } else {
-          routeUtils.handleAPISuccess(req, res,
-            {
-              value: outerUser,
-              message: getSignupMessage(outerUser)
-            })
-        }
-      }
-    )*/
-
-  var errorResponse = {
-    error: "Our login system has changed. Please update to the latest version in the App Store to continue using Crossroads."
-  }
-  routeUtils.handleAPIError(req, res, errorResponse, errorResponse)
-}
-
 function validateUserLogin(req, res) {
   utils.l.d("handleBungieResponse request", req.body)
   var data = req.body
@@ -815,8 +757,46 @@ function signup(req, res) {
     })
 }
 
+function login (req, res) {
+  utils.l.d("Login request", req.body)
+      var outerUser = null
+  utils.async.waterfall([
+    helpers.req.handleVErrorWrapper(req),
+    function(callback) {
+      utils.l.d('calling passport...')
+      var passportHandler = passport.authenticate('local', function(err, user) {
+        utils.l.d('passport.authenticate',user)
+        if (err) {
+          return callback(err, null)
+        } else {
+          return callback(null, user)
+        }
+      })
+      passportHandler(req, res)
+    },
+    function(user,callback) {
+      service.authService.addLegalAttributes(user, function(err, data) {
+        outerUser = data
+        return callback(null, user)
+      })
+    },
+    reqLoginWrapper(req, "auth.login")
+  ],
+    function (err) {
+      if (err) {
+        return routeUtils.handleAPIError(req, res, err, err)
+      } else {
+        routeUtils.handleAPISuccess(req, res,
+          {
+            value: outerUser
+            //message: getSignupMessage(outerUser)
+          })
+      }
+    }
+  )
+}
+
 /** Routes */
-routeUtils.rGetPost(router, '/login', 'Login', login, login)
 routeUtils.rGetPost(router, '/bo/login', 'BOLogin', boLogin, boLogin)
 routeUtils.rPost(router, '/logout', 'Logout', logout)
 //routeUtils.rGet(router, '/verifyconfirm/:token', 'AccountVerification', verifyConfirm)
@@ -833,6 +813,7 @@ routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUser
 
 routeUtils.rPost(router, '/validateUserInPlatform', 'validateUserInPlatform', validateUserInPlatform)
 routeUtils.rPost(router, '/register', 'Signup', signup)
+routeUtils.rGetPost(router, '/login', 'Login', login, login)
 
 module.exports = router
 

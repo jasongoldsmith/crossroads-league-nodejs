@@ -721,18 +721,18 @@ function signup(req, res) {
     return
   }
 
-  service.authService.registerUser(req, body.userName, body.passWord, function (err, result) {
+  service.authService.registerUser(req, body.userName, body.passWord, function (err, user) {
       if (err) {
         routeUtils.handleAPIError(req, res, err, err)
       } else {
-        routeUtils.handleAPISuccess(req, res, result)
+        routeUtils.handleAPISuccess(req, res, {value: user})
       }
     })
 }
 
 function login (req, res) {
   utils.l.d("Login request", req.body)
-      var outerUser = null
+  var outerUser = null
   utils.async.waterfall([
     helpers.req.handleVErrorWrapper(req),
     function(callback) {

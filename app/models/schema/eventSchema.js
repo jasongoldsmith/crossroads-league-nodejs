@@ -1,11 +1,29 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var idValidator = require('mongoose-id-validator')
+var utils = require('../../utils')
+
+var consoleTypeEnum = {
+	type: String,
+	enum: utils._.values(utils.constants.consoleTypes),
+	default: utils.constants.consoleTypes.PC
+}
+
+var statusTypeEnum = {
+	type: String,
+	enum: utils._.values(utils.constants.eventStatusTypes)
+}
+
+var launchStatusTypeEnum = {
+	type: String,
+	enum: utils._.values(utils.constants.eventLaunchStatusTypes),
+	default: utils.constants.eventLaunchStatusTypes.now
+}
 
 var eventSchema = new Schema({
 	eType: { type: Schema.Types.ObjectId, ref: 'Activity', required: true },
-	status: { type: String, enum: ['new', 'open', 'full', 'can_join']},
-	launchStatus: { type: String, enum: ['now', 'upcoming'], default: "now"},
+	status: statusTypeEnum,
+	launchStatus: launchStatusTypeEnum,
 	minPlayers: { type : Number, required : true },
 	maxPlayers: { type : Number, required : true },
 	creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
@@ -17,7 +35,7 @@ var eventSchema = new Schema({
 	clanId: {type: String},
 	clanName: {type: String},
 	clanImageUrl: {type: String},
-	consoleType: {type: String, enum: ['PS3', 'PS4', 'XBOX360', 'XBOXONE']},
+	consoleType: consoleTypeEnum,
 	comments: [
 		{
 			user: {type: Schema.Types.ObjectId, ref: 'User', required: true },

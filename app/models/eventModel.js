@@ -131,7 +131,7 @@ function createEvent(user, data, callback) {
 		if(minutesDiff < 15 || startDate < endDate) {
 			checkWithDate = null
 		} else {
-			data.launchStatus = utils.constants.eventLaunchStatusList.upcoming
+			data.launchStatus = utils.constants.eventLaunchStatusTypes.upcoming
 		}
 	}
 
@@ -144,7 +144,7 @@ function createEvent(user, data, callback) {
 			if (utils._.isInvalidOrBlank(checkWithDate)) {
 				getByQuery({
 						eType: data.eType,
-						launchStatus: utils.constants.eventLaunchStatusList.now,
+						launchStatus: utils.constants.eventLaunchStatusTypes.now,
 						clanId: eventObj.clanId,
 						consoleType: eventObj.consoleType},
 					null,
@@ -333,7 +333,7 @@ function launchEvent(eventId, callback){
 	utils.l.d("Updating event launch status "+eventId);
 	utils.async.waterfall([
 				function(callback) {
-					Event.findByIdAndUpdate(eventId,{ "$set": {launchStatus: utils.constants.eventLaunchStatusList.now}},callback)
+					Event.findByIdAndUpdate(eventId,{ "$set": {launchStatus: utils.constants.eventLaunchStatusTypes.now}},callback)
 				}
 			],function(err, updatedEvent) {
 				if (err) {

@@ -21,14 +21,14 @@ function getFeed(user, consoleType, isPublicFeed, createMyEventsList, callback) 
 			}
 
 			if(isPublicFeed) {
-				query.launchStatus = utils.constants.eventLaunchStatusList.now
+				query.launchStatus = utils.constants.eventLaunchStatusTypes.now
 			}
 
 			// for public feed user will be null
 			if(user) {
 				query.$or = [
 					{status: {$ne: "full"}},
-					{launchStatus: utils.constants.eventLaunchStatusList.upcoming},
+					{launchStatus: utils.constants.eventLaunchStatusTypes.upcoming},
 					{players: user._id}
 				]
 			}

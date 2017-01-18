@@ -8,11 +8,13 @@ var consoleTypeEnum = {
   enum: utils._.values(utils.constants.consoleTypes),
   default: utils.constants.consoleTypes.PC
 }
+
 var acctVerifyEnum = {
   type: String,
   enum: utils._.values(utils.constants.accountVerificationStatusTypes),
   default: utils.constants.accountVerificationStatusTypes.NOT_INITIATED
 }
+
 var reviewPromptCardStatusEnum = {
   type: String,
   enum: utils._.values(utils.constants.reviewPromptCardStatusTypes),
@@ -40,7 +42,7 @@ var UserSchema = new Schema({
     isPrimary: {type: Boolean, default: false},
     region: String
   }],
-  clanId: {type: String},
+  clanId: {type: String, default: "clan_id_not_set"},
   clanName: String,
   clanImageUrl: String,
   imageUrl: String,

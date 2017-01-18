@@ -496,7 +496,7 @@ function mergeDuplicateEvents() {
   utils.async.waterfall([
     function (callback) {
       models.event.getByQueryLeanWithComments(
-        {launchStatus: utils.constants.eventLaunchStatusList.now},
+        {launchStatus: utils.constants.eventLaunchStatusTypes.now},
         callback)
     },
     function(eventList, callback) {

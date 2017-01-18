@@ -11,10 +11,10 @@ function handleUpcomingEvents(notifTrigger) {
       function (callback) {
         var date = utils.moment().utc().add(utils.config.triggerIntervalMinutes,"minutes")
         models.event.getByQueryLean({
-          launchStatus: utils.constants.eventLaunchStatusList.upcoming,
+          launchStatus: utils.constants.eventLaunchStatusTypes.upcoming,
           launchDate: {$lte: date}}, callback)
        /* models.event.getByQuery({
-          launchStatus: utils.constants.eventLaunchStatusList.upcoming,
+          launchStatus: utils.constants.eventLaunchStatusTypes.upcoming,
           launchDate: {$lte: date}},
           null, callback)*/
       },
@@ -54,7 +54,7 @@ function launchEventStart(notifTrigger){
       function (callback) {
         var date = utils.moment().utc()
         models.event.getByQuery({
-          launchStatus: utils.constants.eventLaunchStatusList.now,
+          launchStatus: utils.constants.eventLaunchStatusTypes.now,
           launchDate: {$lte: date},
           status: "full",
           notifStatus: {$nin: ["launchEventStart"]}},
@@ -96,7 +96,7 @@ function eventStartReminder(notifTrigger){
         var date = utils.moment().utc().add(utils.config.triggerReminderInterval, "minutes")
         var date1 =  utils.moment().utc().add((utils.config.triggerReminderInterval - 15), "minutes")
         models.event.getByQuery({
-          launchStatus: utils.constants.eventLaunchStatusList.upcoming,
+          launchStatus: utils.constants.eventLaunchStatusTypes.upcoming,
           launchDate: {$lte: date, $gte: date1},
           notifStatus: {$nin: ["eventStartReminder"]}},
           null, callback)
@@ -140,7 +140,7 @@ function dailyOneTimeReminder(notifTrigger, callback){
   utils.async.waterfall([
       function (callback) {
         models.event.getByQuery({
-            launchStatus: utils.constants.eventLaunchStatusList.upcoming,
+            launchStatus: utils.constants.eventLaunchStatusTypes.upcoming,
             status: {$ne: "full"},
             launchDate: {$gte: date1, $lte: date2}
         },
@@ -172,7 +172,7 @@ function launchUpComingReminders(notifTrigger){
       function (callback) {
         var date = utils.moment().utc().add(utils.config.triggerUpcomingReminderInterval, "minutes")
         models.event.getByQuery({
-          launchStatus: utils.constants.eventLaunchStatusList.now,
+          launchStatus: utils.constants.eventLaunchStatusTypes.now,
           launchDate:{$lte: date}},
           null, callback)
       },
@@ -231,13 +231,13 @@ function handleNewEvents(event, notifTrigger, callback) {
   utils.l.d('handleNewEvents::notifTrigger',notifTrigger)
   if(notifTrigger.isActive) {
     var newEventNotif = null
-    if (event.launchStatus == utils.constants.eventLaunchStatusList.upcoming
+    if (event.launchStatus == utils.constants.eventLaunchStatusTypes.upcoming
       && !hasNotifStatus(event.notifStatus,"NewCreateForUpcoming")) {
       newEventNotif = utils._.find(notifTrigger.notifications, {"name": "NewCreateForUpcoming"})
       event.notifStatus.push("NewCreateForUpcoming")
       createNotificationAndSend(event, null, null, newEventNotif)
       models.event.update(event,callback)
-    } else if (event.launchStatus == utils.constants.eventLaunchStatusList.now
+    } else if (event.launchStatus == utils.constants.eventLaunchStatusTypes.now
       && !hasNotifStatus(event.notifStatus,"NoSignupNotification") && playersNeeded>0) {
       utils.l.d('handleNewEvents::Sending NoSignupNotification notification for '+playersNeeded)
       newEventNotif = utils._.find(notifTrigger.notifications, {"name": "NoSignupNotification"})
@@ -253,7 +253,7 @@ function handleNewEvents(event, notifTrigger, callback) {
 function handleJoinEvent(event, notifTrigger, playerList, callback) {
   utils.l.d("Running trigger for event join", utils.l.eventLog(event))
   if(notifTrigger.isActive) {
-    if(event.launchStatus == utils.constants.eventLaunchStatusList.now &&
+    if(event.launchStatus == utils.constants.eventLaunchStatusTypes.now &&
       event.players.length > 1 && event.players.length < event.maxPlayers) {
       utils.async.map(notifTrigger.notifications,
         utils._.partial(createNotificationAndSend, event, playerList, null))
@@ -271,7 +271,7 @@ function handleJoinEvent(event, notifTrigger, playerList, callback) {
 function handleEventInviteAccept(event, notifTrigger, playerList, callback) {
   utils.l.d("Running trigger for event join", utils.l.eventLog(event))
   if(notifTrigger.isActive) {
-    if(event.launchStatus == utils.constants.eventLaunchStatusList.now &&
+    if(event.launchStatus == utils.constants.eventLaunchStatusTypes.now &&
       event.players.length > 1 && event.players.length < event.maxPlayers) {
       utils.async.map(notifTrigger.notifications,
         utils._.partial(createNotificationAndSend, event, playerList, null))
@@ -289,7 +289,7 @@ function handleEventInviteAccept(event, notifTrigger, playerList, callback) {
 function handleLeaveEvent(event, notifTrigger, user, callback) {
   utils.l.d("Running trigger for event leave", utils.l.eventLog(event))
   if(notifTrigger.isActive) {
-    if(event.launchStatus == utils.constants.eventLaunchStatusList.now) {
+    if(event.launchStatus == utils.constants.eventLaunchStatusTypes.now) {
       utils.async.map(notifTrigger.notifications,
         utils._.partial(createNotificationAndSend, event, user, null))
       return callback(null, event)
@@ -304,7 +304,7 @@ function handleLeaveEvent(event, notifTrigger, user, callback) {
 function handleEventKick(event, notifTrigger, user, callback) {
   utils.l.d("Running trigger for event kick", utils.l.eventLog(event))
   if(notifTrigger.isActive) {
-    if(event.launchStatus == utils.constants.eventLaunchStatusList.now) {
+    if(event.launchStatus == utils.constants.eventLaunchStatusTypes.now) {
       utils.async.map(notifTrigger.notifications,
         utils._.partial(createNotificationAndSend, event, user, null))
       return callback(null, event)
@@ -349,7 +349,7 @@ function handleCreatorChange(event, notifTrigger, playerList, callback) {
 function handleEventInvites(event, notifTrigger, playerList, callback) {
   utils.l.d("Running trigger for event invite push notification", utils.l.eventLog(event))
   if(notifTrigger.isActive) {
-    var eventInviteNotif = (event.launchStatus == utils.constants.eventLaunchStatusList.upcoming)
+    var eventInviteNotif = (event.launchStatus == utils.constants.eventLaunchStatusTypes.upcoming)
       ? utils._.find(notifTrigger.notifications, {"name": "EventInviteForUpcoming"})
       : utils._.find(notifTrigger.notifications, {"name": "EventInviteForCurrent"})
     createNotificationAndSend(event, playerList, null, eventInviteNotif)
@@ -379,7 +379,7 @@ function launchUpcomingEvent(event, notifTrigger, callback){
         //Send NoSignupNotification only if there are no players signedup. i.e Only player in event is creator
         var notifications = notifTrigger.notifications
 
-        if(updatedEvent.status.toString() == utils.constants.eventStatus.full.toString()) {
+        if(updatedEvent.status.toString() == utils.constants.eventStatusTypes.full.toString()) {
           utils._.remove(notifications, {name: 'NoSignupNotification'})
           utils._.remove(notifications, {name: 'EventNotFullNotification'})
         } else if(updatedEvent.players.length > 1) {

@@ -146,7 +146,7 @@ function expireEvents(notifTrigger,sysConfig){
       utils.l.d('looking for events inactive for ' + eventExpiryInterval + " mins")
       var date = utils.moment().utc().add(eventExpiryInterval, "minutes")
       models.event.getEventsByQuery({
-        launchStatus: utils.constants.eventLaunchStatusList.now,
+        launchStatus: utils.constants.eventLaunchStatusTypes.now,
         updated: {$lte: date}
       }, callback)
     },
@@ -440,7 +440,7 @@ function handleDuplicateCurrentEvent(event, callback) {
         eType: event.eType,
         clanId: event.clanId,
         consoleType: event.consoleType,
-        launchStatus: utils.constants.eventLaunchStatusList.now
+        launchStatus: utils.constants.eventLaunchStatusTypes.now
       }
       models.event.getByQueryLeanWithComments(query, callback)
     },
@@ -546,7 +546,7 @@ function handleScenariosForKicking(eventObj, userId, callback) {
     return callback({error: "Sorry, you can't kick someone from a non-full event"}, null)
   }
 
-  if(eventObj.launchStatus != utils.constants.eventLaunchStatusList.now) {
+  if(eventObj.launchStatus != utils.constants.eventLaunchStatusTypes.now) {
     return callback({error: "Sorry, you can't kick someone from an upcoming event"}, null)
   }
 

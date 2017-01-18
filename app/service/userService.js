@@ -59,7 +59,7 @@ function notifyPreUserTimeout(user,notifTrigger,callback){
       //TODO: Change clearEventsForPlayer to send one push notificaiton or remove the notification part
       //TODO: Clarify if we should not notify the creator
       models.event.getEventsByQuery({
-        launchStatus: utils.constants.eventLaunchStatusList.now,
+        launchStatus: utils.constants.eventLaunchStatusTypes.now,
         "players": user._id},callback)
     },function(eventsToLeave,callback){
       utils.l.d('notifyPreUserTimeout::'+utils.l.userLog(user)+"\n\eventsToLeave::\n\t",utils.l.eventLog(eventsToLeave))
@@ -129,7 +129,7 @@ function timeoutUser(user,notifTrigger,callback){
       //remove user from all events
       //TODO: Change clearEventsForPlayer to send one push notificaiton or remove the notification part
       //TODO: Clarify if we should not notify the creator
-      eventService.clearEventsForPlayer(user, utils.constants.eventLaunchStatusList.now, null, callback)
+      eventService.clearEventsForPlayer(user, utils.constants.eventLaunchStatusTypes.now, null, callback)
     }
   ],function(err,eventsLeft){
     utils.l.d('timeoutUser::'+utils.l.userLog(user)+"\n\teventsLeft::\n\t",utils.l.eventLog(eventsLeft))

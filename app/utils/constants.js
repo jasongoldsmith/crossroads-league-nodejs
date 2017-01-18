@@ -488,12 +488,12 @@ var eventAction = {
   join: 'join'
 }
 
-var eventLaunchStatusList = {
+var eventLaunchStatusTypes = {
     now:'now',
     upcoming:'upcoming'
 }
 
-var eventStatus = {
+var eventStatusTypes = {
   new:'new',
   open:'open',
   full:'full',
@@ -690,7 +690,7 @@ module.exports = {
   imageFiles: imageFiles,
   reportListStatus: reportListStatus,
   eventAction: eventAction,
-  eventLaunchStatusList: eventLaunchStatusList,
+  eventLaunchStatusTypes: eventLaunchStatusTypes,
   bungieMemberShipType:bungieMemberShipType,
   eventNotificationTrigger: eventNotificationTrigger,
   userNotificationTrigger: userNotificationTrigger,
@@ -700,7 +700,7 @@ module.exports = {
   bungieErrorMessage: bungieErrorMessage,
   consoleGenericsId: consoleGenericsId,
   sysConfigKeys: sysConfigKeys,
-  eventStatus: eventStatus,
+  eventStatusTypes: eventStatusTypes,
   reviewPromptCardStatus: reviewPromptCardStatus,
   notificationQueueTypeEnum: notificationQueueTypeEnum,
   existingUserInstallData:existingUserInstallData,

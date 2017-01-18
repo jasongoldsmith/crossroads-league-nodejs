@@ -487,7 +487,7 @@ function getMessageBody(host,token,messageType,consoleType, messageDetails, call
       var invitedByGamerTag = messageDetails.invitedByGamerTag
       var invitationLink = messageDetails.invitationLink
       if(utils._.isValidNonBlank(event)) {
-        if(event.launchStatus == utils.constants.eventLaunchStatusList.now)
+        if(event.launchStatus == utils.constants.eventLaunchStatusTypes.now)
           msg = utils.constants.bungieMessages.eventInvitationCurrent
             .replace(/%CONSOLE_ID%/g, invitedByGamerTag)
             .replace(/%ACTIVITY_NAME%/g, event.eType.aSubType)

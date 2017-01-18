@@ -567,26 +567,6 @@ function handleInvalidUser(user,callback){
 }
 */
 
-function logout(req, res) {
-  var user = req.user
-  utils.async.waterfall([
-    function(callback){
-      user.isLoggedIn = false
-      models.user.save(user,callback)
-    },function(user,callback){
-      //models.userGroup.updateUserGroup(user._id,{refreshGroups:true},callback)
-      helpers.sns.unSubscribeUser(user,callback)
-    }
-  ],function(err,userGroup){
-    if(err) {
-      utils.l.d("failed to save ths user object: ", err)
-    }
-
-    req.logout()
-    routeUtils.handleAPISuccess(req, res, {success: true})
-  })
-}
-
 function getSignupMessage(user){
   var primaryConsole = utils.primaryConsole(user)
   if(primaryConsole.verifyStatus == "INITIATED")
@@ -772,9 +752,35 @@ function login (req, res) {
   )
 }
 
+function logout(req, res) {
+  var user = req.user
+
+  if(utils._.isInvalidOrBlank(user)) {
+    req.logout()
+    routeUtils.handleAPISuccess(req, res, {success: true})
+    return
+  }
+
+  utils.async.waterfall([
+    function(callback) {
+      user.isLoggedIn = false
+      models.user.save(user,callback)
+    },
+    function(user, callback) {
+      helpers.sns.unSubscribeUser(user, callback)
+    }
+  ],
+    function(err, userGroup) {
+      if(err) {
+        utils.l.d("failed to save ths user object: ", err)
+      }
+      req.logout()
+      routeUtils.handleAPISuccess(req, res, {success: true})
+    })
+}
+
 /** Routes */
 routeUtils.rGetPost(router, '/bo/login', 'BOLogin', boLogin, boLogin)
-routeUtils.rPost(router, '/logout', 'Logout', logout)
 //routeUtils.rGet(router, '/verifyconfirm/:token', 'AccountVerification', verifyConfirm)
 //routeUtils.rGet(router, '/verifyReject/:token', 'verifyReject', verifyReject)
 routeUtils.rGet(router, '/verify/:token', 'AccountVerification', verifyAccount)
@@ -789,6 +795,7 @@ routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUser
 
 routeUtils.rPost(router, '/register', 'Signup', signup)
 routeUtils.rGetPost(router, '/login', 'Login', login, login)
+routeUtils.rPost(router, '/logout', 'Logout', logout)
 
 module.exports = router
 

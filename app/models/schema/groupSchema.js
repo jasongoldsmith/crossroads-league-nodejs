@@ -8,22 +8,22 @@ var serviceTypeEnum = {
 }
 
 var GroupSchema = new Schema({
-  _id:String,
+  _id: String,
   groupName: String,
   date: { type: Date, required: true },
   uDate: Date,
-  avatarPath:String,
-  bungieMemberCount:Number,
-  clanEnabled:Boolean,
+  avatarPath: String,
+  bungieMemberCount: Number,
+  clanEnabled: Boolean,
   appStats:[{
-    consoleType:String,
-    memberCount:Number
+    consoleType: String,
+    memberCount: Number
   }],
   serviceEndpoints:[{
-    serviceType:serviceTypeEnum,
-    consoleType:String,
-    topicEndpoint:String,
-    topicName:String
+    serviceType: serviceTypeEnum,
+    consoleType: String,
+    topicEndpoint: String,
+    topicName: String
   }]
 })
 

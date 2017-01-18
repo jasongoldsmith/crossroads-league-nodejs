@@ -34,9 +34,11 @@ var UserSchema = new Schema({
     verifyStatus: acctVerifyEnum,
     verifyToken: String,
     clanTag: String,
-    destinyMembershipId: String,
+    gamePlatformId: String,
+    gamePlayerLevel: Number,
     imageUrl: String,
-    isPrimary: {type: Boolean, default: false}
+    isPrimary: {type: Boolean, default: false},
+    region: String
   }],
   clanId: {type: String},
   clanName: String,
@@ -70,14 +72,7 @@ var UserSchema = new Schema({
   reviewPromptCard: {
     status: reviewPromptCardStatusEnum,
     cardId: {type: Schema.Types.ObjectId, ref: 'ReviewPromptCard'}
-  },
-
-  // -------------------------------------------------------------------------------------------------
-  // New Code
-
-  summonerName: {type: String, required: true},
-  summonerId: {type: String, required: true},
-  summonerLevel: Number
+  }
 })
 
 UserSchema.index({'userName': 1}, {unique: true})

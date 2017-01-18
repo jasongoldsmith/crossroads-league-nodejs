@@ -124,51 +124,6 @@ function getUserMetrics(req, res) {
   })
 }
 
-function addConsole(req, res) {
-  var newConsoleType = req.body.consoleType ? req.body.consoleType.toString().toUpperCase() : null
-
-  if(!newConsoleType) {
-    var err = {error: "new console type is needed"}
-    routeUtils.handleAPIError(req, res, err, err)
-  } else if(utils._.isValidNonBlank(utils.getUserConsoleObject(req.user, newConsoleType))) {
-    var err = {error: "You already own this console"}
-    routeUtils.handleAPIError(req, res, err, err)
-  } else if((newConsoleType == 'PS3' && utils._.isValidNonBlank(utils.getUserConsoleObject(req.user, "PS4")))
-  || (newConsoleType == 'XBOX360' && utils._.isValidNonBlank(utils.getUserConsoleObject(req.user, "XBOXONE")))) {
-    var err = {error: "You cannot downgrade your console"}
-    routeUtils.handleAPIError(req, res, err, err)
-  } else if(newConsoleType == 'PS4' && utils._.isValidNonBlank(utils.getUserConsoleObject(req.user, "PS3"))) {
-    service.userService.upgradeConsole(req.user, "PS3", newConsoleType, function (err, user) {
-      if (err) {
-        routeUtils.handleAPIError(req, res, err, err)
-      } else {
-        routeUtils.handleAPISuccess(req, res, {value:user})
-      }
-    })
-  } else if(newConsoleType == 'XBOXONE' && utils._.isValidNonBlank(utils.getUserConsoleObject(req.user, "XBOX360"))) {
-    service.userService.upgradeConsole(req.user, "XBOX360", newConsoleType, function (err, user) {
-      if (err) {
-        routeUtils.handleAPIError(req, res, err, err)
-      } else {
-        routeUtils.handleAPISuccess(req, res, {value:user})
-      }
-    })
-  } else {
-    if(utils._.isInvalidOrBlank(req.body.consoleId)) {
-      var err = {error: "Please enter a gamertag to add a new console."}
-      routeUtils.handleAPIError(req, res, err, err)
-    } else {
-      service.userService.addConsole(req.user, req.body, function (err, user) {
-        if (err) {
-          routeUtils.handleAPIError(req, res, err, err)
-        } else {
-          routeUtils.handleAPISuccess(req, res, {value:user})
-        }
-      })
-    }
-  }
-}
-
 function changePrimaryConsole(req, res) {
   if(!req.body.consoleType) {
     var err = {error: "console type is needed"}
@@ -255,6 +210,29 @@ function getPendingEventInvites(req, res) {
       routeUtils.handleAPIError(req, res, err, err)
     } else {
       routeUtils.handleAPISuccess(req, res, pendingEventInvites)
+    }
+  })
+}
+
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+
+function addConsole(req, res) {
+  var body = req.body
+  var err = {}
+
+  if(!body.consoleId || !body.region) {
+    err = {error: "One or more inputs is missing"}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.userService.addConsole(req.user, body.consoleId, body.region, function (err, user) {
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {value:user})
     }
   })
 }

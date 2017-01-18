@@ -367,16 +367,22 @@ function updateUserConsoles(user,callback){
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-function getUserBySummonerProfile(summonerName, summonerId, callback) {
+function getUserBySummonerProfile(consoleId, region, gamePlatformId, callback) {
   var query = null
 
-  if(utils._.isInvalidOrBlank(summonerId)) {
+  if(utils._.isInvalidOrBlank(gamePlatformId)) {
     query = {
-      summonerName: {$regex : new RegExp(["^", summonerName, "$"].join("")), $options:"i"}
+      consoles: {
+        $elemMatch: {
+          consoleId: {$regex : new RegExp(["^", consoleId, "$"].join("")), $options:"i"},
+          region: region
+        }}
     }
   } else {
     query = {
-      summonerId: summonerId
+      consoles: {
+        gamePlatformId: gamePlatformId
+      }
     }
   }
   User.find(query).exec(utils.firstInArrayCallback(function (err, users) {
@@ -419,7 +425,9 @@ module.exports = {
   findUserCount:findUserCount,
   updateUserConsoles:updateUserConsoles,
   getUserByConsole:getUserByConsole,
+
   // -------------------------------------------------------------------------------------------------
   // New Code
+
   getUserBySummonerProfile: getUserBySummonerProfile
 }

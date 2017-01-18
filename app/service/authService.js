@@ -209,7 +209,7 @@ function createInvitedUsers(bungieMembership,consoleType,messageDetails,callback
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-function registerUser(req, summonerName, summonerId, region, userName, password, callback) {
+function registerUser(req, userName, passWord, callback) {
 	utils.async.waterfall([
 		function generateUIDForUser(callback) {
 			/* We need this call explicitly incase a new user is trying to
@@ -220,110 +220,11 @@ function registerUser(req, summonerName, summonerId, region, userName, password,
 			var data = {
 				_id: uId,
 				userName: userName,
-				passWord: passwordHash.generate(password),
-				summonerName: summonerName,
-				summonerId: summonerId,
-				consoles:[{
-					consoleType: "PC",
-					consoleId: summonerName,
-					isPrimary: true
-				}]
+				passWord: passwordHash.generate(passWord)
 			}
 			userService.createNewUser(data, callback)
 		}
 	], callback)
-}
-
-function validateSummonerName(summonerName, region, callback) {
-	var summonerNameExistsError = {
-		error: "This summoner name has already been taken. Does it belong to you?"
-	}
-	utils.async.waterfall([
-		function checkDBForSummonerName(callback) {
-			checkDBForSummonerProfile(summonerName, null, function (err, user) {
-				if (err) {
-					return callback(err, user)
-				} else if(utils._.isValidNonBlank(user)) {
-					return callback(summonerNameExistsError, callback)
-				} else {
-					return callback(err, user)
-				}
-			})
-		},
-		function getSummonerInfoFromLoLServer(user, callback) {
-			var url = "/by-name/" + summonerName
-			getSummonerInfo(region, url, callback)
-		},
-		function checkDBForSummonerId(summonerInfoResponse, callback) {
-			checkDBForSummonerProfile(summonerName, summonerInfoResponse[Object.keys(summonerInfoResponse)[0]].id, function (err, user) {
-				if (err) {
-					return callback(err, user)
-				} else if(utils._.isValidNonBlank(user)) {
-					return callback(summonerNameExistsError, callback)
-				} else {
-					return callback(err, summonerInfoResponse)
-				}
-			})
-		}
-	], callback)
-}
-
-function checkDBForSummonerProfile(summonerName, summonerId, callback) {
-	models.user.getUserBySummonerProfile(summonerName, summonerId, callback)
-}
-
-function getSummonerInfo(region, url, callback) {
-	var baseUrlPlaceHolder = "https://#REGION_ABBR#.api.pvp.net/api/lol/#REGION_ABBR#/v1.4/summoner"
-	request({
-		baseUrl: baseUrlPlaceHolder
-			.replace("#REGION_ABBR#", region.toLowerCase())
-			.replace("#REGION_ABBR#", region.toLowerCase()),
-		url: url,
-		method: "GET",
-		qs: {
-			api_key: utils.config.riotGamesAPIKey
-		}
-	},
-		function(error, response, results) {
-			if(error) {
-				utils.l.s("Error for url "  + " and error is::----" + error)
-				return callback(error, null)
-			}
-			else if(response.statusCode == 200){
-				return callback(null, JSON.parse(results))
-			}
-
-			switch(response.statusCode) {
-				case 200:
-					utils.l.d("got results:", results)
-					return callback(null, JSON.parse(results))
-					break
-				case 400:
-					utils.l.s("Bad request", response)
-					return callback({error: "Something went wrong. Please try again later."}, null)
-					break
-				case 401:
-					utils.l.s("Unauthorized", response)
-					return callback({error: "Something went wrong. Please try again later."}, null)
-					break
-				case 404:
-					utils.l.d("Summoner not found", response)
-					return callback({error: "User with this summoner name does not exist."}, null)
-					break
-				case 429:
-					utils.l.d("Rate limit exceeded", response)
-					return callback({error: "Something went wrong. Please try again later."}, null)
-					break
-				case 500:
-					utils.l.i("Internal server error", response)
-					return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
-					break
-				case 503:
-					utils.l.i("Service unavailable", response)
-					return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
-					break
-			}
-		})
 }
 
 module.exports = {
@@ -336,6 +237,5 @@ module.exports = {
 	// --------------------------------------------------------------------------------------------
 	// New code
 
-	registerUser: registerUser,
-	validateSummonerName: validateSummonerName
+	registerUser: registerUser
 }

@@ -710,45 +710,18 @@ function home(req,res){
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-function validateUserInPlatform(req, res) {
-  var body = req.body
-  utils.l.d("Validate User in Platform request: ", JSON.stringify(body))
-
-  if(!body.summonerName || !body.region) {
-    utils.l.s("Bad signup request")
-    var err = {error: "One or more input fields missing."}
-    routeUtils.handleAPIError(req, res, err, err)
-    return
-  }
-
-  service.authService.validateSummonerName(body.summonerName, body.region, function (err, summonerInfoResponse) {
-    if (err) {
-      routeUtils.handleAPIError(req, res, err, err)
-    } else {
-      var summonerInfo = summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
-      var result = {
-        summonerName: summonerInfo.name,
-        summonerId: summonerInfo.id,
-        region : body.region
-      }
-      routeUtils.handleAPISuccess(req, res, result)
-    }
-  })
-}
-
 function signup(req, res) {
   var body = req.body
   utils.l.d("Signup user request: ", JSON.stringify(body))
 
-  if(!body.summonerName || !body.summonerId || !body.region || !body.userName || !body.passWord) {
+  if(!body.userName || !body.passWord) {
     utils.l.s("Bad signup request")
     var err = {error: "One or more input fields missing."}
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
 
-  service.authService.registerUser(req, body.summonerName, body.summonerId, body.region,
-    body.userName, body.passWord, function (err, result) {
+  service.authService.registerUser(req, body.userName, body.passWord, function (err, result) {
       if (err) {
         routeUtils.handleAPIError(req, res, err, err)
       } else {
@@ -811,7 +784,6 @@ routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUser
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-routeUtils.rPost(router, '/validateUserInPlatform', 'validateUserInPlatform', validateUserInPlatform)
 routeUtils.rPost(router, '/register', 'Signup', signup)
 routeUtils.rGetPost(router, '/login', 'Login', login, login)
 

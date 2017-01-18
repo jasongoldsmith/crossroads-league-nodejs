@@ -238,7 +238,7 @@ switch(command) {
         "aDifficulty" : "",
         "tag" : ""
       }]
-    activityService.createActivitiesWithConverter("/Users/dasasr/projects/traveler/admin/activities.csv",
+    activityService.createActivitiesWithConverter("/Users/abichsu/lol-activities.csv",
       "",adCards,
       function(err,data){
         utils.l.d("Done with activities")

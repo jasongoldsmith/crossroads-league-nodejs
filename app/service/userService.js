@@ -6,6 +6,7 @@ var eventNotificationTriggerService = require('./eventNotificationTriggerService
 var pendingEventInvitationService = require('./pendingEventInvitationService')
 var destinyInterface = require('./destinyInterface')
 var passwordHash = require('password-hash')
+var request = require('request')
 var helpers = require('../helpers')
 var temporal = require('temporal')
 
@@ -173,42 +174,6 @@ function upgradeConsole(user, oldConsoleType, newConsoleType, callback) {
 function updateReviewPromptCardStatus(user, data, callback) {
   user.reviewPromptCard.status = data.reviewPromptCardStatus.toUpperCase()
   updateUser(user, callback)
-}
-
-function addConsole(user, console, callback) {
-  var consoleType = console.consoleType.toString().toUpperCase()
-  if(consoleType == "XBOX360" || consoleType == "PS3") {
-    return callback({error: "We do not support old generation consoles anymore. " +
-    "Please try again once you have upgraded to a new generation console"}, null)
-  }
-  utils.async.waterfall([
-    function (callback) {
-      destinyInterface.getBungieMemberShip(console.consoleId, consoleType, null, true,callback)
-    },
-    function (bungieMember, callback) {
-      if(bungieMember.bungieMemberShipId.toString() != user.bungieMemberShipId.toString()) {
-        var errMsgTemplate = utils.constants.bungieMessages.addConsoleErrorMsg
-        var errMsg = errMsgTemplate
-          .replace("#CONSOLE_TYPE#", consoleType)
-          .replace("#CONSOLE_ID#", console.consoleId)
-        return callback({error: errMsg}, null)
-      } else {
-        console.verifyStatus = user.consoles[0].verifyStatus
-        console.clanTag = bungieMember.clanTag
-        console.destinyMembershipId = bungieMember.destinyProfile.memberShipId
-        user.consoles.push(console)
-        updateUser(user, function (err, updatedUser) {
-          if(err) {
-            utils.l.s("Unable to update the user", err)
-            return callback({error: "Something went wrong. Please try again"}, null)
-          } else {
-            return callback(null, updatedUser)
-          }
-        })
-      }
-    }
-  ], callback)
-
 }
 
 function refreshConsoles(user, bungieResponse, consoleReq, callback){
@@ -880,6 +845,117 @@ function createNewUser(data, callback) {
   models.user.createUserFromData(data, callback)
 }
 
+function addConsole(user, consoleId, region, callback) {
+  utils.async.waterfall([
+    function validateConsoleId(callback) {
+      validateSummonerName(consoleId, region, callback)
+    },
+    function (summonerInfoResponse, callback) {
+      var summonerInfo = summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
+       var console = {
+         consoleId: summonerInfo.name,
+         gamePlatformId: summonerInfo.id,
+         region: region,
+         gamePlayerLevel: summonerInfo.summonerLevel
+       }
+      user.consoles.push(console)
+      updateUser(user, callback)
+    }
+  ], callback)
+}
+
+
+function validateSummonerName(consoleId, region, callback) {
+  var summonerNameExistsError = {
+    error: "This summoner name has already been taken. Does it belong to you?"
+  }
+  utils.async.waterfall([
+    function checkDBForconsoleId(callback) {
+      checkDBForSummonerProfile(consoleId, region, null, function (err, user) {
+        if (err) {
+          return callback(err, user)
+        } else if(utils._.isValidNonBlank(user)) {
+          return callback(summonerNameExistsError, callback)
+        } else {
+          return callback(err, user)
+        }
+      })
+    },
+    function getSummonerInfoFromLoLServer(user, callback) {
+      var url = "/by-name/" + consoleId
+      getSummonerInfo(region, url, callback)
+    },
+    function checkDBForGamePlatformId(summonerInfoResponse, callback) {
+      checkDBForSummonerProfile(consoleId, region, summonerInfoResponse[Object.keys(summonerInfoResponse)[0]].id, function (err, user) {
+        if (err) {
+          return callback(err, user)
+        } else if(utils._.isValidNonBlank(user)) {
+          return callback(summonerNameExistsError, callback)
+        } else {
+          return callback(err, summonerInfoResponse)
+        }
+      })
+    }
+  ], callback)
+}
+
+function checkDBForSummonerProfile(consoleId, region, gamePlatformId, callback) {
+  models.user.getUserBySummonerProfile(consoleId, region, gamePlatformId, callback)
+}
+
+function getSummonerInfo(region, url, callback) {
+  var baseUrlPlaceHolder = "https://#REGION_ABBR#.api.pvp.net/api/lol/#REGION_ABBR#/v1.4/summoner"
+  request({
+      baseUrl: baseUrlPlaceHolder
+        .replace("#REGION_ABBR#", region.toLowerCase())
+        .replace("#REGION_ABBR#", region.toLowerCase()),
+      url: url,
+      method: "GET",
+      qs: {
+        api_key: utils.config.riotGamesAPIKey
+      }
+    },
+    function(error, response, results) {
+      if(error) {
+        utils.l.s("Error for url "  + " and error is::----" + error)
+        return callback(error, null)
+      }
+      else if(response.statusCode == 200){
+        return callback(null, JSON.parse(results))
+      }
+
+      switch(response.statusCode) {
+        case 200:
+          utils.l.d("got results:", results)
+          return callback(null, JSON.parse(results))
+          break
+        case 400:
+          utils.l.s("Bad request", response)
+          return callback({error: "Something went wrong. Please try again later."}, null)
+          break
+        case 401:
+          utils.l.s("Unauthorized", response)
+          return callback({error: "Something went wrong. Please try again later."}, null)
+          break
+        case 404:
+          utils.l.d("Summoner not found", response)
+          return callback({error: "User with this summoner name does not exist."}, null)
+          break
+        case 429:
+          utils.l.d("Rate limit exceeded", response)
+          return callback({error: "Something went wrong. Please try again later."}, null)
+          break
+        case 500:
+          utils.l.i("Internal server error", response)
+          return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
+          break
+        case 503:
+          utils.l.i("Service unavailable", response)
+          return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
+          break
+      }
+    })
+}
 
 module.exports = {
   userTimeout: userTimeout,

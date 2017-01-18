@@ -437,17 +437,14 @@ function addLogin(userId, userIp, userAgent, reason, callback) {
 
 function reqLoginWrapper(req, reason) {
   return function (user, callback) {
-    utils.async.waterfall(
-      [
-        function (callback) {
-          req.logIn(user, callback)
-        },
-        function(callback) {
-          addLogin(user.id, req.adata.ip, req.adata.user_agent, reason, callback)
-        }
-      ],
-      callback
-    )
+    utils.async.waterfall([
+      function (callback) {
+        req.logIn(user, callback)
+      },
+      function(callback) {
+        addLogin(user.id, req.adata.ip, req.adata.user_agent, reason, callback)
+      }
+    ], callback)
   }
 }
 
@@ -721,7 +718,13 @@ function signup(req, res) {
     return
   }
 
-  service.authService.registerUser(req, body.userName, body.passWord, function (err, user) {
+  utils.async.waterfall([
+    function registerUser(callback) {
+      service.authService.registerUser(req, body.userName, body.passWord, callback)
+    },
+    reqLoginWrapper(req, "auth.login")
+  ],
+    function (err, user) {
       if (err) {
         routeUtils.handleAPIError(req, res, err, err)
       } else {
@@ -747,7 +750,7 @@ function login (req, res) {
       })
       passportHandler(req, res)
     },
-    function(user,callback) {
+    function(user, callback) {
       service.authService.addLegalAttributes(user, function(err, data) {
         outerUser = data
         return callback(null, user)

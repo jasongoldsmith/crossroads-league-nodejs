@@ -228,6 +228,12 @@ function addConsole(req, res) {
     return
   }
 
+  if(req.user.consoles.length >=1 ) {
+    err = {error: "We do not support multiple summoner profiles yet."}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
   service.userService.addConsole(req.user, body.consoleId, body.region, function (err, user) {
     if (err) {
       routeUtils.handleAPIError(req, res, err, err)

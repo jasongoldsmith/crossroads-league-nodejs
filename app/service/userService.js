@@ -856,7 +856,8 @@ function addConsole(user, consoleId, region, callback) {
          consoleId: summonerInfo.name,
          gamePlatformId: summonerInfo.id,
          region: region,
-         gamePlayerLevel: summonerInfo.summonerLevel
+         gamePlayerLevel: summonerInfo.summonerLevel,
+         isPrimary: true
        }
       user.consoles.push(console)
       updateUser(user, callback)

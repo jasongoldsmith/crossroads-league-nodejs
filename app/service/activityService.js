@@ -87,12 +87,12 @@ function prepareActivities(activities, mods, adcards, callback){
       activitiesResp.push(arLocal)
     })
   })
-  //utils.l.d("activitiesResp",activitiesResp)
+  utils.l.d("activitiesResp",activitiesResp)
   setAdCards(activitiesResp,adcards)
   utils.async.mapSeries(activitiesResp,function(activityData,asyncCallback){
     models.activity.createActivity(activityData,asyncCallback)
   },function(err,results){
-    utils.l.d("Completed activity import")
+    utils.l.d("Completed activity import",err)
     return callback(null,activitiesResp)
   })
 
@@ -114,6 +114,7 @@ function createActivitiesWithConverter(activityPath,modsPath,adcards,callback){
         return callback(null,result)
       });
     },function(activitiesJSON,callback){
+      //utils.l.d("json for csv",activitiesJSON)
       activities = activitiesJSON
       utils.l.d("converting modifiers"+modsPath)
       //converter.fromFile(modsPath,callback)

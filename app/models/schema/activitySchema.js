@@ -28,7 +28,7 @@ var activitySchema = new Schema({
 		aSubLocation: String,
 	},
 	aLight: Number,
-	aLevel: Number,
+	aLevel: String,
 	aIconUrl: String,
 	isActive: {type: Boolean, default: true},
 	isFeatured: {type: Boolean, default: false},

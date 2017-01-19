@@ -8,6 +8,13 @@ var GroupSchema = require('./schema/groupSchema')
 // Model initialization
 var Group = mongoose.model('Group', GroupSchema.schema)
 
+
+function getByQuery(query, callback) {
+  Group
+    .find(query)
+    .exec(callback)
+}
+
 // Public functions
 function updateGroupStats(groupId,consoleType,memberCount, callback) {
   Group.update({_id:groupId,"appStats.consoleType":consoleType},{"$set":{"appStats.$.memberCount":memberCount}},{multi:true},callback)
@@ -71,11 +78,41 @@ function findGroupsPaginated(query, pageNumber, limit, callback){
   Group.find(query).skip(pageNumber > 0 ? ((pageNumber) * limit) : 0).limit(limit).exec(callback)
 }
 
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+function createGroup(groupId, groupName, serviceType, consoleType, callback) {
+
+  var data = {
+    _id: groupId,
+    groupName: groupName,
+    serviceEndpoints: [
+      {
+        serviceType: serviceType,
+        consoleType: consoleType
+      }
+    ]
+  }
+
+  var groupObj = new Group(data)
+  groupObj.save(callback)
+}
+
+function listGroups(callback) {
+  getByQuery({}, callback)
+}
+
 module.exports = {
   model: Group,
-  updateGroupStats:updateGroupStats,
-  addGroups:addGroups,
-  findGroupsPaginated:findGroupsPaginated,
-  addServiceEndpoints:addServiceEndpoints,
-  findGroupById:findGroupById
+  updateGroupStats: updateGroupStats,
+  addGroups: addGroups,
+  findGroupsPaginated: findGroupsPaginated,
+  addServiceEndpoints: addServiceEndpoints,
+  findGroupById: findGroupById,
+
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+
+  createGroup: createGroup,
+  listGroups: listGroups
 }

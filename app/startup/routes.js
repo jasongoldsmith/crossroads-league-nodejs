@@ -43,6 +43,7 @@ module.exports = function (app, passport) {
 
   app.use('/api/v1/auth', require('../routes/v1/auth'))
   app.use('/api/v1/activity', require('../routes/v1/activity'))
+  app.use('/api/v1/groups', require('../routes/v1/groups'))
   app.use('/api/v1/reviewPromptCard', require('../routes/v1/reviewPromptCard'))
   app.use('/api/v1/notification', require('../routes/v1/notification'))
   app.use('/api/v1/notificationTrigger', require('../routes/v1/notificationTrigger'))

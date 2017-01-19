@@ -646,17 +646,17 @@ var serviceTypes = {
 // New Code
 
 var LoLRegions = {
-  "Brazil": "BR",
-  "EU Nordic & East": "EUNE",
-  "EU West": "EUW",
-  "Japan": "JP",
-  "Korea": "KR",
-  "Latin America North": "LAN",
-  "Latin America South": "LAS",
-  "North America": "NA",
-  "Oceania": "OCE",
-  "Russia": "RU",
-  "Turkey": "TR"
+  "BR": "Brazil" ,
+  "EUNE": "EU Nordic & East",
+  "EUW": "EU West",
+  "JP": "Japan",
+  "KR": "Korea",
+  "LAN": "Latin America North",
+  "LAS": "Latin America South",
+  "NA": "North America",
+  "OCE": "Oceania",
+  "RU": "Russia",
+  "TR": "Turkey"
 }
 
 var consoleTypes = {

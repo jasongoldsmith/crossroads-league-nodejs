@@ -41,7 +41,8 @@ function createActivity(data, callback) {
 }
 
 function listActivities(activityType, includeTags, callback) {
-	getByQueryAndSort(constructFindActivityQuery(activityType, includeTags), {tag: "ascending"}, callback)
+	getByQueryAndSort(constructFindActivityQuery(activityType, includeTags),
+		{aCheckpointOrder: "ascending", tag: "ascending"}, callback)
 }
 
 function listAdActivities(callback) {

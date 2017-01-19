@@ -93,7 +93,7 @@ var defaults = {
   destinyGruopsJoinedURL:"https://www.bungie.net/Platform/Group/User/%MEMBERSHIPID%/",
   accountVerificationSuccess:"Great! Welcome to Crossroadsapp! If you have any issues or suggestions you may contact us at gaming@forcecatalyst.com",
   accountVerification:"Thanks for signing up for Traveler, the Destiny Fireteam Finder mobile app! Click the link below to verify your PSN id. %HOST%/api/v1/auth/verify/%TOKEN%",
-  firebaseURL: process.env.firebaseURL || "https://crossroadsapp-dev.firebaseio.com/",
+  firebaseURL: process.env.firebaseURL || "https://lolapp-dev.firebaseio.com",
   triggerIntervalMinutes: 5,
   triggerReminderInterval: 120,
   triggerUpcomingReminderInterval: -5,

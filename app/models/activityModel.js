@@ -41,7 +41,7 @@ function createActivity(data, callback) {
 }
 
 function listActivities(activityType, includeTags, callback) {
-	getByQueryAndSort(constructFindActivityQuery(activityType,includeTags),{tag:"ascending"}, callback)
+	getByQueryAndSort(constructFindActivityQuery(activityType, includeTags), {tag: "ascending"}, callback)
 }
 
 function listAdActivities(callback) {
@@ -110,9 +110,9 @@ function constructFindActivityQuery(activityType,includeTags) {
 			query.aType = activityType
 	}
 
-	includeTags = includeTags && (includeTags==true || includeTags=="true") ?true:false
-	if(!includeTags){
-		query.tag=""
+	includeTags = includeTags && (includeTags == true || includeTags == "true") ? true : false
+	if(!includeTags) {
+		query.tag = ""
 	}
 	return query
 }

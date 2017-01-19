@@ -217,7 +217,6 @@ function getPendingEventInvites(req, res) {
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-
 function addConsole(req, res) {
   var body = req.body
   var err = {}
@@ -228,7 +227,7 @@ function addConsole(req, res) {
     return
   }
 
-  if(req.user.consoles.length >= 1 ) {
+  if(req.user.consoles.length >= 1) {
     err = {error: "We do not support multiple summoner profiles yet."}
     routeUtils.handleAPIError(req, res, err, err)
     return
@@ -238,7 +237,7 @@ function addConsole(req, res) {
     if (err) {
       routeUtils.handleAPIError(req, res, err, err)
     } else {
-      routeUtils.handleAPISuccess(req, res, {value:user})
+      routeUtils.handleAPISuccess(req, res, {value: user})
     }
   })
 }

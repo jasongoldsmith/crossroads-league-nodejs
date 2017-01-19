@@ -1,3 +1,4 @@
+// Internal modules
 var models = require('../models')
 var utils = require('../utils')
 var eventService = require('./eventService')
@@ -5,9 +6,12 @@ var authService = require('./authService')
 var eventNotificationTriggerService = require('./eventNotificationTriggerService')
 var pendingEventInvitationService = require('./pendingEventInvitationService')
 var destinyInterface = require('./destinyInterface')
-var passwordHash = require('password-hash')
-var request = require('request')
 var helpers = require('../helpers')
+var userGroupService = require('./userGroupService')
+
+// External Modules
+var request = require('request')
+var passwordHash = require('password-hash')
 var temporal = require('temporal')
 
 function preUserTimeout(notifTrigger,sysConfig){
@@ -846,11 +850,12 @@ function createNewUser(data, callback) {
 }
 
 function addConsole(user, consoleId, region, callback) {
+  var outerUser = null
   utils.async.waterfall([
     function validateConsoleId(callback) {
       validateSummonerName(consoleId, region, callback)
     },
-    function (summonerInfoResponse, callback) {
+    function addConsoleToUser(summonerInfoResponse, callback) {
       var summonerInfo = summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
        var console = {
          consoleId: summonerInfo.name,
@@ -860,9 +865,23 @@ function addConsole(user, consoleId, region, callback) {
          isPrimary: true
        }
       user.consoles.push(console)
+      // clanId == groupId == region
+      user.clanId = region
       updateUser(user, callback)
+    },
+    function addUserGroup(user, callback) {
+      outerUser = user
+      // clanId == groupId == region
+      createUserGroup(user, region, "PC", false, callback)
     }
-  ], callback)
+  ],
+    function (err, results) {
+      return callback(err, outerUser)
+    })
+}
+
+function createUserGroup(user, groupId, consoleType, muteNotification, callback) {
+  userGroupService.createUserGroup(user, groupId, consoleType, muteNotification, callback)
 }
 
 

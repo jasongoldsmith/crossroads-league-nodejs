@@ -154,16 +154,43 @@ function findUsersByGroup(groupId,callback){
   return callback(null,cursor)
 }
 
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+function createUserGroup(user, groupId, consoleType, muteNotification, callback) {
+  var data = {
+    user: user._id,
+    group: groupId,
+    consoles: [consoleType],
+    muteNotification: muteNotification
+  }
+
+  var userGroupObj = new UserGroup(data)
+  userGroupObj.save(function (err, userGroup) {
+    if(err) {
+      utils.l.s("There was an error in creating a user group", err)
+      return callback({error: "Something went wrong. Please try again later"}, null)
+    } else {
+      return callback(err, userGroup)
+    }
+  })
+}
+
 module.exports = {
   model: UserGroup,
-  updateUserGroup:updateUserGroup,
-  getUsersByGroup:getUsersByGroup,
-  getByUser:getByUser,
-  refreshUserGroup:refreshUserGroup,
-  getGroupCountByConsole:getGroupCountByConsole,
-  addServiceEndpoints:addServiceEndpoints,
-  getByUserLean:getByUserLean,
-  getUserCountByGroup:getUserCountByGroup,
-  findUsersPaginated:findUsersPaginated,
-  findUsersByGroup:findUsersByGroup
+  updateUserGroup: updateUserGroup,
+  getUsersByGroup: getUsersByGroup,
+  getByUser: getByUser,
+  refreshUserGroup: refreshUserGroup,
+  getGroupCountByConsole: getGroupCountByConsole,
+  addServiceEndpoints: addServiceEndpoints,
+  getByUserLean: getByUserLean,
+  getUserCountByGroup: getUserCountByGroup,
+  findUsersPaginated: findUsersPaginated,
+  findUsersByGroup: findUsersByGroup,
+
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+
+  createUserGroup: createUserGroup
 }

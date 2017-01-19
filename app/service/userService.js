@@ -459,73 +459,78 @@ function updateUserGroup(data, callback) {
 }
 
 function listGroups(user, callback) {
-  var groupList = null
   utils.async.waterfall([
-    function(callback){
-      if(user)
-        models.userGroup.getByUser(user._id,null,callback)
-      else return callback({error: "User doesnot exist/logged in."})
+    function getUserGroups(callback){
+      if(user) {
+        models.userGroup.getByUser(user._id, null, callback)
+      }
+      else {
+        return callback({error: "User doesnot exist/logged in."})
+      }
     },
-    function(userGroup,callback) {
-      listUserGroups(userGroup,user,callback)
-    },
-    function(userGroupList, callback) {
-      transformGroups(userGroupList,utils.primaryConsole(user).consoleType,callback)
+    function geUserGroupStats(userGroupList, callback) {
+      transformGroups(userGroupList, utils.primaryConsole(user).consoleType, callback)
     }
   ], callback)
 }
 
-function listUserGroups(userGroupLst,user,callback){
+function listUserGroups(userGroupList, user, callback) {
   utils.async.waterfall([
     function(callback) {
-      var groupsObj = (userGroupLst && userGroupLst.length>0) ? userGroupLst[0]: null
-      var dateUpdated = utils._.isValidNonBlank(groupsObj) ? utils.moment(groupsObj.uDate).utc().add("24","hours") : utils.moment().utc()
-      if (utils._.isInvalidOrBlank(groupsObj) || dateUpdated < utils.moment().utc() || groupsObj.refreshGroups || utils._.isInvalidOrBlank(groupsObj.group)) {
+      var groupsObj = (userGroupList && userGroupList.length > 0) ? userGroupList[0] : null
+      var dateUpdated = utils._.isValidNonBlank(groupsObj) ?
+        utils.moment(groupsObj.uDate).utc().add("24","hours") : utils.moment().utc()
+      if (utils._.isInvalidOrBlank(groupsObj) || dateUpdated < utils.moment().utc()
+        || groupsObj.refreshGroups || utils._.isInvalidOrBlank(groupsObj.group)) {
         utils.l.d("Groups does not exists. Fetching from bungie")
-        destinyInterface.listBungieGroupsJoined(user.bungieMemberShipId, utils.primaryConsole(user).consoleType, 1, function(err, groups){
-          if(groups)
-            refreshGroups(user,userGroupLst,groups,callback)
-          else
-            callback(err,userGroupLst)
+        destinyInterface.listBungieGroupsJoined(user.bungieMemberShipId,
+          utils.primaryConsole(user).consoleType, 1, function(err, groups) {
+          if(groups) {
+            refreshGroups(user, userGroupList, groups, callback)
+          }
+          else {
+            return callback(err, userGroupList)
+          }
         })
       } else {
         utils.l.d("Groups already exists.")
-        callback (null,userGroupLst)
+        return callback(null, userGroupList)
       }
     }
-  ],callback)
+  ], callback)
 }
 
-function refreshGroups(user,userGroupLst,groups,callback){
+function refreshGroups(user, userGroupList, groups, callback) {
   utils.async.waterfall([
-    function(callback){
-      models.groups.addGroups(groups,utils._.map(user.consoles,"consoleType"),callback)
-    },function(docs, callback){
-      models.userGroup.refreshUserGroup(user,groups,userGroupLst,callback)
+    function(callback) {
+      models.groups.addGroups(groups, utils._.map(user.consoles,"consoleType"), callback)
+    },
+    function(docs, callback) {
+      models.userGroup.refreshUserGroup(user, groups, userGroupList, callback)
     }
-  ],callback)
+  ], callback)
 }
 
-function transformGroups(userGroupLst,consoleType,callback){
+function transformGroups(userGroupList, consoleType, callback) {
   utils.async.waterfall([
-    function(callback){
+    function(callback) {
       var groups = []
-      utils._.map(userGroupLst, function(userGroup){
+      utils._.map(userGroupList, function(userGroup) {
         groups.push({
           "groupId": userGroup.group._id,
           "groupName": userGroup.group.groupName,
           "avatarPath": userGroup.group.avatarPath,
           "clanEnabled": userGroup.group.clanEnabled,
           "bungieMemberCount": userGroup.group.bungieMemberCount,
-          "memberCount": utils._.find(userGroup.group.appStats,{consoleType:consoleType}).memberCount,
+          "memberCount": utils._.find(userGroup.group.appStats, {consoleType: consoleType}).memberCount,
           "muteNotification": userGroup.muteNotification
         })
       })
-      eventService.listEventCountByGroups(utils._.map(groups, 'groupId'), consoleType, function(err,eventStats){
+      eventService.listEventCountByGroups(utils._.map(groups, 'groupId'), consoleType, function(err, eventStats) {
         return callback(null, mergeEventStatsWithGroups(eventStats,groups))
       })
     }
-  ],callback)
+  ], callback)
 }
 
 function mergeEventStatsWithGroups(eventCountList, groupList){
@@ -648,6 +653,9 @@ function updateGroupStats(group, callback){
           },
           xboxStats: function (callback) {
             models.userGroup.getGroupCountByConsole(group._id,"XBOXONE", callback)
+          },
+          pcStats: function (callback) {
+            models.userGroup.getGroupCountByConsole(group._id,"PC", callback)
           }
         },
         function (err, results) {
@@ -663,7 +671,8 @@ function updateGroupStats(group, callback){
       if(utils._.isValidNonBlank(results)) {
         var ps4Stats = results.ps4Stats
         var xboxStats = results.xboxStats
-        subscribeGroups(ps4Stats,xboxStats,group,callback)
+        var pcStats = results.pcStats
+        subscribeGroups(ps4Stats,xboxStats, pcStats,group,callback)
       }else{
         callback(null,null)
       }
@@ -671,7 +680,7 @@ function updateGroupStats(group, callback){
   ],callback)
 }
 
-function subscribeGroups(ps4Stats,xboxStats,group, callback){
+function subscribeGroups(ps4Stats,xboxStats,pcStats,group, callback){
   var needUserGroupSubscription = false;
   utils.async.waterfall([
     function(callback){
@@ -700,6 +709,9 @@ function subscribeGroups(ps4Stats,xboxStats,group, callback){
           },
           xboxStatsUpdate: function (parallelCallback) {
             models.groups.updateGroupStats(group._id, "XBOXONE", xboxStats, parallelCallback)
+          },
+          pcStatsUpdate: function (parallelCallback) {
+            models.groups.updateGroupStats(group._id, "PC", pcStats, parallelCallback)
           }
         },
         function (err, results) {
@@ -992,16 +1004,16 @@ module.exports = {
   updateUserConsoles: updateUserConsoles,
   updateUser: updateUser,
   getPendingEventInvites: getPendingEventInvites,
-  refreshUserData:refreshUserData,
-  updateUserGroup:updateUserGroup,
-  handleMuteGroupNotifications:handleMuteGroupNotifications,
-  listGroups:listGroups,
-  bulkUpdateUserGroups:bulkUpdateUserGroups,
-  bulkUpdateGroupStats:bulkUpdateGroupStats,
-  subscribeUserNotifications:subscribeUserNotifications,
-  updateGroupStats:updateGroupStats,
-  refreshGroups:refreshGroups,
-  subscribeUsersForGroup:subscribeUsersForGroup,
+  refreshUserData: refreshUserData,
+  updateUserGroup: updateUserGroup,
+  handleMuteGroupNotifications: handleMuteGroupNotifications,
+  listGroups: listGroups,
+  bulkUpdateUserGroups: bulkUpdateUserGroups,
+  bulkUpdateGroupStats: bulkUpdateGroupStats,
+  subscribeUserNotifications: subscribeUserNotifications,
+  updateGroupStats: updateGroupStats,
+  refreshGroups: refreshGroups,
+  subscribeUsersForGroup: subscribeUsersForGroup,
 
   // -------------------------------------------------------------------------------------------------
   // New Code

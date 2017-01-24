@@ -13,12 +13,13 @@ PushNotification.init({
     cert: (process.env.NODE_ENV == 'production' ? fs.readFileSync('./keys/prod/cert.pem'): fs.readFileSync('./keys/cert.pem')),
     key:  (process.env.NODE_ENV == 'production' ? fs.readFileSync('./keys/prod/key.pem'): fs.readFileSync('./keys/key.pem')),
     production: (process.env.NODE_ENV === 'production'),
-    gateway: (process.env.NODE_ENV == 'production' ? "gateway.push.apple.com": "gateway.sandbox.push.apple.com")
+    //gateway: (process.env.NODE_ENV == 'production' ? "gateway.push.apple.com": "gateway.push.apple.com")
 
     //cert: path.resolve('./keys/prod/cert.pem'),
     //key:  path.resolve('./keys/prod/key.pem'),
     //production: true,
-    //gateway: "gateway.push.apple.com"
+    // TODO: we need to change this we plan to use dev from local and not from TF
+    gateway: "gateway.push.apple.com"
   },
   gcm: {
     apiKey: utils.config.googleAPIKey

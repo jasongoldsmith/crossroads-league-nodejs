@@ -42,7 +42,7 @@ function sendMessage(data, messageCreator, callback) {
 					return callback({error: "This event has been deleted"}, null)
 				} else {
 					eventObj = event
-					models.user.getUserById(data, callback)
+					models.user.getUserByIdWithPassword(data.id, callback)
 				}
 			},
 			function (user, callback) {

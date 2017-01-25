@@ -108,7 +108,7 @@ function searchGroup(user, groupId, callback){
   var groupList = null
   utils.async.waterfall([
     function (callback) {
-      models.user.getUserById({id: user._id}, callback)
+      models.user.getUserByIdWithPassword({id: user._id}, callback)
     },
     function (user, callback) {
       if(user) {

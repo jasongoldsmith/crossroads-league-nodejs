@@ -142,7 +142,7 @@ function changePrimaryConsole(req, res) {
 function getUserById(data, callback) {
   utils.async.waterfall([
     function(callback){
-      models.user.getUserById(data, callback)
+      models.user.getUserByIdWithPassword(data.id, callback)
     },function(user, callback){
       service.authService.addLegalAttributes(user,callback)
     }
@@ -192,7 +192,7 @@ function acceptLegal(req,res){
 function handleAcceptLegal(user, callback){
   utils.async.waterfall([
     function(callback){
-      models.user.getUserById({id:user._id}, callback)
+      models.user.getUserByIdWithPassword(user._id, callback)
     },function(user, callback){
       models.sysConfig.getSysConfigList([utils.constants.sysConfigKeys.termsVersion,utils.constants.sysConfigKeys.privacyPolicyVersion],callback)
     },function(sysConfigs, callback){
@@ -218,6 +218,7 @@ function getPendingEventInvites(req, res) {
 // New Code
 
 function addConsole(req, res) {
+  utils.l.d("addConsole request" + JSON.stringify(req.body))
   var body = req.body
   var err = {}
 
@@ -242,6 +243,26 @@ function addConsole(req, res) {
   })
 }
 
+function changePassword(req, res) {
+  utils.l.d("addConsole request" + JSON.stringify(req.body))
+  var body = req.body
+  var err = {}
+
+  if(!body.oldPassWord || !body.newPassWord) {
+    err = {error: "One or more inputs is missing"}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.userService.changePassword(req.user, body.oldPassWord, body.newPassWord, function (err, user) {
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {value: user})
+    }
+  })
+}
+
 routeUtils.rGet(router, '/self', 'GetSelfUser', getSelfUser)
 routeUtils.rGet(router, '/list', 'list', list)
 routeUtils.rPost(router, '/listById', 'listById', listById)
@@ -250,8 +271,13 @@ routeUtils.rPost(router, '/updateGroup', 'updateGroup', updateGroup)
 routeUtils.rPost(router, '/acceptLegal', 'acceptLegal', acceptLegal)
 routeUtils.rPost(router, '/updatePassword', 'updatePassword', updatePassword)
 routeUtils.rPost(router, '/updateReviewPromptCardStatus', 'updateReviewPromptCardStatus', updateReviewPromptCardStatus)
-routeUtils.rPost(router, '/addConsole', 'addUserConsole', addConsole)
 routeUtils.rPost(router, '/changePrimaryConsole', 'changePrimaryConsole', changePrimaryConsole)
 routeUtils.rGet(router, '/getMetrics', 'getUserMetrics', getUserMetrics)
 routeUtils.rGet(router, '/getPendingEventInvites', 'getPendingEventInvites', getPendingEventInvites)
+
+// -------------------------------------------------------------------------------------------------
+// New Code
+
+routeUtils.rPost(router, '/addConsole', 'addUserConsole', addConsole)
+routeUtils.rPost(router, '/changePassword', 'changePassword', changePassword)
 module.exports = router

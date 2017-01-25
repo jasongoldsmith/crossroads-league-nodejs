@@ -989,12 +989,26 @@ function getSummonerInfo(region, url, callback) {
     })
 }
 
+function changePassword(user, oldPassWord, newPassWord, callback) {
+  utils.async.waterfall([
+    function getUserWithPassword(callback) {
+      models.user.getUserByIdWithPassword(user._id, callback)
+    },
+    function changePassword(userWithPassWord, callback) {
+      if(!passwordHash.verify(oldPassWord, userWithPassWord.passWord)) {
+        return callback({error: "Your old password does not match our records"}, null)
+      }
+      user.passWord = passwordHash.generate(newPassWord)
+      updateUser(user, callback)
+    }
+  ], callback)
+}
+
 module.exports = {
   userTimeout: userTimeout,
   preUserTimeout: preUserTimeout,
   upgradeConsole: upgradeConsole,
   updateReviewPromptCardStatus: updateReviewPromptCardStatus,
-  addConsole: addConsole,
   changePrimaryConsole: changePrimaryConsole,
   checkBungieAccount: checkBungieAccount,
   setLegalAttributes: setLegalAttributes,
@@ -1018,5 +1032,7 @@ module.exports = {
   // -------------------------------------------------------------------------------------------------
   // New Code
 
-  createNewUser: createNewUser
+  createNewUser: createNewUser,
+  addConsole: addConsole,
+  changePassword: changePassword
 }

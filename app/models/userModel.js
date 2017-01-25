@@ -170,25 +170,6 @@ function getAll(callback) {
   getByQuery({}, callback)
 }
 
-function getUserById(data, callback) {
-  utils.async.waterfall([
-      function (callback) {
-        User.findOne({_id: data.id}, callback)
-      },
-      function(user, callback) {
-        if (!user) {
-          utils.l.d("no user found")
-          return callback({ error: "user with this id does not exist" }, null)
-        } else {
-          utils.l.d("found user: " + utils.l.userLog(user))
-          return callback(null, user)
-        }
-      }
-  ],
-    callback
-  )
-}
-
 function listUsers(username, consoleId, callback) {
   getByQuery(constructFindUserQuery(username, consoleId), callback)
 }
@@ -400,9 +381,23 @@ function createUserFromData(data, callback) {
   save(user, callback)
 }
 
+function getUserByIdWithPassword(userId, callback) {
+  User.findOne({_id: userId}, function (err, user) {
+    if(err) {
+      utils.l.s("Error in getting user by id", err)
+      return callback({error: "Something went wrong. Please try again later"}, null)
+    } else if(!user) {
+      utils.l.d("no user found")
+      return callback({ error: "This user no longer exists"}, null)
+    } else {
+      utils.l.d("found user: " + utils.l.userLog(user))
+      return callback(null, user)
+    }
+  })
+}
+
 module.exports = {
   model: User,
-  getUserById: getUserById,
   getByIds: getByIds,
   listUsers:listUsers,
   setFields: setFields,
@@ -429,5 +424,7 @@ module.exports = {
   // -------------------------------------------------------------------------------------------------
   // New Code
 
-  getUserBySummonerProfile: getUserBySummonerProfile
+  getUserBySummonerProfile: getUserBySummonerProfile,
+  getUserByIdWithPassword: getUserByIdWithPassword
+
 }

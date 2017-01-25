@@ -37,7 +37,14 @@ function getByQuery(query, callback) {
   User
     .find(query)
     .select("-passWord")
-    .exec(callback)
+    .exec(function (err, users) {
+      if(err) {
+        utils.l.s("getByQuery on users failed", err)
+        return callback({error: "Somethign went wrong. Please try again later"}, null)
+      } else {
+        return callback(err, users)
+      }
+    })
 }
 
 function getByQueryLite(query, excludeFields, callback) {

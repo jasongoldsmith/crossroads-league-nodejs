@@ -29,7 +29,7 @@ module.exports = function (passport, config) {
         } else if(!user) {
           utils.l.d("user not found")
           return callback({error: "The username and password do not match our records."}, null)
-        } else if(!passwordHash.verify(password, user.passWord)) {
+        } else if(!passwordHash.verify(password, user.passWord.trim())) {
           return callback({error: "The username and password do not match our records."}, null)
         } else {
           return callback(null, user)

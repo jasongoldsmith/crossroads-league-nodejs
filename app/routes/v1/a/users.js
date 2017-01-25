@@ -244,7 +244,7 @@ function addConsole(req, res) {
 }
 
 function changePassword(req, res) {
-  utils.l.d("addConsole request" + JSON.stringify(req.body))
+  utils.l.d("change password request" + JSON.stringify(req.body))
   var body = req.body
   var err = {}
 
@@ -255,6 +255,26 @@ function changePassword(req, res) {
   }
 
   service.userService.changePassword(req.user, body.oldPassWord, body.newPassWord, function (err, user) {
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {value: user})
+    }
+  })
+}
+
+function changeEmail(req, res) {
+  utils.l.d("change email request" + JSON.stringify(req.body))
+  var body = req.body
+  var err = {}
+
+  if(!body.oldEmail || !body.newEmail) {
+    err = {error: "One or more inputs is missing"}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.userService.changeEmail(req.user, body.oldEmail, body.newEmail, function (err, user) {
     if (err) {
       routeUtils.handleAPIError(req, res, err, err)
     } else {
@@ -280,4 +300,5 @@ routeUtils.rGet(router, '/getPendingEventInvites', 'getPendingEventInvites', get
 
 routeUtils.rPost(router, '/addConsole', 'addUserConsole', addConsole)
 routeUtils.rPost(router, '/changePassword', 'changePassword', changePassword)
+routeUtils.rPost(router, '/changeEmail', 'changeEmail', changeEmail)
 module.exports = router

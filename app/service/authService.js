@@ -219,8 +219,8 @@ function registerUser(req, userName, passWord, callback) {
 		function createNewUserInDb(uId, callback) {
 			var data = {
 				_id: uId,
-				userName: userName,
-				passWord: passwordHash.generate(passWord)
+				userName: userName.toLowerCase().trim(),
+				passWord: passwordHash.generate(passWord.trim())
 			}
 			userService.createNewUser(data, callback)
 		}

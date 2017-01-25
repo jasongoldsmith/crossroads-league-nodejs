@@ -995,10 +995,32 @@ function changePassword(user, oldPassWord, newPassWord, callback) {
       models.user.getUserByIdWithPassword(user._id, callback)
     },
     function changePassword(userWithPassWord, callback) {
-      if(!passwordHash.verify(oldPassWord, userWithPassWord.passWord)) {
+      if(!passwordHash.verify(oldPassWord.trim(), userWithPassWord.passWord)) {
         return callback({error: "Your old password does not match our records"}, null)
       }
-      user.passWord = passwordHash.generate(newPassWord)
+      user.passWord = passwordHash.generate(newPassWord.trim())
+      updateUser(user, callback)
+    }
+  ], callback)
+}
+
+function changeEmail(user, oldEmail, newEmail, callback) {
+  var cleanedOldEmail = oldEmail.toLowerCase().trim()
+  var cleanedNewEmail = newEmail.toLowerCase().trim()
+  utils.async.waterfall([
+    function validateLegitimateEmailChange(callback) {
+      if(user.userName != cleanedOldEmail) {
+        return callback({error: "Your old email does not match our records"}, null)
+      }
+
+      models.user.getByQuery({userName: cleanedNewEmail}, utils.firstInArrayCallback(callback))
+    },
+    function changeEmail(userFoundInDb, callback) {
+      if(utils._.isValidNonBlank(userFoundInDb)) {
+        return ({error: "This email has already been registered with another user"}, null)
+      }
+
+      user.userName = cleanedNewEmail
       updateUser(user, callback)
     }
   ], callback)
@@ -1034,5 +1056,6 @@ module.exports = {
 
   createNewUser: createNewUser,
   addConsole: addConsole,
-  changePassword: changePassword
+  changePassword: changePassword,
+  changeEmail: changeEmail
 }

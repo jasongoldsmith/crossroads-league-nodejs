@@ -761,22 +761,16 @@ function logout(req, res) {
     return
   }
 
-  utils.async.waterfall([
-    function(callback) {
-      user.isLoggedIn = false
-      models.user.save(user,callback)
-    },
-    function(user, callback) {
-      helpers.sns.unSubscribeUser(user, callback)
+  models.user.save(user, function (err, updatedUser) {
+    if(err) {
+      utils.l.s("failed to save ths user object: ", err)
     }
-  ],
-    function(err, userGroup) {
-      if(err) {
-        utils.l.d("failed to save ths user object: ", err)
-      }
-      req.logout()
-      routeUtils.handleAPISuccess(req, res, {success: true})
+    req.logout()
+    helpers.sns.unSubscribeUser(user,function(err, data) {
+      utils.l.i("Completed the unsubscribe in aws")
     })
+    routeUtils.handleAPISuccess(req, res, {success: true})
+  })
 }
 
 /** Routes */

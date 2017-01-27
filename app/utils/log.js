@@ -120,6 +120,7 @@ function userLog(userList){
 
   return JSON.stringify(userLogList)
 }
+
 module.exports = {
   i: info,
   e: error,

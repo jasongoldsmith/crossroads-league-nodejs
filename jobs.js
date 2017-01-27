@@ -461,30 +461,43 @@ function eventBasedNotifications() {
 }
 
 function eventBasedNotificationsHandler() {
+  var notificationDelayPeriod = 1
   utils.async.waterfall([
-      function (callback) {
-        models.notificationQueue.getByQuery({}, callback)
-      },
-      function (notificationQueue, callback) {
-        utils.async.mapSeries(notificationQueue, function (notificationQueueObj, callback) {
-          utils.l.d("notificationQueueObj", notificationQueueObj)
-          models.event.getById(notificationQueueObj.eventId.toString(), function (err, event) {
-            if (err) {
-              utils.l.s("There was an issue while fetching the event from db", err)
-            } else if (!event) {
-              utils.l.d("Event has been deleted", notificationQueueObj.eventId)
+    function (callback) {
+      getNotificationDelayPeriod(callback)
+    },
+    function (notificationDelayPeriodInMins, callback) {
+      notificationDelayPeriod = notificationDelayPeriodInMins
+      models.notificationQueue.getByQuery({}, callback)
+    },
+    function (notificationQueue, callback) {
+      utils.async.mapSeries(notificationQueue, function (notificationQueueObj, callback) {
+        utils.l.d("notificationQueueObj", notificationQueueObj)
+        models.event.getById(notificationQueueObj.eventId.toString(), function (err, event) {
+          if (err) {
+            utils.l.s("There was an issue while fetching the event from db", err)
+            notificationQueueObj.remove(callback)
+          } else if (!event) {
+            utils.l.d("Event has been deleted", notificationQueueObj.eventId)
+            notificationQueueObj.remove(callback)
+          } else {
+            if(!utils.isWaitCriteriaMetInMins(event.created, notificationDelayPeriod)) {
+              utils.l.d("This event is not older than #TIME# minutes. Skipping the notification".replace("#TIME#", notificationDelayPeriod.toString()))
+              return callback(null, null)
             } else {
+              utils.l.d("Trying to send eventBasedNotifications")
               var userList = notificationQueueObj.notificationInformation ? notificationQueueObj.notificationInformation.userList : null
               var comment = notificationQueueObj.notificationInformation ? notificationQueueObj.notificationInformation.comment : null
               event.playerJoinedOrLeft = notificationQueueObj.notificationInformation ? notificationQueueObj.notificationInformation.playerJoinedOrLeft : null
               service.eventBasedPushNotificationService
                 [utils.constants.notificationQueueTypeEnum[notificationQueueObj.notificationType]](event, userList, comment)
+              notificationQueueObj.remove(callback)
             }
-          })
-          notificationQueueObj.remove(callback)
-        }, callback)
-      }
-    ],
+          }
+        })
+      }, callback)
+    }
+  ],
     function (err, notificationQueue) {
       if(err) {
         utils.l.s("Error sending in eventNewCreateNotificationHandler::" + JSON.stringify(err))
@@ -847,6 +860,21 @@ function createUserAndInstallation(counter, totalUsers) {
 
 function getNewDate(minutes) {
   return new Date(Date.now() + (minutes * 60000)).toISOString()
+}
+
+function getNotificationDelayPeriod(callback) {
+  var notificationDelayPeriodInMins = 1
+  models.sysConfig.getSysConfig(utils.constants.sysConfigKeys.notificationDelayPeriodInMins,
+    function (err, notificationDelayPeriodObj) {
+      if(err) {
+        utils.l.s("Error in getting notificationDelayPeriod", err)
+      } else if(utils._.isInvalidOrBlank(notificationDelayPeriodObj)) {
+        utils.l.d("No value found for notificationDelayPeriodInMins")
+      } else {
+        notificationDelayPeriodInMins = parseInt(notificationDelayPeriodObj.value)
+      }
+      return callback(null, notificationDelayPeriodInMins)
+  })
 }
 
 module.exports = {

@@ -148,10 +148,29 @@ function getRecipients(recipientType, event, clanId, consoleType, callback) {
 function getClanMembers(event, clanId, consoleType, callback) {
 	var clanId = event ? event.clanId : clanId
 	var consoleType = event ? event.consoleType : consoleType
-	if(clanId == utils.constants.freelanceBungieGroup.groupId){
-		return callback(null,[])
-	}else {
-		models.userGroup.getUsersByGroup(clanId,false,consoleType,callback)
+	utils.async.waterfall([
+		function findGroupInDb(callback) {
+			models.groups.findGroupById(clanId, callback)
+		},
+		function checkIfGroupHasTopicEndpoint(group, callback) {
+			if(doesGroupHaveATopicEndpoint(group)) {
+				// We don't want to compute recipients if a group has an SNS endpoint
+				utils.l.d("group found in getClanMembers", group)
+				return callback(null, [])
+			} else {
+				utils.l.d("Didn't find the topicEndpoint using regular push")
+				models.userGroup.getUsersByGroup(clanId, false, consoleType, callback)
+			}
+		}
+	], callback)
+}
+
+function doesGroupHaveATopicEndpoint(group) {
+	if(utils._.isValidNonBlank(group) && utils._.isValidNonBlank(group.serviceEndpoints)) {
+		var serviceEndpoint = utils._.find(group.serviceEndpoints, {consoleType: consoleType})
+		return utils._.isValidNonBlank(serviceEndpoint) && utils._.isValidNonBlank(serviceEndpoint.topicEndpoint)
+	} else {
+		return false
 	}
 }
 
@@ -203,6 +222,6 @@ function getTimeStringForDisplay(date) {
 module.exports = {
 	getNotificationDetails: getNotificationDetails,
 	getAggregateNotificationDetails: getAggregateNotificationDetails,
-	getClanMembers:getClanMembers,
-	formatMessage:formatMessage
+	getClanMembers: getClanMembers,
+	formatMessage: formatMessage
 }

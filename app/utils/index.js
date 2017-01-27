@@ -4,6 +4,7 @@ var chai = require('chai');
 var config = require('config');
 var Chance = require("chance");
 var chance = new Chance();
+var moment = require("moment")
 var TIME_ELAPSED_30MIN = 30 * 60 * 1000;
 
 function isJson(str) {
@@ -139,6 +140,12 @@ function getUniquePlayerListOfTwoEvents(event1, event2) {
   return lodash.unionWith(event1.players, event2.players, lodash.isEqual)
 }
 
+function isWaitCriteriaMetInMins(timeField, delayInMins) {
+  var currentTime = moment().utc()
+  var timeFieldInUtc = moment(timeField).utc()
+  return currentTime.diff(timeFieldInUtc, 'minutes') > delayInMins
+}
+
 module.exports = {
   format: require('./formatUtils'),
   mongo: require('./mongoUtils'),
@@ -166,5 +173,6 @@ module.exports = {
   getNotificationPlayerListForEventExceptUser: getNotificationPlayerListForEventExceptUser,
   convertMongooseArrayToPlainArray: convertMongooseArrayToPlainArray,
   getUniquePlayerListOfTwoEvents: getUniquePlayerListOfTwoEvents,
+  isWaitCriteriaMetInMins: isWaitCriteriaMetInMins,
   moment:require('moment')
 };

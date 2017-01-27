@@ -411,7 +411,7 @@ function updateUserConsoles(userToupdate){
             newConsole.clanTag = destinyAccount.clanTag
             newConsole.imageUrl = utils.config.bungieBaseURL + "/" + destinyAccount.helmetUrl
             newConsole.verifyStatus = userObj.verifyStatus ? userObj.verifyStatus : "INITIATED"
-            user.consoles.push(newConsole)
+            userObj.consoles.push(newConsole)
           }
         })
 

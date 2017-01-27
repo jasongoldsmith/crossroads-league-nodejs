@@ -7,6 +7,7 @@ var sound = "default"
 var config = require('config')
 var models = require('../models')
 var fs = require('fs')
+var sns = require('./SNS')
 
 PushNotification.init({
   apn: {
@@ -52,10 +53,26 @@ function sendMultiplePushNotificationsForUsers(notification, data, clanId) {
 
   utils.l.d("sendMultiplePushNotificationsForUsers::notification::", {notification:notification.name,message:notification.message})
 
-  notification.recipients = utils._.filter(notification.recipients, 'isLoggedIn')
-  utils.async.map(notification.recipients, models.installation.getInstallationByUser, function(err, installations) {
-    sendMultiplePushNotifications(installations, data, notification.message, notification, clanId)
-  })
+  // If there are no recipeints we assume that the group has an endpoint and we send a push via SNS
+  if(utils._.isInvalidOrBlank(notification.recipients)) {
+    utils.l.d("notification recipients is blank")
+    var payload = getPayload(data, notification, clanId)
+    utils.l.d("payload to be sent to sns", payload)
+    sns.publishToSNSTopic(payload.eventConsole, payload.eventClanId, payload, notification.message, function (err, result) {
+      if(err) {
+        utils.l.d('err', err)
+      }
+      else {
+        utils.l.d("push notification sent successfully for " , result)
+      }
+    })
+  } else {
+    utils.l.d("notification recipients is not blank")
+    notification.recipients = utils._.filter(notification.recipients, 'isLoggedIn')
+    utils.async.map(notification.recipients, models.installation.getInstallationByUser, function(err, installations) {
+      sendMultiplePushNotifications(installations, data, notification.message, notification, clanId)
+    })
+  }
 }
 
 function getPayload(data, notificationResponse, clanId) {

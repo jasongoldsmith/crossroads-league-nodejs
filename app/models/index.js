@@ -16,6 +16,7 @@ var helmetTracker = require('./helmetTrackerModel')
 var eventInvitationModel = require('./eventInvitationModel')
 var pendingEventInvitationModel = require('./pendingEventInvitationModel')
 var groupsModel = require('./groupModel')
+var roundRobinCounterModel = require('./roundRobinCounterModel')
 
 module.exports = {
   user: user,
@@ -35,5 +36,6 @@ module.exports = {
   helmetTracker: helmetTracker,
   eventInvitation: eventInvitationModel,
   pendingEventInvitation: pendingEventInvitationModel,
-  groups:groupsModel
+  groups: groupsModel,
+  roundRobinCounterModel: roundRobinCounterModel
 }

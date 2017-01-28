@@ -5,33 +5,31 @@ var roundRobinCounterSchema = require('./schema/roundRobinCounterSchema')
 // Model initialization
 var RoundRobinCounter = mongoose.model('RoundRobinCounter', roundRobinCounterSchema.schema)
 
-function getByQuery(callback) {
+function getValue(callback) {
 	RoundRobinCounter
 		.findOne({name: "RoundRobinCounter"})
-		.exec(callback)
+		.exec(function (err, roundRobinCounter) {
+			if(err) {
+				utils.l.s("unable to get roundRobinCounter", err)
+				return callback(null, 0)
+			} else if(utils._.isInvalidOrBlank(roundRobinCounter)) {
+				utils.l.d("no value found for roundRobinCounter")
+				return callback(err, 0)
+			}
+			else {
+				return callback(err, roundRobinCounter.value)
+			}
+		})
 }
 
-function updateCounter(value, callback) {
-	utils.async.waterfall([
-			function (callback) {
-				getByQuery(callback)
-			},
-			function(roundRobinCounter, callback) {
-				if (!roundRobinCounter) {
-					utils.l.i("no value found for roundRobinCounter")
-					var roundRobinCounterObj = new RoundRobinCounter({ name: "RoundRobinCounter", value: 0 })
-					roundRobinCounterObj.save(callback)
-				} else {
-					utils.l.i("found roundRobinCounter: " + JSON.stringify(roundRobinCounter))
-					roundRobinCounter.value = value
-					roundRobinCounter.save(callback)
-				}
-			}
-		], callback)
+function incrementCounter(callback) {
+	RoundRobinCounter.findOneAndUpdate({name: "RoundRobinCounter"}, {$inc: {value: 1}, upsert: true}, function (err, roundRobinCounterValue) {
+		return callback(null, roundRobinCounterValue)
+	})
 }
 
 module.exports = {
 	model: RoundRobinCounter,
-	getByQuery: getByQuery,
-	updateCounter: updateCounter
+	getValue: getValue,
+	incrementCounter: incrementCounter
 }

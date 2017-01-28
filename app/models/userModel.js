@@ -8,19 +8,6 @@ var UserSchema = require('./schema/userSchema')
 
 // Model initialization
 var User = mongoose.model('User', UserSchema.schema)
-var roundRobinCounterModel = require('./roundRobinCounterModel')
-
-//static variables
-var roundRobinCount = null
-
-roundRobinCounterModel.getByQuery(function(err, counter) {
-  if (counter) {
-    utils.l.d ( "getting roundRobinCount from mongo: " + counter.value)
-    roundRobinCount = counter.value
-  } else {
-    roundRobinCount = 0
-  }
-})
 
 // Public functions
 function setFields(user_id, data, callback) {
@@ -123,21 +110,6 @@ function deleteUser(data, callback) {
       }
     }
   )
-}
-
-function handleMissingImageUrl(data, callback) {
-  if (!data.imageUrl) {
-    utils.l.d("no image URL found")
-    var imageFiles = utils.constants.imageFiles
-    data.imageUrl = utils.constants.baseUrl + imageFiles[roundRobinCount % imageFiles.length]
-    utils.l.d("image URL round robin count = " + roundRobinCount)
-    utils.l.d("image files length = " + imageFiles.length)
-    roundRobinCount++
-    utils.l.d("setting roundRobinCount to mongo: " + roundRobinCount)
-    roundRobinCounterModel.updateCounter(roundRobinCount, function(err, counter) {
-      return callback(null, data)
-    })
-		}else return callback(null,data)
 }
 
 function getUserByData(data, callback) {

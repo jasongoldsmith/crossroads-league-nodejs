@@ -860,7 +860,36 @@ function subscribeUserNotifications(user,forceUpdate,callback){
 // New Code
 
 function createNewUser(data, callback) {
-  models.user.createUserFromData(data, callback)
+  utils.async.waterfall([
+    function setImageUrlIfBlank(callback) {
+      if(utils._.isInvalidOrBlank(data.imageUrl)) {
+        handleMissingImageUrl(data, callback)
+      } else {
+        return callback(null, data)
+      }
+    },
+    function createUserInDb(updatedData, callback) {
+      models.user.createUserFromData(updatedData, callback)
+    }
+  ], callback)
+}
+
+function handleMissingImageUrl(data, callback) {
+  utils.async.waterfall([
+    function getRoundRobinCounterValue(callback) {
+      models.roundRobinCounterModel.getValue(callback)
+    },
+    function setImageUrlAndUpdateCounterValue(roundRobinCounterValue, callback) {
+      var imageFiles = utils.constants.imageFiles
+      data.imageUrl = utils.constants.baseUrl + imageFiles[roundRobinCounterValue % imageFiles.length]
+      utils.l.d("image URL round robin count = " + roundRobinCounterValue)
+      utils.l.d("image files length = " + imageFiles.length)
+      models.roundRobinCounterModel.incrementCounter(callback)
+    }
+  ],
+    function (err, result) {
+      return callback(null, data)
+    })
 }
 
 function addConsole(user, consoleId, region, callback) {

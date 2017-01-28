@@ -9,13 +9,20 @@ var UserGroupSchema = require('./schema/userGroupSchema')
 var UserGroup = mongoose.model('UsersGroup', UserGroupSchema.schema)
 
 // Public functions
-function updateUserGroup(userId,groupId, data, callback) {
-  var query={}
+function updateUserGroup(userId, groupId, data, callback) {
+  var query = {}
   if(utils._.isValidNonBlank(userId))
-    query.user=userId
+    query.user = userId
   if(utils._.isValidNonBlank(groupId))
-    query.group=groupId
-  UserGroup.update(query,{"$set":data},{multi:true},callback)
+    query.group = groupId
+  UserGroup.findOneAndUpdate(query, {"$set": data}, {new: true, multi: true}, function (err, userGroup) {
+    if(err) {
+      utils.l.s("There was an error in updating user group", err)
+      return callback({error: "Something wnet wrong. Please try again later"}, null)
+    } else {
+      return callback(err, userGroup)
+    }
+  })
 }
 
 function getByGroup(groupId,callback){

@@ -544,33 +544,35 @@ function mergeEventStatsWithGroups(eventCountList, groupList){
 }
 
 function handleMuteGroupNotifications(user, data, callback) {
-  var muteNotification = data.muteNotification=="true" || data.muteNotification == true?true:false
+  var muteNotification = data.muteNotification == "true" || data.muteNotification == true
   utils.async.waterfall([
     function(callback){
-      models.userGroup.getByUser(user._id,data.groupId,callback)
+      models.userGroup.getByUser(user._id, data.groupId, callback)
     },function(userGroup,callback){
       if(muteNotification)
-        unSubscribeUserGroupNotification(userGroup,user,data.groupId,muteNotification,callback)
+        unSubscribeUserGroupNotification(userGroup, user, data.groupId, muteNotification, callback)
       else
-        subscribeUserGroupNotification(userGroup,user,data.groupId,muteNotification,callback)
+        subscribeUserGroupNotification(userGroup, user, data.groupId, muteNotification, callback)
     }
   ],callback)
 }
 
-function unSubscribeUserGroupNotification(userGroup,user,groupId, muteNotification, callback){
+function unSubscribeUserGroupNotification(userGroup, user, groupId, muteNotification, callback) {
   utils.async.waterfall([
     function(callback){
-      helpers.sns.unSubscirbeUserGroup(userGroup,callback)
-    },function(result,callback){
-      models.userGroup.updateUserGroup(user._id,groupId,{muteNotification:muteNotification,serviceEndpoints:[]},callback)
+      helpers.sns.unSubscirbeUserGroup(userGroup, callback)
+    },
+    function(result, callback) {
+      models.userGroup.updateUserGroup(user._id, groupId,
+        {muteNotification: muteNotification, serviceEndpoints:[]}, callback)
     }
-  ],callback)
+  ], callback)
 }
 
-function subscribeUserGroupNotification(userGroup,user,groupId, muteNotification,callback){
+function subscribeUserGroupNotification(userGroup,user,groupId, muteNotification, callback){
   utils.async.waterfall([
     function(callback){
-      models.installation.getInstallationByUser(user,callback)
+      models.installation.getInstallationByUser(user, callback)
     },function(installation,callback){
       helpers.sns.subscirbeUserGroup(userGroup,installation,callback)
     },function(result,callback){

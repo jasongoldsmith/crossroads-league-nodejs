@@ -156,7 +156,7 @@ function getClanMembers(event, clanId, consoleType, callback) {
 			if(doesGroupHaveATopicEndpoint(group, consoleType)) {
 				// We don't want to compute recipients if a group has an SNS endpoint
 				utils.l.d("group found in getClanMembers", group)
-				return callback(null, [])
+				return callback(null, {type: "SNS"})
 			} else {
 				utils.l.d("Didn't find the topicEndpoint using regular push")
 				models.userGroup.getUsersByGroup(clanId, false, consoleType, callback)

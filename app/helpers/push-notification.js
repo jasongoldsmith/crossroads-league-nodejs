@@ -53,8 +53,10 @@ function sendMultiplePushNotificationsForUsers(notification, data, clanId) {
 
   utils.l.d("sendMultiplePushNotificationsForUsers::notification::", {notification:notification.name,message:notification.message})
 
-  // If there are no recipeints we assume that the group has an endpoint and we send a push via SNS
-  if(utils._.isInvalidOrBlank(notification.recipients)) {
+  // If the recipients type is "SNS" we use SNS
+  if(utils._.isValidNonBlank(notification.recipients)
+    && utils._.isValidNonBlank(notification.recipients.type)
+    && notification.recipients.type == "SNS") {
     utils.l.d("notification recipients is blank")
     var payload = getPayload(data, notification, clanId)
     utils.l.d("payload to be sent to sns", payload)

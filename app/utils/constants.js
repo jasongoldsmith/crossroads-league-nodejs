@@ -190,6 +190,8 @@ var imageFiles = [
   "profile12.jpg"
 ]
 
+var lolImageUrlTemplate = "http://ddragon.leagueoflegends.com/cdn/7.2.1/img/profileicon/#profileIconId#.png"
+
 var LoLRegions = {
   "BR": "Brazil" ,
   "EUNE": "EU Nordic & East",
@@ -256,6 +258,7 @@ module.exports = {
   
   baseImageUrl: baseImageUrl,
   imageFiles: imageFiles,
+  lolImageUrlTemplate: lolImageUrlTemplate,
   LoLRegions: LoLRegions,
   consoleTypes: consoleTypes,
   accountVerificationStatusTypes: accountVerificationStatusTypes,

@@ -925,6 +925,7 @@ function addConsole(user, consoleId, region, callback) {
       user.consoles.push(console)
       // clanId == groupId == region
       user.clanId = region
+      user.imageUrl = utils.constants.lolImageUrlTemplate.replace("#profileIconId#", summonerInfo.profileIconId.toString())
       updateUser(user, callback)
     },
     function addUserGroup(user, callback) {

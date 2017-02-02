@@ -298,7 +298,13 @@ function refreshHelmet(req, res) {
     if (err) {
       routeUtils.handleAPIError(req, res, err, err)
     } else {
-      routeUtils.handleAPISuccess(req, res, {value: user})
+      routeUtils.handleAPISuccess(req, res,
+        // Inorder to keep compatibility with destiny we use this format for response
+        {
+          status : "Success",
+          helmetUrl : user.imageUrl,
+          message : "Successfully updated helmet"
+        })
     }
   })
 }

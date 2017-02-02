@@ -896,7 +896,7 @@ function handleMissingImageUrl(data, callback) {
     },
     function setImageUrlAndUpdateCounterValue(roundRobinCounterValue, callback) {
       var imageFiles = utils.constants.imageFiles
-      data.imageUrl = utils.constants.baseUrl + imageFiles[roundRobinCounterValue % imageFiles.length]
+      data.imageUrl = utils.constants.baseImageUrl + imageFiles[roundRobinCounterValue % imageFiles.length]
       utils.l.d("image URL round robin count = " + roundRobinCounterValue)
       utils.l.d("image files length = " + imageFiles.length)
       models.roundRobinCounterModel.incrementCounter(callback)

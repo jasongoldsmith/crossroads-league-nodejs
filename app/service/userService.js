@@ -546,39 +546,54 @@ function mergeEventStatsWithGroups(eventCountList, groupList){
 function handleMuteGroupNotifications(user, data, callback) {
   var muteNotification = data.muteNotification == "true" || data.muteNotification == true
   utils.async.waterfall([
-    function(callback){
+    function(callback) {
       models.userGroup.getByUser(user._id, data.groupId, callback)
-    },function(userGroup,callback){
-      if(muteNotification)
+    },
+    function(userGroup, callback) {
+      if(muteNotification) {
         unSubscribeUserGroupNotification(userGroup, user, data.groupId, muteNotification, callback)
-      else
+      } else {
         subscribeUserGroupNotification(userGroup, user, data.groupId, muteNotification, callback)
+      }
     }
-  ],callback)
+  ],
+    function (err, userGroup) {
+      if(err) {
+        return callback(err, userGroup)
+      } else {
+        return callback(null, {
+          groupId: userGroup.group,
+          muteNotification: userGroup.muteNotification
+        })
+      }
+    })
 }
 
 function unSubscribeUserGroupNotification(userGroup, user, groupId, muteNotification, callback) {
   utils.async.waterfall([
-    function(callback){
+    function(callback) {
       helpers.sns.unSubscirbeUserGroup(userGroup, callback)
     },
-    function(result, callback) {
+    function (result, callback) {
       models.userGroup.updateUserGroup(user._id, groupId,
-        {muteNotification: muteNotification, serviceEndpoints:[]}, callback)
+        {muteNotification: muteNotification, serviceEndpoints: []}, callback)
     }
   ], callback)
 }
 
-function subscribeUserGroupNotification(userGroup,user,groupId, muteNotification, callback){
+function subscribeUserGroupNotification(userGroup,user,groupId, muteNotification, callback) {
   utils.async.waterfall([
-    function(callback){
+    function(callback) {
       models.installation.getInstallationByUser(user, callback)
-    },function(installation,callback){
-      helpers.sns.subscirbeUserGroup(userGroup,installation,callback)
-    },function(result,callback){
-      models.userGroup.updateUserGroup(user._id,groupId,{muteNotification:muteNotification},callback)
+    },
+    function(installation, callback) {
+      helpers.sns.subscirbeUserGroup(userGroup, installation, callback)
+    },
+    function(result, callback) {
+      models.userGroup.updateUserGroup(user._id, groupId,
+        {muteNotification: muteNotification}, callback)
     }
-  ],callback)
+  ], callback)
 }
 
 function bulkUpdateUserGroups(page, limit){

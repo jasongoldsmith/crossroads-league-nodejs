@@ -283,6 +283,26 @@ function changeEmail(req, res) {
   })
 }
 
+function refreshHelmet(req, res) {
+  utils.l.d("refresh helmet request" + JSON.stringify(req.user))
+  var user = req.user
+  var err = {}
+
+  if(utils._.isInvalidOrBlank(user.consoles)) {
+    err = {error: "You have to link your summoner profile with Crossroads before trying to refresh your summoner icon"}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  service.userService.refreshHelmet(user, function (err, user) {
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {value: user})
+    }
+  })
+}
+
 routeUtils.rGet(router, '/self', 'GetSelfUser', getSelfUser)
 routeUtils.rGet(router, '/list', 'list', list)
 routeUtils.rPost(router, '/listById', 'listById', listById)
@@ -301,4 +321,5 @@ routeUtils.rGet(router, '/getPendingEventInvites', 'getPendingEventInvites', get
 routeUtils.rPost(router, '/addConsole', 'addUserConsole', addConsole)
 routeUtils.rPost(router, '/changePassword', 'changePassword', changePassword)
 routeUtils.rPost(router, '/changeEmail', 'changeEmail', changeEmail)
+routeUtils.rGet(router, '/refreshHelmet', 'refreshHelmet', refreshHelmet)
 module.exports = router

@@ -914,7 +914,7 @@ function addConsole(user, consoleId, region, callback) {
       validateSummonerName(consoleId, region, callback)
     },
     function addConsoleToUser(summonerInfoResponse, callback) {
-      var summonerInfo = summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
+      var summonerInfo = getSummonerInfoFromSummonerInfoResponse(summonerInfoResponse)
        var console = {
          consoleId: summonerInfo.name,
          gamePlatformId: summonerInfo.id,
@@ -925,7 +925,8 @@ function addConsole(user, consoleId, region, callback) {
       user.consoles.push(console)
       // clanId == groupId == region
       user.clanId = region
-      user.imageUrl = utils.constants.lolImageUrlTemplate.replace("#profileIconId#", summonerInfo.profileIconId.toString())
+      user.imageUrl = utils.constants.lolImageUrlTemplate.replace("#profileIconId#",
+        summonerInfo.profileIconId.toString())
       updateUser(user, callback)
     },
     function addUserGroup(user, callback) {
@@ -961,8 +962,7 @@ function validateSummonerName(consoleId, region, callback) {
       })
     },
     function getSummonerInfoFromLoLServer(user, callback) {
-      var url = "/by-name/" + consoleId
-      getSummonerInfo(region, url, callback)
+      getSummonerInfo(region, consoleId, callback)
     },
     function checkDBForGamePlatformId(summonerInfoResponse, callback) {
       checkDBForSummonerProfile(consoleId, region, summonerInfoResponse[Object.keys(summonerInfoResponse)[0]].id, function (err, user) {
@@ -982,7 +982,12 @@ function checkDBForSummonerProfile(consoleId, region, gamePlatformId, callback) 
   models.user.getUserBySummonerProfile(consoleId, region, gamePlatformId, callback)
 }
 
-function getSummonerInfo(region, url, callback) {
+function getSummonerInfoFromSummonerInfoResponse(summonerInfoResponse) {
+  return summonerInfoResponse[Object.keys(summonerInfoResponse)[0]]
+}
+
+function getSummonerInfo(region, summonerName, callback) {
+  var url = "/by-name/" + summonerName
   var baseUrlPlaceHolder = "https://#REGION_ABBR#.api.pvp.net/api/lol/#REGION_ABBR#/v1.4/summoner"
   request({
       baseUrl: baseUrlPlaceHolder
@@ -1073,6 +1078,29 @@ function changeEmail(user, oldEmail, newEmail, callback) {
   ], callback)
 }
 
+function refreshHelmet(user, callback) {
+  var primaryConsole = utils.primaryConsole(user)
+  if(utils._.isInvalidOrBlank(primaryConsole)) {
+    utils.l.s("user does not have a primary console", user)
+    return callback({error: "Something went wrong. Please try again later."}, null)
+  }
+
+  var summonerName = primaryConsole.consoleId
+  var region = primaryConsole.region
+
+  utils.async.waterfall([
+    function getSummonerInfoFromLoLServer(callback) {
+      getSummonerInfo(region, summonerName, callback)
+    },
+    function refreshImageUrl(summonerInfoResponse, callback) {
+      var summonerInfo = getSummonerInfoFromSummonerInfoResponse(summonerInfoResponse)
+      user.imageUrl = utils.constants.lolImageUrlTemplate.replace("#profileIconId#",
+        summonerInfo.profileIconId.toString())
+      updateUser(user, callback)
+    }
+  ], callback)
+}
+
 module.exports = {
   userTimeout: userTimeout,
   preUserTimeout: preUserTimeout,
@@ -1104,5 +1132,6 @@ module.exports = {
   createNewUser: createNewUser,
   addConsole: addConsole,
   changePassword: changePassword,
-  changeEmail: changeEmail
+  changeEmail: changeEmail,
+  refreshHelmet: refreshHelmet
 }

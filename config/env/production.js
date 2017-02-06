@@ -13,5 +13,5 @@ module.exports = {
   logLevel: 'info',
   enableNewRelic:process.env.enableNewRelic || true,
   disableEnvetUpdateForComments: process.env.DISABLE_EVENT_UPDATE_COMMENTS || false,
-  minUsersForGroupNotification: 100
+  minUsersForGroupNotification: 0
 };

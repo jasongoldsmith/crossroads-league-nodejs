@@ -103,7 +103,7 @@ var defaults = {
   userLastActiveUpdateInterval:2,
   disableEnvetUpdateForComments: process.env.DISABLE_EVENT_UPDATE_COMMENTS || true,
   defaultHelmetUrl: 'https://www.bungie.net/common/destiny_content/icons/3e0b919ea55d420156cdf384b66a7f8a.jpg',
-  minUsersForGroupNotification: 2,
+  minUsersForGroupNotification: 0,
 
   // ------------------------------------------------------------------------------------------------------------------
   // New Code

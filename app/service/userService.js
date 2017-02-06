@@ -547,7 +547,7 @@ function handleMuteGroupNotifications(user, data, callback) {
   var muteNotification = data.muteNotification == "true" || data.muteNotification == true
   utils.async.waterfall([
     function(callback) {
-      models.userGroup.getByUser(user._id, data.groupId, callback)
+      models.userGroup.getUserGroupByUserIdAndGroupId(user._id, data.groupId, callback)
     },
     function(userGroup, callback) {
       if(muteNotification) {

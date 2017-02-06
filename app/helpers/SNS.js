@@ -213,7 +213,8 @@ function subscribeGroup(groupObj, consoleType, callback) {
     utils.async.waterfall([
       function(callback){
         getTopicARNEndpoint(consoleType,groupObj._id,"GROUP",callback)
-      },function(topic,callback){
+      },
+      function(topic,callback){
         var newServiceEndpoint = {}
         newServiceEndpoint.serviceType =utils.constants.serviceTypes.PUSHNOTIFICATION
         newServiceEndpoint.consoleType = consoleType
@@ -221,8 +222,15 @@ function subscribeGroup(groupObj, consoleType, callback) {
         newServiceEndpoint.topicName = topic.key
         models.groups.addServiceEndpoints(groupObj._id,newServiceEndpoint,callback)
       }
-    ],function(err,data){
-      callback(null,null)
+    ],
+      function(err, data){
+      if(err) {
+        utils.l.s("Got an error in subscribe", err)
+        return callback({error: "Something went wrong. Please try again later"}, null)
+      } else {
+        utils.l.d("Results of subscribe group", data)
+        return callback(null, data)
+      }
     })
   }
 }
@@ -233,11 +241,11 @@ function subscribeGroup(groupObj, consoleType, callback) {
  *
  * Subscribe to a given user group. userGroup has console and group information
  */
-function subscirbeUserGroup(userGroup,installation, callback){
+function subscribeUserGroup(userGroup, installation, callback){
   utils.async.waterfall([
     function(callback){
       if(utils._.isValidNonBlank(installation.deviceSubscription) && utils._.isValidNonBlank(installation.deviceSubscription.deviceEndpointArn))
-        callback(null,installation)
+        callback(null, installation)
       else
         registerDeviceToken(userGroup.user,installation,callback)
     },function(installationUpdated, callback){
@@ -249,14 +257,14 @@ function subscirbeUserGroup(userGroup,installation, callback){
               createUserGroupEndPoints(userGroup,consoleType,installationUpdated.deviceSubscription.deviceEndpointArn,asyncCallback)
             else asyncCallback(null,null)
           },
-          function(errList,results){
+          function(errList, results) {
             callback(null,null)
           }
         )
-      }else
+      } else
         callback(null,null)
     }
-  ],callback)
+  ], callback)
 }
 
 function createUserGroupEndPoints(userGroup, consoleType, deviceEndpointArn, callback){
@@ -304,27 +312,29 @@ function subscibeTopic(deviceEndpointArn, topicARN, callback){
   }, callback)
 }
 
-function unSubscirbeUserGroup(userGroup,callback){
-  utils.async.waterfall([
-    function(callback){
-        utils.async.mapSeries(userGroup.serviceEndpoints,
-          function(endPoint,asyncCallback){
-            if(utils._.isValidNonBlank(endPoint))
-              sns.unsubscribe({SubscriptionArn: endPoint.topicSubscriptionEndpoint}, asyncCallback)
-            else asyncCallback(null,null)
-          },
-          function(errList,results){
-            callback(null,null)
-          }
-        )
+function unSubscribeUserGroup(userGroup, callback){
+  utils.async.mapSeries(userGroup.serviceEndpoints,
+    function(endPoint,asyncCallback){
+      if(utils._.isValidNonBlank(endPoint))
+        sns.unsubscribe({SubscriptionArn: endPoint.topicSubscriptionEndpoint}, asyncCallback)
+      else  return asyncCallback(null,null)
+    },
+    function(errList,results) {
+      if(errList) {
+        utils.l.s("error from unsubscribe", errList)
+        return callback({error: "Something went wrong. Please try again later."}, null)
+      } else {
+        utils.l.d("results from unsubscribe", results)
+        return callback(null, results)
+      }
     }
-  ],callback)
+  )
 }
 
 function unSubscribeAllUserGroups(userGroupList, callback){
   utils.async.mapSeries(userGroupList,
     function(userGroup,asyncCallback){
-      unSubscirbeUserGroup(userGroup,asyncCallback)
+      unSubscribeUserGroup(userGroup,asyncCallback)
     },
     function(errList,results){
       return callback(null,null)
@@ -629,11 +639,11 @@ module.exports = {
   publishToSNSTopic: publishToSNSTopic,
   //unsubscribeAllEndpoints: unsubscribeAllEndpoints,
   subscribeGroup: subscribeGroup,
-  subscirbeUserGroup:subscirbeUserGroup,
+  subscirbeUserGroup:subscribeUserGroup,
   reSubscirbeUserGroup:reSubscirbeUserGroup,
   unRegisterDeviceToken:unRegisterDeviceToken,
   unSubscribeUser:unSubscribeUser,
-  unSubscirbeUserGroup:unSubscirbeUserGroup,
+  unSubscirbeUserGroup: unSubscribeUserGroup,
   deleteTopic:deleteTopic,
   unSubscribeGroup:unSubscribeGroup
 }

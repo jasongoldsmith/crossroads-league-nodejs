@@ -200,6 +200,17 @@ function createUserGroup(user, groupId, consoleType, muteNotification, callback)
   })
 }
 
+function getUserGroupByUserIdAndGroupId(userId, groupId, callback) {
+  var query = {
+    user: userId,
+    group: groupId
+  }
+
+  UserGroup
+    .findOne(query).populate("group")
+    .exec(callback)
+}
+
 module.exports = {
   model: UserGroup,
   updateUserGroup: updateUserGroup,
@@ -216,5 +227,6 @@ module.exports = {
   // -------------------------------------------------------------------------------------------------
   // New Code
 
-  createUserGroup: createUserGroup
+  createUserGroup: createUserGroup,
+  getUserGroupByUserIdAndGroupId: getUserGroupByUserIdAndGroupId
 }

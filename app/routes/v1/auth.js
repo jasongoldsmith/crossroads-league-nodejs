@@ -574,56 +574,6 @@ function getSignupMessage(user){
   else return "Thanks for signing up for "+utils.config.appName+", the Destiny Fireteam Finder mobile app!"
 }
 
-function requestResetPassword(req,res){
-/*  var useGamerTag = false
-  var userName = req.body.userName
-  var consoleType = req.body.consoleType ? req.body.consoleType.toString().toUpperCase() : null
-  var consoleId = req.body.consoleId ? req.body.consoleId.toString().trim() : null
-  utils.async.waterfall([
-      function (callback) {
-        utils.l.d("requestResetPassword::userName="+userName+",consoleType="+consoleType+",consoleId="+consoleId)
-        if(utils._.isValidNonBlank(consoleType)) {
-          useGamerTag = true
-/!*          models.user.getUserByData({
-            consoles: {
-              $elemMatch: {
-                consoleType: consoleType,
-                consoleId:{$regex : new RegExp(["^", consoleId, "$"].join("")), $options:"i"}
-              }
-            }
-          }, callback)*!/
-          models.user.getUserByConsole(consoleId,consoleType,null,callback)
-        }
-        else
-          models.user.getUserByData({userName: userName.toLowerCase().trim()}, callback)
-      },
-      function(user,callback){
-        if(user) {
-          service.authService.requestResetPassword(user, callback)
-        }else {
-         if(useGamerTag) callback({error: "Please provide a valid "+ utils._.get(utils.constants.consoleGenericsId, consoleType)})
-          else callback({error: "Please provide a valid Crossroads Username."})
-        }
-      }
-    ],
-    function (err, updatedUser) {
-      if (err) {
-        return routeUtils.handleAPIError(req, res, err,err)
-      }else  if(updatedUser && utils._.isEmpty(updatedUser.passwordResetToken)){
-        var error =  {error:"Unable to process password reset request. Please try again later."}
-        return routeUtils.handleAPIError(req, res,error,error)
-      }else{
-        return routeUtils.handleAPISuccess(req, res, updatedUser)
-      }
-    }
-  )*/
-
-  var errorResponse = {
-    error: "Our login system has changed. Please update to the latest version in the App Store to continue using Crossroads."
-  }
-  routeUtils.handleAPIError(req, res, errorResponse, errorResponse)
-}
-
 /*function resetPasswordLaunch(req,res){
   var token = req.param("token")
   models.user.getUserByData({passwordResetToken:token},function(err, user){
@@ -771,6 +721,20 @@ function logout(req, res) {
     })
     routeUtils.handleAPISuccess(req, res, {success: true})
   })
+}
+
+function requestResetPassword(req, res) {
+  var body = req.body
+  utils.l.d("Reset password request", body)
+
+  if(!body.userName) {
+    utils.l.s("Bad reset password request")
+    var err = {error: "One or more input fields missing."}
+    routeUtils.handleAPIError(req, res, err, err)
+    return
+  }
+
+  routeUtils.handleAPISuccess(req, res, {success: true})
 }
 
 /** Routes */

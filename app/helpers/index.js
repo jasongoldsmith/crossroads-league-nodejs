@@ -13,5 +13,9 @@ module.exports = {
   bitly: require("./bitly"),
   pushNotification: require("./push-notification"),
   uuid: require("./uuidHelper"),
-  sns:require('./SNS')
-};
+  sns: require('./SNS'),
+
+  // -------------------------------------------------------------------------------------------------
+  // New Code
+  ses: require('./SES')
+}

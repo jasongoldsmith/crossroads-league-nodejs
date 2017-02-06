@@ -81,8 +81,9 @@ function save(user, callback) {
     if(err) {
       if(utils.format.isDuplicateMongoKeyError(err)) {
         return callback({error: "An account with that email address already exists. Try logging in."}, user)
+      } else {
+        return callback(err, user)
       }
-      return callback(err, user)
     } else {
       return callback(err, user)
     }
@@ -114,8 +115,15 @@ function deleteUser(data, callback) {
 
 function getUserByData(data, callback) {
   utils.l.d('getUserByData::data',data)
-  User.find(data)
-    .exec(utils.firstInArrayCallback(callback))
+  User.findOne(data)
+    .exec(function(err, user) {
+      if(err) {
+        utils.l.s("Error in getUserByData", err)
+        return callback({error: "Something went wrong. Please try again later"}, null)
+      } else {
+        return callback(err, user)
+      }
+    })
 }
 
 function getUserByConsole(consoleId, consoleType, bungieMemberShipId, callback) {

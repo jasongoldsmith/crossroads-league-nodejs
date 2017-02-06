@@ -574,60 +574,6 @@ function getSignupMessage(user){
   else return "Thanks for signing up for "+utils.config.appName+", the Destiny Fireteam Finder mobile app!"
 }
 
-/*function resetPasswordLaunch(req,res){
-  var token = req.param("token")
-  models.user.getUserByData({passwordResetToken:token},function(err, user){
-    if(user){
-      res.render("account/resetPassword",{
-        token: token,
-        consoleId: utils.primaryConsole(user).consoleId,
-        userName: user.userName,
-        appName:utils.config.appName
-      })
-    }else{
-      res.render("account/error")
-    }
-  })
-}
-
-function resetPassword(req,res){
-  var userName = req.body.userName
-  var token = req.param("token")
-  try {
-    req.assert('passWord').notEmpty().isAlphaNumeric()
-  } catch(ex) {
-    res.render("password must be between 1 and 9 characters and must be alphanumeric")
-  }
-
-  var newPassword = passwordHash.generate(req.body.passWord)
-  console.log("resetPassword::userName"+userName+",token::"+token)
-  utils.async.waterfall([
-      function (callback) {
-        models.user.getUserByData({passwordResetToken:token},callback)
-      },
-      function(user,callback){
-        if(user) {
-          user.passWord = newPassword
-          user.verifyStatus ="VERIFIED"
-
-          utils._.map(user.consoles,function(console){
-            if(console.verifyStatus != "VERIFIED")
-              console.verifyStatus ="VERIFIED"
-          })
-          models.user.save(user, callback)
-        }else callback({error:"Invalid username. Please provide a valid username"})
-      }
-    ],
-    function (err, updatedUser) {
-      if (err) {
-        req.routeErr = err
-        return res.render("Unable to reset password at this time. Please try again later.."+err)
-      }
-      return res.render("account/resetPasswordConfirm",{appName:utils.config.appName})
-    }
-  )
-}*/
-
 function home(req,res){
   //res.render('home/index')
   res.writeHead(302, {'Location': 'http://w3.crossroadsapp.co/'})
@@ -737,7 +683,65 @@ function requestResetPassword(req, res) {
     return
   }
 
-  routeUtils.handleAPISuccess(req, res, {success: true})
+  service.authService.requestResetPassword(body.userName, function (err, response) {
+    if(err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {success: true})
+    }
+  })
+}
+
+function resetPasswordLaunch(req, res) {
+  var token = req.param("token")
+  models.user.getUserByData({passwordResetToken:token},function(err, user){
+    if(user) {
+      res.render("account/resetPassword", {
+        token: token,
+        consoleId: utils.primaryConsole(user).consoleId,
+        userName: user.userName,
+        appName: utils.config.appName
+      })
+    } else {
+      res.render("account/error")
+    }
+  })
+}
+
+
+function resetPassword(req, res) {
+  var userName = req.body.userName
+  var token = req.param("token")
+  try {
+    req.assert('passWord').notEmpty().isAlphaNumeric()
+  } catch(ex) {
+    res.render("password must be between 1 and 9 characters and must be alphanumeric")
+  }
+
+  var newPassword = passwordHash.generate(req.body.passWord)
+  utils.l.d("resetPassword::userName" + userName + ", token::" + token)
+  utils.async.waterfall([
+      function getUser(callback) {
+        models.user.getUserByData({passwordResetToken: token},callback)
+      },
+      function resetPassword(user, callback) {
+        if(utils._.isValidNonBlank(user)) {
+          user.passWord = newPassword
+          models.user.save(user, callback)
+        } else {
+          return callback({error:"Invalid username. Please provide a valid username"})
+        }
+      }
+    ],
+    function (err, updatedUser) {
+      if (err) {
+        req.routeErr = err
+        utils.l.d("Error in reset password", err)
+        return res.render("Unable to reset password at this time. Please try again later..")
+      }
+      return res.render("account/resetPasswordConfirm",{appName: utils.config.appName})
+    }
+  )
 }
 
 /** Routes */
@@ -745,9 +749,6 @@ routeUtils.rGetPost(router, '/bo/login', 'BOLogin', boLogin, boLogin)
 //routeUtils.rGet(router, '/verifyconfirm/:token', 'AccountVerification', verifyConfirm)
 //routeUtils.rGet(router, '/verifyReject/:token', 'verifyReject', verifyReject)
 routeUtils.rGet(router, '/verify/:token', 'AccountVerification', verifyAccount)
-//routeUtils.rGet(router, '/resetPassword/:token', 'resetPasswordLaunch', resetPasswordLaunch, resetPasswordLaunch)
-routeUtils.rPost(router, '/request/resetPassword', 'requestResetPassword', requestResetPassword, requestResetPassword)
-//routeUtils.rPost(router, '/resetPassword/:token', 'resetPassword', resetPassword, resetPassword)
 routeUtils.rGet(router,'/','homePage',home,home)
 routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUserLogin)
 
@@ -757,6 +758,10 @@ routeUtils.rPost(router, '/validateUserLogin', 'validateUserLogin', validateUser
 routeUtils.rPost(router, '/register', 'Signup', signup)
 routeUtils.rGetPost(router, '/login', 'Login', login, login)
 routeUtils.rPost(router, '/logout', 'Logout', logout)
+
+routeUtils.rPost(router, '/request/resetPassword', 'requestResetPassword', requestResetPassword, requestResetPassword)
+routeUtils.rGet(router, '/resetPasswordLaunch/:token', 'resetPasswordLaunch', resetPasswordLaunch, resetPasswordLaunch)
+routeUtils.rPost(router, '/resetPassword/:token', 'resetPassword', resetPassword, resetPassword)
 
 module.exports = router
 

@@ -19,9 +19,9 @@ var defaults = {
   enforceSSL: true,
   devMode: false,
   logLevel: 'info',
-  appName:'LoL',
-  tinyUrlHost:'http://dev.crsrd.co/',
-  testHostUrl:'http://localhost:3000',
+  appName: 'Crossroads For League of Legends',
+  tinyUrlHost: 'http://dev.crsrd.co/',
+  testHostUrl: 'http://localhost:3000',
   hostUrl: function() {
     var url = this.hostName
     if (this.portNum !== -1) {
@@ -49,8 +49,7 @@ var defaults = {
     console.log('enforceSSL: ' + this.enforceSSL)
     console.log('logLevel: ' + this.logLevel)
   },
-  awsKey: {accessKeyId: process.env.awsAccessKeyId, secretAccessKey: process.env.awsSecretAccessKey, region: "us-east-1"},
-  awsSNSKey:{
+  awsKey:{
     accessKeyId: 'AKIAI5ODU5YNUXEMCG4Q',
     secretAccessKey: '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',
     region: 'us-east-1'

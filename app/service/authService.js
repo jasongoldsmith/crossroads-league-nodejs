@@ -5,6 +5,7 @@ var destinyService = require('./destinyInterface')
 var utils = require('../utils')
 var userService = require('./userService')
 var trackingService = require('./trackingService')
+var tinyUrlService = require('./tinyUrlService')
 var helpers = require('../helpers')
 
 function createNewUser(signupData,validateBungie,verifyStatus,messageType,messageDetails,callback){
@@ -55,36 +56,6 @@ function sendVerificationMessage(signupData,consoleType,messageType,messageDetai
 				}
 			})
 }
-
-/*
-function requestResetPassword(userData, callback) {
-	utils.async.waterfall([
-		function(callback) {
-			//TBD: membershiptype is hardcoded to PSN for now. When we introduce multiple channels change this to take it from userdata
-			// or send notification to both xbox and psn depending on the ID availability
-			if(utils.config.enableBungieIntegration) {
-				utils.l.d("Destiny validation enabled")
-				destinyService.sendBungieMessage(
-					userData.bungieMemberShipId,
-					utils.primaryConsole(userData).consoleType,
-					utils.constants.bungieMessageTypes.passwordReset,
-					function (err, messageResponse) {
-						if(err) {
-							return callback(err, null)
-						} else {
-							utils.l.d("messageResponse::token=== " + messageResponse.token)
-							userData.passwordResetToken = messageResponse.token
-						}
-						models.user.save(userData, callback)
-					})
-			} else {
-				utils.l.d("Destiny validation disabled")
-				return callback(null, userData)
-			}
-		}
-	], callback)
-}
-*/
 
 function addLegalAttributes(user,callback){
 	var userLegal = JSON.parse(JSON.stringify(user))
@@ -238,15 +209,15 @@ function registerLoginUserinMixpanel(req, user, callback) {
 		// An existing user logging for first time after installing the app. Create mp user
 		req.zuid = user._id
 		req.adata.distinct_id = user._id
-		trackingService.trackUserLogin(req, user, updateMpDistinctId ,existingUserZuid,
+		trackingService.trackUserLogin(req, user, updateMpDistinctId, existingUserZuid,
 			isInvitedUserInstall, function(err, data) {
-			if(!err) {
-				utils.l.d('setting mp refresh data')
-				user.mpDistinctId = helpers.req.getHeader(req, 'x-mixpanelid')
-				user.mpDistinctIdRefreshed = true
-			}
-			userService.updateUser(user, callback)
-		})
+				if(! err) {
+					utils.l.d('setting mp refresh data')
+					user.mpDistinctId = helpers.req.getHeader(req, 'x-mixpanelid')
+					user.mpDistinctIdRefreshed = true
+				}
+				userService.updateUser(user, callback)
+			})
 	} else {
 		// An existing user logging in either as a result of log out or app calling login when launched.
 		req.zuid = user._id
@@ -263,8 +234,66 @@ function registerLoginUserinMixpanel(req, user, callback) {
 	}
 }
 
+function requestResetPassword(userName, callback) {
+	utils.async.waterfall([
+		function getUserByUserName(callback) {
+			models.user.getUserByData({userName: userName.toLowerCase().trim()}, callback)
+		},
+		function setPasswordTokenOnUser(user, callback) {
+			if(utils._.isInvalidOrBlank(user)) {
+				return callback({error:"An account with that email address does not exist."}, null)
+			}
+			helpers.uuid.getRandomUUID()
+			user.passwordResetToken = helpers.uuid.getRandomUUID()
+			models.user.save(user, callback)
+		},
+		function createEmailMsg(updatedUser, callback) {
+			var emailMsg = {
+				subject: "Reset Password request for Crossroads for League of Legends"
+			}
+			var longUrl = utils.config.hostUrl() + "/api/v1/auth/resetPasswordLaunch/" + updatedUser.passwordResetToken
+			var msg = utils.constants.bungieMessages.passwordReset
+				.replace(/%URL%/g, longUrl)
+				.replace(/%APPNAME%/g, utils.config.appName)
+				//TODO: hack till we get out of sandbox for SES, remove replace emaol
+				.replace(/%EMAIL%/g, userName)
+			utils.l.d("resetPassword msg to send::" + msg)
+			utils.l.d("resetPassword msg to send::" + msg)
+			emailMsg.body = msg
+			return callback(null, emailMsg)
+			//TODO: To use tinyURL once we build a dedicated db for it
+			//tinyUrlService.createTinyUrl(longUrl, function(err, shortUrl) {
+			//	var msg = utils.constants.bungieMessages.passwordReset
+			//		.replace(/%URL%/g, shortUrl)
+			//		.replace(/%APPNAME%/g, utils.config.appName)
+			//	utils.l.d("resetPassword msg to send::" + msg)
+			//	emailMsg.body = msg
+			//	return callback(null, emailMsg)
+			//})
+		},
+		function (emailMsg, callback) {
+			if(utils.config.enableSESIntegration) {
+				utils.l.d("SES integration is enabled")
+				//TODO: hack till we get out of sandbox for SES, change receivers
+				helpers.ses.sendEmail(utils.constants.SNS_EMAIL_RECEIVERS, utils.constants.SNS_EMAIL_SENDER, emailMsg.subject,
+					emailMsg.body, function(err, response) {
+						if(err) {
+							utils.l.s("err in send email", err)
+							return callback({error: "Something went wrong. Please try again later"}, callback)
+						} else {
+							utils.l.d("response in send email", response)
+							return callback(err, response)
+						}
+					})
+			} else {
+				utils.l.i("SES integration is disabled")
+				return callback({error: "Reset password has been disabled temporarily. Please try again later"})
+			}
+		}
+	], callback)
+}
+
 module.exports = {
-	//requestResetPassword: requestResetPassword,
 	addLegalAttributes: addLegalAttributes,
 	createNewUser: createNewUser,
 	createInvitees: createInvitees,
@@ -274,5 +303,6 @@ module.exports = {
 	// New code
 
 	registerUser: registerUser,
-	registerLoginUserinMixpanel: registerLoginUserinMixpanel
+	registerLoginUserinMixpanel: registerLoginUserinMixpanel,
+	requestResetPassword: requestResetPassword
 }

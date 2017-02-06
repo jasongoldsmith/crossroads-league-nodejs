@@ -2,7 +2,7 @@ var AWS = require('aws-sdk');
 var utils = require('../utils')
 //var models = require('../models')
 
-AWS.config.update(utils.config.awsSNSKey)
+AWS.config.update(utils.config.awsKey)
 var sns = new AWS.SNS()
 
 function createTopic(topicName,callback){

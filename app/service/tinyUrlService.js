@@ -3,12 +3,13 @@ var utils = require('../utils')
 
 function createTinyUrl(longUrl, callback) {
 	utils.async.waterfall([
-    function(callback){
+    function(callback) {
       models.tinyUrl.createTinyUrl(longUrl, callback)
-    },function(tinyUrlHash,callback){
-      callback(null,utils.config.tinyUrlHost+tinyUrlHash)
+    },
+    function(tinyUrlHash ,callback) {
+      callback(null, utils.config.tinyUrlHost + tinyUrlHash)
     }
-  ],callback)
+  ], callback)
 
 }
 

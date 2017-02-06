@@ -136,7 +136,7 @@ var invitedUserInstallData = {
 }
 
 var sysConfigKeys = {
-  awsSNSAppArn:'app_%DEVICE_TYPE%_%ENV%',
+  awsSNSAppArn:'lol_%DEVICE_TYPE%_%ENV%',
   awsSNSTopicArn:'topic_%ENV%_%GROUP%_%CONSOLETYPE%',
   eventExpiryTimeInMins:"eventExpiryTimeInMins",
   userTimeoutInMins:"userTimeoutInMins",

@@ -136,19 +136,21 @@ function unSubscribeGroup(groupId,callback){
  *   - Register a device token to an app
  *   - Subscribe to all users topic
  */
-function registerDeviceToken(user,installation,callback){
+function registerDeviceToken(user, installation, callback) {
   var models = require('../models')
   var config = {}
-  utils.l.d("registering for insllation::"+installation._id)
+  utils.l.d("registering for insllation::" + installation._id)
   utils.async.waterfall([
     function(callback) {
-      getApplicationArnEndPoint(installation.deviceType,callback)
-    },function(appArnEndpoint,callback){
+      getApplicationArnEndPoint(installation.deviceType, callback)
+    },
+    function(appArnEndpoint,callback){
       utils.l.d("appArnEndpoint",appArnEndpoint)
       config.appArnEndpoint = appArnEndpoint
-      getTopicARNEndpoint('All_Platforms','All_Groups',"SYSTEM",callback)
-    },function(topicArnEndpoint,callback){
-      config.allUsersTopicArnEndpoint = topicArnEndpoint
+      getTopicARNEndpoint('All_Platforms','All_Groups',"SYSTEM", callback)
+    },
+    function(topicAllUsersArnEndpoint,callback){
+      config.allUsersTopicArnEndpoint = topicAllUsersArnEndpoint
       sns.createPlatformEndpoint({
         PlatformApplicationArn: config.appArnEndpoint.value,
         Token: installation.deviceToken,
@@ -156,51 +158,68 @@ function registerDeviceToken(user,installation,callback){
       }, callback)
     },
     function(deviceEndPoint, callback) {
-      utils.l.d("deviceEndPoint",deviceEndPoint)
+      utils.l.d("deviceEndPoint", deviceEndPoint)
       config.deviceEndPointArn = deviceEndPoint.EndpointArn
+      subscribeUserToRegionGroup(user.clanId, deviceEndPoint.EndpointArn, callback)
+    },
+    function(deviceEndPoint, callback) {
       sns.subscribe({
         Protocol: 'application',
         TopicArn: config.allUsersTopicArnEndpoint.value,
-        Endpoint: deviceEndPoint.EndpointArn
+        Endpoint: config.deviceEndPointArn
       }, callback)
     },
     function(subscribeEndPoint, callback) {
       if(installation.deviceSubscription) {
         installation.deviceSubscription.deviceEndpointArn = config.deviceEndPointArn
-        installation.deviceSubscription.allUsersTopicSubscriptionArn=subscribeEndPoint.SubscriptionArn
-      }else{
-        installation.deviceSubscription= {deviceEndpointArn: config.deviceEndPointArn,
-                                          allUsersTopicSubscriptionArn: subscribeEndPoint.SubscriptionArn}
+        installation.deviceSubscription.allUsersTopicSubscriptionArn = subscribeEndPoint.SubscriptionArn
+      } else {
+        installation.deviceSubscription = {
+          deviceEndpointArn: config.deviceEndPointArn,
+          allUsersTopicSubscriptionArn: subscribeEndPoint.SubscriptionArn
+        }
       }
       models.installation.findByIdAndUpdate(installation._id,
       {deviceSubscription: installation.deviceSubscription}, callback)
     }
-  ],callback)
+  ], callback)
+}
+
+function subscribeUserToRegionGroup(groupId, deviceEndpointArn, callback) {
+  utils.async.waterfall([
+    function(callback) {
+      // clanId is the group and PC is the only console supported so far in LoL
+      getTopicARN("PC", groupId, callback)
+    },
+    function(topicARNObj, callback) {
+      subscibeTopic(deviceEndpointArn, topicARNObj.value, callback)
+    }
+  ], callback)
 }
 
 /**
  * register topic for each console
  *
- * @param group
- * @param consoles
+ * @param groupObj
+ * @param consoleType
  * @param callback
  */
-function subscribeGroup(group,consoleType,callback){
+function subscribeGroup(groupObj, consoleType, callback) {
   var models = require('../models')
-  var serviceEndPoint = utils._.find(group.serviceEndpoints,{consoleType:consoleType,serviceType:utils.constants.serviceTypes.PUSHNOTIFICATION})
+  var serviceEndPoint = utils._.find(groupObj.serviceEndpoints,{consoleType:consoleType,serviceType:utils.constants.serviceTypes.PUSHNOTIFICATION})
   if(utils._.isValidNonBlank(serviceEndPoint))
     return callback(null,null)
   else{
     utils.async.waterfall([
       function(callback){
-        getTopicARNEndpoint(consoleType,group._id,"GROUP",callback)
+        getTopicARNEndpoint(consoleType,groupObj._id,"GROUP",callback)
       },function(topic,callback){
         var newServiceEndpoint = {}
         newServiceEndpoint.serviceType =utils.constants.serviceTypes.PUSHNOTIFICATION
         newServiceEndpoint.consoleType = consoleType
         newServiceEndpoint.topicEndpoint = topic.value
         newServiceEndpoint.topicName = topic.key
-        models.groups.addServiceEndpoints(group._id,newServiceEndpoint,callback)
+        models.groups.addServiceEndpoints(groupObj._id,newServiceEndpoint,callback)
       }
     ],function(err,data){
       callback(null,null)
@@ -609,7 +628,7 @@ module.exports = {
   registerDeviceToken: registerDeviceToken,
   publishToSNSTopic: publishToSNSTopic,
   //unsubscribeAllEndpoints: unsubscribeAllEndpoints,
-  subscribeGroup:subscribeGroup,
+  subscribeGroup: subscribeGroup,
   subscirbeUserGroup:subscirbeUserGroup,
   reSubscirbeUserGroup:reSubscirbeUserGroup,
   unRegisterDeviceToken:unRegisterDeviceToken,

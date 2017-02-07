@@ -27,6 +27,7 @@ function listConfigs(req, res) {
     },
     function(LoLRegions, callback) {
       var configs = {
+        mixpanelToken: utils.config.mixpanelKey,
         LolRegions: LoLRegions.value
       }
 

@@ -243,44 +243,34 @@ function addConsole(req, res) {
   })
 }
 
-function changePassword(req, res) {
-  utils.l.d("change password request" + JSON.stringify(req.body))
+function changeUserCredentials(req, res) {
+  utils.l.d("change user credentials request" + JSON.stringify(req.body))
   var body = req.body
   var err = {}
 
-  if(!body.oldPassWord || !body.newPassWord) {
+  if(!(body.oldEmail && body.newEmail) && !(body.oldPassWord && body.newPassWord)) {
     err = {error: "One or more inputs is missing"}
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
 
-  service.userService.changePassword(req.user, body.oldPassWord, body.newPassWord, function (err, user) {
-    if (err) {
-      routeUtils.handleAPIError(req, res, err, err)
-    } else {
-      routeUtils.handleAPISuccess(req, res, {value: user})
-    }
-  })
-}
-
-function changeEmail(req, res) {
-  utils.l.d("change email request" + JSON.stringify(req.body))
-  var body = req.body
-  var err = {}
-
-  if(!body.oldEmail || !body.newEmail) {
-    err = {error: "One or more inputs is missing"}
-    routeUtils.handleAPIError(req, res, err, err)
-    return
+  if(body.newEmail) {
+    service.userService.changeEmail(req.user, body.oldEmail, body.newEmail, function (err, user) {
+      if (err) {
+        routeUtils.handleAPIError(req, res, err, err)
+      } else {
+        routeUtils.handleAPISuccess(req, res, {value: user})
+      }
+    })
+  } else {
+    service.userService.changePassword(req.user, body.oldPassWord, body.newPassWord, function (err, user) {
+      if (err) {
+        routeUtils.handleAPIError(req, res, err, err)
+      } else {
+        routeUtils.handleAPISuccess(req, res, {value: user})
+      }
+    })
   }
-
-  service.userService.changeEmail(req.user, body.oldEmail, body.newEmail, function (err, user) {
-    if (err) {
-      routeUtils.handleAPIError(req, res, err, err)
-    } else {
-      routeUtils.handleAPISuccess(req, res, {value: user})
-    }
-  })
 }
 
 function refreshHelmet(req, res) {
@@ -325,7 +315,6 @@ routeUtils.rGet(router, '/getPendingEventInvites', 'getPendingEventInvites', get
 // New Code
 
 routeUtils.rPost(router, '/addConsole', 'addUserConsole', addConsole)
-routeUtils.rPost(router, '/changePassword', 'changePassword', changePassword)
-routeUtils.rPost(router, '/changeEmail', 'changeEmail', changeEmail)
+routeUtils.rPost(router, '/changeUserCredentials', 'changeUserCredentials', changeUserCredentials)
 routeUtils.rGet(router, '/refreshHelmet', 'refreshHelmet', refreshHelmet)
 module.exports = router

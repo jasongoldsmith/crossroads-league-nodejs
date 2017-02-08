@@ -10,10 +10,9 @@ function getFeed(user, consoleType, isPublicFeed, createMyEventsList, callback) 
 	utils.async.waterfall([
 		function getEventsForUser(callback) {
 			var query = {}
-			if(utils._.isInvalidOrBlank(user))
-				query.clanId = utils.constants.freelanceBungieGroup.groupId
-			else
+			if(utils._.isValidNonBlank(user)) {
 				query.clanId = user.clanId
+			}
 
 			// Fetch base event object with activity and playerIds
 			if(utils._.isInvalidOrBlank(consoleType) && utils._.isValidNonBlank(user)) {

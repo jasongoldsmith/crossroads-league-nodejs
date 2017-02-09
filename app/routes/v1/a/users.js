@@ -268,13 +268,13 @@ function changeEmail(req, res) {
 
   var body = req.body
   var err = {}
-  if(!body.oldEmail || !body.newEmail) {
+  if(!body.passWord || !body.newEmail) {
     err = {error: "One or more inputs is missing"}
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
 
-  service.userService.changeEmail(req.user, body.oldEmail, body.newEmail, function (err, user) {
+  service.userService.changeEmail(req.user, body.passWord, body.newEmail, function (err, user) {
     if (err) {
       routeUtils.handleAPIError(req, res, err, err)
     } else {

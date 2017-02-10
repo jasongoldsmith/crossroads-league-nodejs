@@ -875,7 +875,7 @@ function subscribeUserNotifications(user,forceUpdate,callback){
 // -------------------------------------------------------------------------------------------------
 // New Code
 
-function createNewUser(data, callback) {
+function createNewUser(req, data, callback) {
   utils.async.waterfall([
     function setImageUrlIfBlank(callback) {
       if(utils._.isInvalidOrBlank(data.imageUrl)) {

@@ -222,7 +222,7 @@ function registerUser(req, userName, passWord, callback) {
 				userName: userName.toLowerCase().trim(),
 				passWord: passwordHash.generate(passWord.trim())
 			}
-			userService.createNewUser(data, callback)
+			userService.createNewUser(req, data, callback)
 		}
 	], callback)
 }

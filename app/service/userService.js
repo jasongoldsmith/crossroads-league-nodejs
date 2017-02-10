@@ -891,11 +891,14 @@ function createNewUser(req, data, callback) {
       trackingService.trackUserSignup(req, user, function (err, response) {
         if(err) {
           utils.l.s("mixpanel trackUserSignup failed", err)
+          return callback(null, user)
         } else {
           utils.l.d("mixpanel trackUserSignup succeeded", response)
+          helpers.req.getHeader(req, 'x-mixpanelid')
+          user.mpDistinctId = helpers.req.getHeader(req, 'x-mixpanelid')
+          updateUser(user, callback)
         }
       })
-      return callback(null, user)
     }
   ], callback)
 }

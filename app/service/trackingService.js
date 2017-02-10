@@ -178,9 +178,9 @@ function trackUserLogin(req, user,updateMpDistinctId,existingMPUserId,isInvitedU
 function trackUserSignup(req, user, callback) {
     // expecting trackingData.ads to be in the format "/<source>/<campaign>/<ad>/<creative>?sasda"
     // We have to maintain this order as it is sent by fb and branch as a deep link
-  helpers.m.setUserAlias(req, callback)
   helpers.m.updateUserJoinDate(user)
   helpers.m.setOrUpdateUserVerifiedStatus(user)
+  helpers.m.setUserAlias(req, callback)
 }
 
 function trackEventSharing(user, data, callback) {

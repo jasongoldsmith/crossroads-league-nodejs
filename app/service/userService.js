@@ -5,6 +5,7 @@ var eventService = require('./eventService')
 var authService = require('./authService')
 var eventNotificationTriggerService = require('./eventNotificationTriggerService')
 var pendingEventInvitationService = require('./pendingEventInvitationService')
+var trackingService = require('./trackingService')
 var destinyInterface = require('./destinyInterface')
 var helpers = require('../helpers')
 var userGroupService = require('./userGroupService')
@@ -885,6 +886,16 @@ function createNewUser(data, callback) {
     },
     function createUserInDb(updatedData, callback) {
       models.user.createUserFromData(updatedData, callback)
+    },
+    function trackUserCreateInMixpanel(user, callback) {
+      trackingService.trackUserSignup(req, user, function (err, response) {
+        if(err) {
+          utils.l.s("mixpanel trackUserSignup failed", err)
+        } else {
+          utils.l.d("mixpanel trackUserSignup succeeded", response)
+        }
+      })
+      return callback(null, user)
     }
   ], callback)
 }

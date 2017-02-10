@@ -155,7 +155,7 @@ function addAdActivitiesToFeed(feedObject, callback) {
 }
 
 function getPublicFeed(feedObject, callback) {
-	models.user.findUserCount({"consoles.verifyStatus":"VERIFIED"}, function(err, userCount) {
+	models.user.findUserCount({}, function(err, userCount) {
 		utils.l.d('feedService::totalUsers::' + userCount)
 		utils.l.d('feedService::totalUsers::err', err)
 		if(userCount > 0) {

@@ -961,10 +961,14 @@ function createUserGroup(user, groupId, consoleType, muteNotification, callback)
 
 function validateSummonerName(consoleId, region, callback) {
   var summonerNameExistsError = {
-    error: "This summoner name has already been taken. Does it belong to you?"
+    error: "An account already exists for that summoner name in #REGION# " +
+    "Please check for any typos. If you believe someone is using your summoner name, " +
+    "let us know using the contact form below".replace("#REGION#", utils.constants.LolRegions[region]),
+    errorType: "NAME ALREADY TAKEN",
+    errorTitle: consoleId
   }
   utils.async.waterfall([
-    function checkDBForconsoleId(callback) {
+    function checkDBForConsoleId(callback) {
       checkDBForSummonerProfile(consoleId, region, null, function (err, user) {
         if (err) {
           return callback(err, user)
@@ -1037,19 +1041,31 @@ function getSummonerInfo(region, summonerName, callback) {
           break
         case 404:
           utils.l.d("Summoner not found", response)
-          return callback({error: "User with this summoner name does not exist."}, null)
+          return callback(
+            {
+              error: "We couldn’t find that summoner name for #REGION#. " +
+              "Please check for any typos. If this issue persists, " +
+              "use the contact form below and we’ll get back to you!"
+                .replace("REGION#", utils.constants.LoLRegions[region]),
+              errorType: "PLAYER NOT FOUND IN THE REGION",
+              errorTitle: summonerName
+            }, null)
           break
         case 429:
-          utils.l.d("Rate limit exceeded", response)
-          return callback({error: "Something went wrong. Please try again later."}, null)
+          utils.l.s("Rate limit exceeded", response)
+          return callback({error: "Our servers are busy. Please try again later."}, null)
           break
         case 500:
-          utils.l.i("Internal server error", response)
-          return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
+          utils.l.s("Internal server error", response)
+          return callback({error: "Looks like we are having trouble reaching our servers. Please try again later."}, null)
           break
         case 503:
-          utils.l.i("Service unavailable", response)
-          return callback({error: "Looks like we are having trouble reaching LoL Servers. Please try again later."}, null)
+          utils.l.s("Service unavailable", response)
+          return callback(
+            {
+              error: "We’re having trouble connecting to Riot Games. Please try again.",
+              errorType: "BROKEN BLADE"
+            }, null)
           break
       }
     })
@@ -1062,7 +1078,7 @@ function changePassword(user, oldPassWord, newPassWord, callback) {
     },
     function changePassword(userWithPassWord, callback) {
       if(!passwordHash.verify(oldPassWord.trim(), userWithPassWord.passWord)) {
-        return callback({error: "Your old password does not match our records"}, null)
+        return callback({error: "The current password you entered does not match our records."}, null)
       }
       user.passWord = passwordHash.generate(newPassWord.trim())
       updateUser(user, callback)
@@ -1071,15 +1087,15 @@ function changePassword(user, oldPassWord, newPassWord, callback) {
 }
 
 function changeEmail(user, passWord, newEmail, callback) {
-  var passWord = passWord.trim()
+  var trimmedPassword = passWord.trim()
   var cleanedNewEmail = newEmail.toLowerCase().trim()
   utils.async.waterfall([
     function getUserWithPassword(callback) {
       models.user.getUserByIdWithPassword(user._id, callback)
     },
     function validateLegitimateEmailChange(userWithPassWord, callback) {
-      if(!passwordHash.verify(passWord, userWithPassWord.passWord)) {
-        return callback({error: "Your old password does not match our records"}, null)
+      if(!passwordHash.verify(trimmedPassword, userWithPassWord.passWord)) {
+        return callback({error: "The current password you entered does not match our records."}, null)
       }
       models.user.getByQuery({userName: cleanedNewEmail}, utils.firstInArrayCallback(callback))
     },

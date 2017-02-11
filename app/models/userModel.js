@@ -80,7 +80,7 @@ function save(user, callback) {
   function(err, user) {
     if(err) {
       if(utils.format.isDuplicateMongoKeyError(err)) {
-        return callback({error: "An account already exists for this user"}, user)
+        return callback({error: "An account with that email address already exists. Try logging in."}, user)
       }
       return callback(err, user)
     } else {

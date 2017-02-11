@@ -28,9 +28,9 @@ module.exports = function (passport, config) {
           return callback({error: "Something went wrong. Please try again"}, null)
         } else if(!user) {
           utils.l.d("user not found")
-          return callback({error: "The username and password do not match our records."}, null)
+          return callback({error: "An account with that email address does not exist."}, null)
         } else if(!passwordHash.verify(password, user.passWord.trim())) {
-          return callback({error: "The username and password do not match our records."}, null)
+          return callback({error: "The email and password do not match our records."}, null)
         } else {
           return callback(null, user)
         }

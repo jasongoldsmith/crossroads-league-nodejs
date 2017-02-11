@@ -668,10 +668,10 @@ function login (req, res) {
   var outerUser = null
   utils.async.waterfall([
     helpers.req.handleVErrorWrapper(req),
-    function(callback) {
+    function loginViaPassport(callback) {
       utils.l.d('calling passport...')
       var passportHandler = passport.authenticate('local', function(err, user) {
-        utils.l.d('passport.authenticate',user)
+        utils.l.d('passport.authenticate', user)
         if (err) {
           return callback(err, null)
         } else {
@@ -680,7 +680,10 @@ function login (req, res) {
       })
       passportHandler(req, res)
     },
-    function(user, callback) {
+    function trackLoginInMixpanel(user, callback) {
+      service.authService.registerLoginUserinMixpanel(req, user, callback)
+    },
+    function addLegalAttributes(user, callback) {
       service.authService.addLegalAttributes(user, function(err, data) {
         outerUser = data
         return callback(null, user)

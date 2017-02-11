@@ -4,6 +4,7 @@ var models = require('../models')
 var destinyService = require('./destinyInterface')
 var utils = require('../utils')
 var userService = require('./userService')
+var trackingService = require('./trackingService')
 var helpers = require('../helpers')
 
 function createNewUser(signupData,validateBungie,verifyStatus,messageType,messageDetails,callback){
@@ -227,6 +228,41 @@ function registerUser(req, userName, passWord, callback) {
 	], callback)
 }
 
+function registerLoginUserinMixpanel(req, user, callback) {
+	//TODO: change it once we implement invite user
+	var isInvitedUserInstall = false
+
+	var updateMpDistinctId = trackingService.needMPIdfresh(req, user)
+	var existingUserZuid = req.zuid
+	if(updateMpDistinctId) {
+		// An existing user logging for first time after installing the app. Create mp user
+		req.zuid = user._id
+		req.adata.distinct_id = user._id
+		trackingService.trackUserLogin(req, user, updateMpDistinctId ,existingUserZuid,
+			isInvitedUserInstall, function(err, data) {
+			if(!err) {
+				utils.l.d('setting mp refresh data')
+				user.mpDistinctId = helpers.req.getHeader(req, 'x-mixpanelid')
+				user.mpDistinctIdRefreshed = true
+			}
+			userService.updateUser(user, callback)
+		})
+	} else {
+		// An existing user logging in either as a result of log out or app calling login when launched.
+		req.zuid = user._id
+		req.adata.distinct_id = user._id
+		if(existingUserZuid.toString() != user._id.toString()) {
+			//app calling due to log out then zuid and user._id are different.
+			// With logout cookie is cleared and next api call will issue new zuid
+			// Fire appInit and remove mp user created due to new session id.
+			helpers.m.removeUser(existingUserZuid)
+			helpers.m.incrementAppInit(req)
+			helpers.m.trackRequest("appInit", {}, req, user)
+		}
+		userService.updateUser(user, callback)
+	}
+}
+
 module.exports = {
 	//requestResetPassword: requestResetPassword,
 	addLegalAttributes: addLegalAttributes,
@@ -237,5 +273,6 @@ module.exports = {
 	// --------------------------------------------------------------------------------------------
 	// New code
 
-	registerUser: registerUser
+	registerUser: registerUser,
+	registerLoginUserinMixpanel: registerLoginUserinMixpanel
 }

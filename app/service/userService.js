@@ -961,9 +961,10 @@ function createUserGroup(user, groupId, consoleType, muteNotification, callback)
 
 function validateSummonerName(consoleId, region, callback) {
   var summonerNameExistsError = {
-    error: "An account already exists for that summoner name in #REGION# " +
+    error: "An account already exists for that summoner name in #REGION#. "
+      .replace("#REGION#", utils.constants.LoLRegions[region]) +
     "Please check for any typos. If you believe someone is using your summoner name, " +
-    "let us know using the contact form below".replace("#REGION#", utils.constants.LolRegions[region]),
+    "let us know using the contact form below",
     errorType: "NAME ALREADY TAKEN",
     errorTitle: consoleId
   }
@@ -1043,10 +1044,10 @@ function getSummonerInfo(region, summonerName, callback) {
           utils.l.d("Summoner not found", response)
           return callback(
             {
-              error: "We couldn’t find that summoner name for #REGION#. " +
+              error: "We couldn’t find that summoner name for #REGION#. "
+                .replace("#REGION#", utils.constants.LoLRegions[region]) +
               "Please check for any typos. If this issue persists, " +
-              "use the contact form below and we’ll get back to you!"
-                .replace("REGION#", utils.constants.LoLRegions[region]),
+              "use the contact form below and we’ll get back to you!",
               errorType: "PLAYER NOT FOUND IN THE REGION",
               errorTitle: summonerName
             }, null)

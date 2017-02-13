@@ -255,12 +255,11 @@ function requestResetPassword(userName, callback) {
 			var msg = utils.constants.bungieMessages.passwordReset
 				.replace(/%URL%/g, longUrl)
 				.replace(/%APPNAME%/g, utils.config.appName)
-				//TODO: hack till we get out of sandbox for SES, remove replace emaol
-				.replace(/%EMAIL%/g, userName)
 			utils.l.d("resetPassword msg to send::" + msg)
 			utils.l.d("resetPassword msg to send::" + msg)
 			emailMsg.body = msg
 			return callback(null, emailMsg)
+
 			//TODO: To use tinyURL once we build a dedicated db for it
 			//tinyUrlService.createTinyUrl(longUrl, function(err, shortUrl) {
 			//	var msg = utils.constants.bungieMessages.passwordReset
@@ -274,8 +273,7 @@ function requestResetPassword(userName, callback) {
 		function (emailMsg, callback) {
 			if(utils.config.enableSESIntegration) {
 				utils.l.d("SES integration is enabled")
-				//TODO: hack till we get out of sandbox for SES, change receivers
-				helpers.ses.sendEmail(utils.constants.SNS_EMAIL_RECEIVERS, utils.constants.SNS_EMAIL_SENDER, emailMsg.subject,
+				helpers.ses.sendEmail([userName], utils.constants.SES_EMAIL_SENDER, emailMsg.subject,
 					emailMsg.body, function(err, response) {
 						if(err) {
 							utils.l.s("err in send email", err)

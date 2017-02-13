@@ -965,8 +965,17 @@ function validateSummonerName(consoleId, region, callback) {
       .replace("#REGION#", utils.constants.LoLRegions[region]) +
     "Please check for any typos. If you believe someone is using your summoner name, " +
     "let us know using the contact form below",
-    errorType: "NAME ALREADY TAKEN",
-    errorTitle: consoleId
+    errorHandling: {
+      type: "Add Console",
+      code: 11,
+      details: {
+        title: "NAME ALREADY TAKEN",
+        message: "An account already exists for that summoner name in #REGION#. "
+          .replace("#REGION#", utils.constants.LoLRegions[region]) +
+        "Please check for any typos. If you believe someone is using your summoner name, " +
+        "let us know using the contact form below"
+      }
+    }
   }
   utils.async.waterfall([
     function checkDBForConsoleId(callback) {
@@ -1048,8 +1057,17 @@ function getSummonerInfo(region, summonerName, callback) {
                 .replace("#REGION#", utils.constants.LoLRegions[region]) +
               "Please check for any typos. If this issue persists, " +
               "use the contact form below and we’ll get back to you!",
-              errorType: "PLAYER NOT FOUND IN THE REGION",
-              errorTitle: summonerName
+              errorHandling: {
+                type: "Add Console",
+                code: 12,
+                details: {
+                  title: "NAME ALREADY TAKEN",
+                  message: "We couldn’t find that summoner name for #REGION#. "
+                    .replace("#REGION#", utils.constants.LoLRegions[region]) +
+                  "Please check for any typos. If this issue persists, " +
+                  "use the contact form below and we’ll get back to you!"
+                }
+              }
             }, null)
           break
         case 429:

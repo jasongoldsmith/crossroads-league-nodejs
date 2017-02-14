@@ -158,6 +158,8 @@ module.exports = {
   expressValidator: require('express-validator'),
   str: require('underscore.string'),
   url: require('url'),
+  moment:require('moment'),
+  errors: require('./errors'),
   chai: chai,
   assert: chai.assert,
   expect: chai.expect,
@@ -174,5 +176,4 @@ module.exports = {
   convertMongooseArrayToPlainArray: convertMongooseArrayToPlainArray,
   getUniquePlayerListOfTwoEvents: getUniquePlayerListOfTwoEvents,
   isWaitCriteriaMetInMins: isWaitCriteriaMetInMins,
-  moment:require('moment')
-};
+}

@@ -589,7 +589,8 @@ function signup(req, res) {
 
   if(!body.userName || !body.passWord) {
     utils.l.s("Bad signup request")
-    var err = {error: "One or more input fields missing."}
+    var err = (utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null))
     routeUtils.handleAPIError(req, res, err, err)
     return
   }

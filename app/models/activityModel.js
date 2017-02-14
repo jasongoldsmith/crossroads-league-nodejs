@@ -11,14 +11,28 @@ var Activity = mongoose.model('Activity', activitySchema.schema)
 function getByQuery(query, callback) {
 	Activity
 		.find(query)
-		.exec(callback)
+		.exec(function (err, activities) {
+			if(err) {
+				utils.l.s("Error in getByQuery of activity model", err)
+				return callback(utils.errors.formErrorObject(utils.errors.errorTypes.all, utils.errors.errorCodes.internalServerError))
+			} else {
+				return callback(err, activities)
+			}
+		})
 }
 
 function getByQueryAndSort(query, sort, callback) {
 	Activity
 			.find(query)
 			.sort(sort)
-			.exec(callback)
+			.exec(function (err, activities) {
+				if(err) {
+					utils.l.s("Error in getByQueryAndSort of activity model", err)
+					return callback(utils.errors.formErrorObject(utils.errors.errorTypes.all, utils.errors.errorCodes.internalServerError))
+				} else {
+					return callback(err, activities)
+				}
+			})
 }
 
 function createActivity(data, callback) {
@@ -56,7 +70,14 @@ function listAllActivities(callback) {
 function listActivityById(data, callback) {
 	utils.async.waterfall([
 		function (callback) {
-			Activity.findOne({_id: data.id}, callback)
+			Activity.findOne({_id: data.id}, function (err, activity) {
+				if(err) {
+					utils.l.s("Error in listActivityById of activity model", err)
+					return callback(utils.errors.formErrorObject(utils.errors.errorTypes.all, utils.errors.errorCodes.internalServerError))
+				} else {
+					return callback(err, activity)
+				}
+			})
 		},
 		function(activity, callback) {
 			if (!activity) {

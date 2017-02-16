@@ -83,7 +83,7 @@ function formatMessage(messageTemplate, event, playerLeft, comment) {
 				messageTemplate = messageTemplate.replace("#PLAYERS_COUNT_NEEDED#", "")
 				messageTemplate = messageTemplate
 					.replace("#PLAYERS_NEEDED_TXT#", "")
-					.replace("#PLAYERS_PREFIX_TXT#", "Your fireteam is ready for ")
+					.replace("#PLAYERS_PREFIX_TXT#", "Your team is ready for ")
 			}
 		}
 	}

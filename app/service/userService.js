@@ -14,6 +14,7 @@ var userGroupService = require('./userGroupService')
 var request = require('request')
 var passwordHash = require('password-hash')
 var temporal = require('temporal')
+var fs = require('fs')
 
 function preUserTimeout(notifTrigger,sysConfig){
   utils.l.d("Starting preUserTimeout")
@@ -947,6 +948,16 @@ function addConsole(user, consoleId, region, callback) {
       outerUser = user
       // clanId == groupId == region
       createUserGroup(user, region, "PC", false, callback)
+    },
+    function (userGroup, callback) {
+      sendWelcomeEmail(user, function (err, response) {
+        if(err) {
+          utils.l.s("There was an error in sending welcome email", err)
+        } else {
+          utils.l.d("Email was sent successfully to: " + outerUser.userName)
+        }
+        return callback(null, outerUser)
+      })
     }
   ],
     function (err, results) {
@@ -956,6 +967,33 @@ function addConsole(user, consoleId, region, callback) {
 
 function createUserGroup(user, groupId, consoleType, muteNotification, callback) {
   userGroupService.createUserGroup(user, groupId, consoleType, muteNotification, callback)
+}
+
+function sendWelcomeEmail(user, callback) {
+  utils.async.waterfall([
+    function readHtmlFile(callback) {
+      fs.readFile(utils.constants.WELCOME_EMAIL_HTML_TEMPLATE_PATH, 'utf8', function (err, html) {
+        if(err) {
+          return callback(err, null)
+        } else {
+          var emailMsg =  {
+            subject: "Welcome to Crossroads For League of Legends",
+            body: html
+          }
+          return callback(null, emailMsg)
+        }
+      })
+    },
+    function (emailMsg, callback) {
+      if(utils.config.enableSESIntegration && utils.config.enableSendWelcomeEmail) {
+        utils.l.d("SES integration is enabled")
+        helpers.ses.sendEmail([user.userName], utils.constants.SES_EMAIL_SENDER, emailMsg.subject,
+          emailMsg.body, callback)
+      } else {
+        utils.l.i("SES integration is disabled")
+      }
+    }
+  ], callback)
 }
 
 

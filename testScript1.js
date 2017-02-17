@@ -13,6 +13,19 @@ switch(command) {
     //utils.l.d('dmaJsonByState',dmaJsonByState)
     fs.writeFileSync('/Users/dasasr/projects/ketsci/docs/dmaByRegionState.json',JSON.stringify(dmaJsonByState,null,'  '))
     break;
+  case 'htmlTest':
+    var ejs = require('ejs')
+    var htmlData = fs.readFileSync('app/views/account/welcomeEmail.ejs','utf8')
+
+    var ejs_string = htmlData,
+        template = ejs.compile(ejs_string),
+        html = template({userName:"Crossroads"});
+        utils.l.d("html",html)
+    helpers.ses.sendEmail(['sreeharsha.dasa@forcecatalyst.com','suraj@forcecatalyst.com'], utils.constants.SES_EMAIL_SENDER, "test mail",
+      html, function(err, response) {
+        utils.l.d("response",response)
+      })
+    break;
   default:
     break;
 }

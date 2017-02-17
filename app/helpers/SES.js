@@ -13,7 +13,7 @@ function sendEmail(to, from, subject, body, callback) {
         Data: subject
       },
       Body: {
-        Text: {
+        Html: {
           Data: body
         }
       }

@@ -1,13 +1,13 @@
 .panel-heading {
-  background-color: #424242;
+  background-color: #203236;
 }
 
 .panel-footer {
-  background-color: #424242;
+  background-color: #203236;
 }
 
 .panel {
-  background-color: #424242;
+  background-color: #203236;
 
 }
 
@@ -60,7 +60,7 @@ th {
 }
 
 body{
-  background-color: #424242;
+  background-color: #203236;
 }
 
 .appTitle{
@@ -259,5 +259,5 @@ a:hover, a:active {
 }
 
 .jumbotron {
-  background-color:#424242;
+  background-color:#203236;
 }

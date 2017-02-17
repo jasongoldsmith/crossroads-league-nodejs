@@ -969,7 +969,7 @@ function validateSummonerName(consoleId, region, callback) {
       type: "Add Console",
       code: 11,
       details: {
-        title: "NAME ALREADY TAKEN",
+        title: "PLAYER NOT FOUND IN REGION",
         message: "An account already exists for that summoner name in #REGION#. "
           .replace("#REGION#", utils.constants.LoLRegions[region]) +
         "Please check for any typos. If you believe someone is using your summoner name, " +

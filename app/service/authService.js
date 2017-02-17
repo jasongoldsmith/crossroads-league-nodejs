@@ -1,5 +1,9 @@
+// External modules
 var request = require('request')
+var fs = require('fs')
 var passwordHash = require('password-hash')
+
+// Internal modules
 var models = require('../models')
 var destinyService = require('./destinyInterface')
 var utils = require('../utils')
@@ -195,6 +199,44 @@ function registerUser(req, userName, passWord, callback) {
 				passWord: passwordHash.generate(passWord.trim())
 			}
 			userService.createNewUser(req, data, callback)
+		},
+		function (user, callback) {
+			sendWelcomeEmail(user, function (err, response) {
+				if(err) {
+					utils.l.s("There was an error in sending welcome email", err)
+				} else {
+					utils.l.d("Email was sent successfully to: " + user.userName)
+				}
+				return callback(null, user)
+			})
+		}
+	], callback)
+}
+
+
+function sendWelcomeEmail(user, callback) {
+	utils.async.waterfall([
+		function readHtmlFile(callback) {
+			fs.readFile(utils.constants.WELCOME_EMAIL_HTML_TEMPLATE_PATH, 'utf8', function (err, html) {
+				if(err) {
+					return callback(err, null)
+				} else {
+					var emailMsg =  {
+						subject: "Welcome to Crossroads For League of Legends",
+						body: html
+					}
+					return callback(null, emailMsg)
+				}
+			})
+		},
+		function (emailMsg, callback) {
+			if(utils.config.enableSESIntegration) {
+				utils.l.d("SES integration is enabled")
+				helpers.ses.sendEmail([user.userName], utils.constants.SES_EMAIL_SENDER, emailMsg.subject,
+					emailMsg.body, callback)
+			} else {
+				utils.l.i("SES integration is disabled")
+			}
 		}
 	], callback)
 }

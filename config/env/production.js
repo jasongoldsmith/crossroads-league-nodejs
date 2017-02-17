@@ -12,5 +12,6 @@ module.exports = {
   logLevel: 'info',
   disableEnvetUpdateForComments: process.env.DISABLE_EVENT_UPDATE_COMMENTS || false,
   minUsersForGroupNotification: 0,
-  enableSESIntegration: process.env.enableSESIntegration || false
-};
+  enableSESIntegration: process.env.enableSESIntegration || false,
+  enableSendWelcomeEmail: process.env.enableSendWelcomeEmail || false
+}

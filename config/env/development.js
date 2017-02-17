@@ -8,5 +8,6 @@ module.exports = {
   logLevel: 'debug',
   enableBungieIntegration: process.env.enableBungieIntegration || false,
   enableSESIntegration: process.env.enableSESIntegration || true,
+  enableSendWelcomeEmail: process.env.enableSendWelcomeEmail || true,
   tinyUrlHost: 'http://crsrd.co/'
 }

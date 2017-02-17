@@ -1120,7 +1120,7 @@ function changeEmail(user, passWord, newEmail, callback) {
     },
     function changeEmail(userFoundInDb, callback) {
       if(utils._.isValidNonBlank(userFoundInDb)) {
-        return ({error: "This email has already been registered with another user"}, null)
+        return callback({error: "an account already exists with email address"}, null)
       }
 
       user.userName = cleanedNewEmail

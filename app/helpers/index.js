@@ -17,5 +17,6 @@ module.exports = {
 
   // -------------------------------------------------------------------------------------------------
   // New Code
-  ses: require('./SES')
+  ses: require('./SES'),
+  freshdesk: require('./freshdesk')
 }

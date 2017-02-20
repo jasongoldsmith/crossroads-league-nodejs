@@ -21,8 +21,12 @@ function getById(id, callback) {
 	getByQuery({'_id':id}, utils.firstInArrayCallback(callback))
 }
 
-function createReport(report, callback) {
-	var reportObj = new Report(report)
+function createReport(email, description, callback) {
+	var reportStructure = {
+		reportDetails: description,
+		reporterEmail: email
+	}
+	var reportObj = new Report(reportStructure)
 	reportObj.save(function (err, data) {
 		if (err) {
 			utils.l.s("There was a problem in creating this report", err)

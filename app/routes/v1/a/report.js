@@ -6,10 +6,17 @@ var utils = require('../../../utils/index')
 
 function createReport(req, res) {
     utils.l.i("Report create request: " + JSON.stringify(req.body))
-    req.assert('reportDetails', "Report details cannot be empty").notEmpty()
-    req.assert('reporter', "Reporter - User of the person reporting cannot be empty").notEmpty()
 
-    service.reportService.createReport(req.body, function(err, report) {
+    var email = req.isAuthenticated() ? req.user.userName : req.body.reporterEmail
+    if(utils._.isInvalidOrEmpty(req.body.reportDetails) || utils._.isInvalidOrEmpty(email)) {
+        var err = utils.errors.formErrorObject(utils.errors.errorTypes.report, utils.errors.errorCodes.missingFields)
+        routeUtils.handleAPIError(req, res, err, err)
+        return
+    }
+    var subject = "League of Legend Contact Us"
+
+    service.reportService.createReport(email, subject, req.body.reportDetails, req.adata['$os'],
+      req.adata['$os_version'], function(err, report) {
         if (err) {
             routeUtils.handleAPIError(req, res, err, err)
         } else {

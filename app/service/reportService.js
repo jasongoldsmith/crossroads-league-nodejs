@@ -1,12 +1,20 @@
 var utils = require('../utils')
 var models = require('../models')
+var helpers = require('../helpers')
 
 function resolveReport(data,callback){
   models.report.resolveReport(data,callback)
 }
 
-function createReport(data, callback) {
-  models.report.createReport(data, callback)
+function createReport(email, subject, description, platform, osVersion, callback) {
+  models.report.createReport(email, description, function (err, response) {
+    if(err) {
+      utils.l.d("save report in db err", err)
+    } else {
+      utils.l.d("save report in db response", response)
+    }
+  })
+  helpers.freshdesk.postTicket(email, subject, description, platform, osVersion, callback)
 }
 
 function listReport(status, callback){

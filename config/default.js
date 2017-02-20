@@ -107,7 +107,8 @@ var defaults = {
   // ------------------------------------------------------------------------------------------------------------------
   // New Code
 
-  riotGamesAPIKey: process.env.riotGamesAPIKey || "RGAPI-0dbb58f1-5652-43a9-ba57-746323393d5d"
+  riotGamesAPIKey: process.env.riotGamesAPIKey || "RGAPI-0dbb58f1-5652-43a9-ba57-746323393d5d",
+  freshdeskAPIKey : process.env.FRESHDESK_API_KEY || 'qL1aKYCDGHkE4IHaZjy'
 }
 
 /**

@@ -589,8 +589,8 @@ function signup(req, res) {
 
   if(!body.userName || !body.passWord) {
     utils.l.s("Bad signup request")
-    var err = (utils.errors.formErrorObject(utils.errors.errorTypes.all,
-      utils.errors.errorCodes.missingFields, null))
+    var err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -666,7 +666,7 @@ function logout(req, res) {
       utils.l.s("failed to save ths user object: ", err)
     }
     req.logout()
-    helpers.sns.unSubscribeUser(user,function(err, data) {
+    helpers.sns.unSubscribeUser(user, function(err, data) {
       utils.l.i("Completed the unsubscribe in aws")
     })
     routeUtils.handleAPISuccess(req, res, {success: true})
@@ -679,7 +679,8 @@ function requestResetPassword(req, res) {
 
   if(!body.userName) {
     utils.l.s("Bad reset password request")
-    var err = {error: "One or more input fields missing."}
+    var err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -695,7 +696,7 @@ function requestResetPassword(req, res) {
 
 function resetPasswordLaunch(req, res) {
   var token = req.param("token")
-  models.user.getUserByData({passwordResetToken:token},function(err, user){
+  models.user.getUserByData({passwordResetToken: token},function(err, user) {
     if(user) {
       res.render("account/resetPassword", {
         token: token,

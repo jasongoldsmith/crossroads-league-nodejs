@@ -42,7 +42,7 @@ var errorCodes = {
     code: 4,
     types: [errorTypes.signUp, errorTypes.updateEmail],
     title: "Email is already taken",
-    message: "An account already exists with that email address."
+    message: "An account already exists with that email address. Try logging in."
   },
   noUserFoundWithTheEmailProvided: {
     code: 5,
@@ -134,6 +134,12 @@ var errorCodes = {
     types: [errorTypes.all],
     title: "Required fields cannot be empty.",
     message: "Required fields cannot be empty."
+  },
+  resetPasswordDisabled: {
+    code: 20,
+    types: [errorTypes.resetPassword],
+    title: "Reset Password Disabled",
+    message: "Reset password has been disabled temporarily. Please try again later"
   }
 }
 

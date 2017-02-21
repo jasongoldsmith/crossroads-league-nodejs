@@ -281,9 +281,11 @@ function changePrimaryConsole(user, consoleType, callback) {
 
 function updateUser(user, callback) {
   models.user.save(user, function(err, updatedUser) {
+    var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.internalServerError, null)
     if(err) {
       utils.l.s("There was a problem in updating the user", err)
-      return callback({error: "There was a problem. Please try again later"}, callback)
+      return callback(error, callback)
     } else {
       helpers.firebase.updateUser(updatedUser)
       return callback(null, updatedUser)

@@ -60,18 +60,18 @@ function sendVerificationMessage(signupData,consoleType,messageType,messageDetai
 			})
 }
 
-function addLegalAttributes(user,callback){
+function addLegalAttributes(user, callback) {
 	var userLegal = JSON.parse(JSON.stringify(user))
-	models.sysConfig.getSysConfigList([utils.constants.sysConfigKeys.termsVersion,utils.constants.sysConfigKeys.privacyPolicyVersion], function(err, sysConfigs) {
+	models.sysConfig.getSysConfigList([
+		utils.constants.sysConfigKeys.termsVersion,
+		utils.constants.sysConfigKeys.privacyPolicyVersion], function(err, sysConfigs) {
 		var termsVersionObj =  utils._.find(sysConfigs, {"key": utils.constants.sysConfigKeys.termsVersion})
 		var privacyObj = utils._.find(sysConfigs, {"key": utils.constants.sysConfigKeys.privacyPolicyVersion})
-		if(userLegal.legal.termsVersion != termsVersionObj.value.toString()) userLegal.legal.termsNeedsUpdate = true
-		else userLegal.legal.termsNeedsUpdate = false
 
-		if(userLegal.legal.privacyVersion != privacyObj.value.toString()) userLegal.legal.privacyNeedsUpdate = true
-		else userLegal.legal.privacyNeedsUpdate = false
+		userLegal.legal.termsNeedsUpdate = userLegal.legal.termsVersion != termsVersionObj.value.toString()
+		userLegal.legal.privacyNeedsUpdate = userLegal.legal.privacyVersion != privacyObj.value.toString()
 
-		return callback(null,userLegal)
+		return callback(null, userLegal)
 	})
 }
 
@@ -214,7 +214,7 @@ function registerLoginUserinMixpanel(req, user, callback) {
 		req.adata.distinct_id = user._id
 		trackingService.trackUserLogin(req, user, updateMpDistinctId, existingUserZuid,
 			isInvitedUserInstall, function(err, data) {
-				if(! err) {
+				if(!err) {
 					utils.l.d('setting mp refresh data')
 					user.mpDistinctId = helpers.req.getHeader(req, 'x-mixpanelid')
 					user.mpDistinctIdRefreshed = true
@@ -244,7 +244,9 @@ function requestResetPassword(userName, callback) {
 		},
 		function setPasswordTokenOnUser(user, callback) {
 			if(utils._.isInvalidOrBlank(user)) {
-				return callback({error:"An account with that email address does not exist."}, null)
+				var error = utils.errors.formErrorObject(utils.errors.errorTypes.signIn,
+					utils.errors.errorCodes.noUserFoundWithTheEmailProvided, null)
+				return callback(error, null)
 			}
 			helpers.uuid.getRandomUUID()
 			user.passwordResetToken = helpers.uuid.getRandomUUID()
@@ -274,13 +276,15 @@ function requestResetPassword(userName, callback) {
 			//})
 		},
 		function (emailMsg, callback) {
+			var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+				utils.errors.errorCodes.internalServerError, null)
 			if(utils.config.enableSESIntegration) {
 				utils.l.d("SES integration is enabled")
 				helpers.ses.sendEmail([userName], utils.constants.SES_EMAIL_SENDER, emailMsg.subject,
 					emailMsg.body, function(err, response) {
 						if(err) {
 							utils.l.s("err in send email", err)
-							return callback({error: "Something went wrong. Please try again later"}, callback)
+							return callback(error, callback)
 						} else {
 							utils.l.d("response in send email", response)
 							return callback(err, response)
@@ -288,7 +292,9 @@ function requestResetPassword(userName, callback) {
 					})
 			} else {
 				utils.l.i("SES integration is disabled")
-				return callback({error: "Reset password has been disabled temporarily. Please try again later"})
+				error = utils.errors.formErrorObject(utils.errors.errorTypes.resetPassword,
+					utils.errors.errorCodes.resetPasswordDisabled, null)
+				return callback(error, null)
 			}
 		}
 	], callback)

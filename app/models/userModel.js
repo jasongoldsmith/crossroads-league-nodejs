@@ -79,10 +79,14 @@ function save(user, callback) {
   ],
   function(err, user) {
     if(err) {
+      var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+        utils.errors.errorCodes.internalServerError, null)
       if(utils.format.isDuplicateMongoKeyError(err)) {
-        return callback({error: "An account with that email address already exists. Try logging in."}, user)
+        error = utils.errors.formErrorObject(utils.errors.errorTypes.signUp,
+          utils.errors.errorCodes.emailIsAlreadyTaken, null)
+        return callback(error, user)
       } else {
-        return callback(err, user)
+        return callback(error, user)
       }
     } else {
       return callback(err, user)
@@ -117,9 +121,11 @@ function getUserByData(data, callback) {
   utils.l.d('getUserByData::data',data)
   User.findOne(data)
     .exec(function(err, user) {
+      var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+        utils.errors.errorCodes.internalServerError, null)
       if(err) {
         utils.l.s("Error in getUserByData", err)
-        return callback({error: "Something went wrong. Please try again later"}, null)
+        return callback(error, null)
       } else {
         return callback(err, user)
       }

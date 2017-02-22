@@ -223,13 +223,15 @@ function addConsole(req, res) {
   var err = {}
 
   if(!body.consoleId || !body.region) {
-    err = {error: "One or more inputs is missing"}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
 
   if(req.user.consoles.length >= 1) {
-    err = {error: "We do not support multiple summoner profiles yet."}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.addConsole,
+      utils.errors.errorCodes.multipleSummonerProfilesNotSupported, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -249,7 +251,8 @@ function changePassword(req, res) {
   var body = req.body
   var err = {}
   if(!body.oldPassWord || !body.newPassWord) {
-    err = {error: "One or more inputs is missing"}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -269,7 +272,8 @@ function changeEmail(req, res) {
   var body = req.body
   var err = {}
   if(!body.passWord || !body.newEmail) {
-    err = {error: "One or more inputs is missing"}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -290,7 +294,8 @@ function changeUserCredentials(req, res) {
   var err = {}
 
   if(!(body.oldEmail && body.newEmail) && !(body.oldPassWord && body.newPassWord)) {
-    err = {error: "One or more inputs is missing"}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.missingFields, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }
@@ -320,7 +325,8 @@ function refreshHelmet(req, res) {
   var err = {}
 
   if(utils._.isInvalidOrBlank(user.consoles)) {
-    err = {error: "You have to link your summoner profile with Crossroads before trying to refresh your summoner icon"}
+    err = utils.errors.formErrorObject(utils.errors.errorTypes.refreshHelmet,
+      utils.errors.errorCodes.noConsoleToRefreshHelmet, null)
     routeUtils.handleAPIError(req, res, err, err)
     return
   }

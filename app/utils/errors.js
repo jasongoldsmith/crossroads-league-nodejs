@@ -1,5 +1,6 @@
 var lodash = require('./lodash')
 var config =  require('config')
+var constants = require('./constants')
 
 var errorTypes = {
   all: "All",
@@ -10,7 +11,9 @@ var errorTypes = {
   changePrimaryConsole: "Change Primary Console",
   updateEmail: "Update Email",
   report: "report",
-  resetPassword: 'resetPassword'
+  resetPassword: 'resetPassword',
+  refreshHelmet: 'refreshHelmet',
+  riotServerUnavailable: 'riotServerUnavailable'
 }
 
 var errorCodes = {
@@ -80,18 +83,21 @@ var errorCodes = {
     title: "You cannot downgrade your console",
     message: "Unable to add that console. Error Code 10."
   },
-  tagAlreadyTaken: {
+  summonerNameAlreadyTaken: {
     code: 11,
     types: [errorTypes.addConsole],
-    title: "Name Already Taken",
-    message: "An account already exists for that BattleTag. " +
-    "Please check for any typos. If you believe someone is using your account name, let us know at support@crossroadsapp.co!"
+    title: "Summoner Name Already Taken",
+    message: "An account already exists for that summoner name in #REGION#. "
+    + "Please check for any typos. If you believe someone is using your summoner name, "
+    + "let us know using the contact form below"
   },
-  battleTagEmptyReceivedFromBattleNet: {
+  summonerNotFoundInRegion: {
     code: 12,
     types: [errorTypes.addConsole],
-    title: "Battletag is not available in battle.net",
-    message: "We can't find a BattleTag associated with your Battle.net account. Please sign in on Battle.net and create a BattleTag."
+    title: "Summoner Not Found",
+    message: "We couldn’t find that summoner name for #REGION#. "
+    + "Please check for any typos. If this issue persists, "
+    + "use the contact form below and we’ll get back to you!"
   },
   accessTokenProfileNotReceivedFromBattleNet: {
     code: 13,
@@ -140,13 +146,37 @@ var errorCodes = {
     types: [errorTypes.resetPassword],
     title: "Reset Password Disabled",
     message: "Reset password has been disabled temporarily. Please try again later"
+  },
+  multipleSummonerProfilesNotSupported: {
+    code: 21,
+    types: [errorTypes.addConsole],
+    title: "Multiple Summoner Profiles Not Supported",
+    message: "We do not support multiple summoner profiles yet."
+  },
+  noConsoleToRefreshHelmet: {
+    code: 22,
+    types: [errorTypes.refreshHelmet],
+    title: "Summoner Profile Not Linked",
+    message: "You have to link your summoner profile with Crossroads before trying to refresh your summoner icon."
+  },
+  riotServerUnavailable: {
+    code: 23,
+    types: [errorTypes.riotServerUnavailable],
+    title: "BROKEN BLADE",
+    message: "We’re having trouble connecting to Riot Games. Please try again."
+  },
+  serversBusy: {
+    code: 24,
+    types: [errorTypes.all],
+    title: "Servers Busy",
+    message: "Our servers are busy. Please try again later."
   }
 }
 
-function formErrorObject(type, errorCodeObj, comments) {
+function formErrorObject(type, errorCodeObj, comments, region) {
   var data = {
     title: lodash._.isInvalidOrEmpty(errorCodeObj) ? errorCodes.unknownError.title : errorCodeObj.title,
-    message: lodash._.isInvalidOrEmpty(errorCodeObj) ? "" : errorCodeObj.message,
+    message: lodash._.isInvalidOrEmpty(errorCodeObj) ? "" : errorCodeObj.message.replace("#REGION#", constants.LoLRegions[region]),
     comments: comments
   }
 

@@ -191,9 +191,11 @@ function createUserGroup(user, groupId, consoleType, muteNotification, callback)
 
   var userGroupObj = new UserGroup(data)
   userGroupObj.save(function (err, userGroup) {
+    var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.internalServerError, null, null)
     if(err) {
       utils.l.s("There was an error in creating a user group", err)
-      return callback({error: "Something went wrong. Please try again later"}, null)
+      return callback(error, null)
     } else {
       return callback(err, userGroup)
     }

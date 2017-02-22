@@ -961,10 +961,7 @@ function addConsole(user, consoleId, region, callback) {
         return callback(null, outerUser)
       })
     }
-  ],
-    function (err, results) {
-      return callback(err, outerUser)
-    })
+  ], callback)
 }
 
 function createUserGroup(user, groupId, consoleType, muteNotification, callback) {
@@ -1000,30 +997,13 @@ function sendWelcomeEmail(user, callback) {
 
 
 function validateSummonerName(consoleId, region, callback) {
-  var summonerNameExistsError = {
-    error: "An account already exists for that summoner name in #REGION#. "
-      .replace("#REGION#", utils.constants.LoLRegions[region]) +
-    "Please check for any typos. If you believe someone is using your summoner name, " +
-    "let us know using the contact form below",
-    errorHandling: {
-      type: "Add Console",
-      code: 11,
-      details: {
-        title: "PLAYER NOT FOUND IN REGION",
-        message: "An account already exists for that summoner name in #REGION#. "
-          .replace("#REGION#", utils.constants.LoLRegions[region]) +
-        "Please check for any typos. If you believe someone is using your summoner name, " +
-        "let us know using the contact form below"
-      }
-    }
-  }
+  var summonerNameExistsError = utils.errors.formErrorObject(utils.errors.errorTypes.addConsole,
+    utils.errors.errorCodes.summonerNameAlreadyTaken, null, region)
   utils.async.waterfall([
     function checkDBForConsoleId(callback) {
       checkDBForSummonerProfile(consoleId, region, null, function (err, user) {
-        if (err) {
-          return callback(err, user)
-        } else if(utils._.isValidNonBlank(user)) {
-          return callback(summonerNameExistsError, callback)
+        if(utils._.isValidNonBlank(user)) {
+          return callback(summonerNameExistsError, null)
         } else {
           return callback(err, user)
         }
@@ -1034,10 +1014,8 @@ function validateSummonerName(consoleId, region, callback) {
     },
     function checkDBForGamePlatformId(summonerInfoResponse, callback) {
       checkDBForSummonerProfile(consoleId, region, summonerInfoResponse[Object.keys(summonerInfoResponse)[0]].id, function (err, user) {
-        if (err) {
-          return callback(err, user)
-        } else if(utils._.isValidNonBlank(user)) {
-          return callback(summonerNameExistsError, callback)
+        if(utils._.isValidNonBlank(user)) {
+          return callback(summonerNameExistsError, null)
         } else {
           return callback(err, summonerInfoResponse)
         }
@@ -1067,10 +1045,13 @@ function getSummonerInfo(region, summonerName, callback) {
         api_key: utils.config.riotGamesAPIKey
       }
     },
-    function(error, response, results) {
-      if(error) {
-        utils.l.s("Error for url "  + " and error is::----" + error)
-        return callback(error, null)
+    function(err, response, results) {
+      var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+        utils.errors.errorCodes.internalServerError, null, null)
+
+      if(err) {
+        utils.l.s("Error for url "  + " and err is::----" + err)
+        return callback(err, null)
       }
       else if(response.statusCode == 200){
         return callback(null, JSON.parse(results))
@@ -1083,48 +1064,35 @@ function getSummonerInfo(region, summonerName, callback) {
           break
         case 400:
           utils.l.s("Bad request", response)
-          return callback({error: "Something went wrong. Please try again later."}, null)
+          return callback(error, null)
           break
         case 401:
           utils.l.s("Unauthorized", response)
-          return callback({error: "Something went wrong. Please try again later."}, null)
+          return callback(error, null)
           break
         case 404:
           utils.l.d("Summoner not found", response)
-          return callback(
-            {
-              error: "We couldn’t find that summoner name for #REGION#. "
-                .replace("#REGION#", utils.constants.LoLRegions[region]) +
-              "Please check for any typos. If this issue persists, " +
-              "use the contact form below and we’ll get back to you!",
-              errorHandling: {
-                type: "Add Console",
-                code: 12,
-                details: {
-                  title: "NAME ALREADY TAKEN",
-                  message: "We couldn’t find that summoner name for #REGION#. "
-                    .replace("#REGION#", utils.constants.LoLRegions[region]) +
-                  "Please check for any typos. If this issue persists, " +
-                  "use the contact form below and we’ll get back to you!"
-                }
-              }
-            }, null)
+          error = utils.errors.formErrorObject(utils.errors.errorTypes.addConsole,
+            utils.errors.errorCodes.summonerNotFoundInRegion, null, region)
+          return callback(error, null)
           break
         case 429:
           utils.l.s("Rate limit exceeded", response)
-          return callback({error: "Our servers are busy. Please try again later."}, null)
+          error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+            utils.errors.errorCodes.serversBusy, null, null)
+          return callback(error, null)
           break
         case 500:
-          utils.l.s("Internal server error", response)
-          return callback({error: "Looks like we are having trouble reaching our servers. Please try again later."}, null)
+          utils.l.s("Internal server err", response)
+          error = utils.errors.formErrorObject(utils.errors.errorTypes.riotServerUnavailable,
+            utils.errors.errorCodes.riotServerUnavailable, null, null)
+          return callback(error, null)
           break
         case 503:
           utils.l.s("Service unavailable", response)
-          return callback(
-            {
-              error: "We’re having trouble connecting to Riot Games. Please try again.",
-              errorType: "BROKEN BLADE"
-            }, null)
+          error = utils.errors.formErrorObject(utils.errors.errorTypes.riotServerUnavailable,
+            utils.errors.errorCodes.riotServerUnavailable, null, null)
+          return callback(error, null)
           break
       }
     })
@@ -1137,7 +1105,9 @@ function changePassword(user, oldPassWord, newPassWord, callback) {
     },
     function changePassword(userWithPassWord, callback) {
       if(!passwordHash.verify(oldPassWord.trim(), userWithPassWord.passWord)) {
-        return callback({error: "The current password you entered does not match our records."}, null)
+        var error = utils.errors.formErrorObject(utils.errors.errorTypes.updatePassword,
+          utils.errors.errorCodes.oldPasswordDoesNotMatchTheCurrentPassword, null, null)
+        return callback(error, null)
       }
       user.passWord = passwordHash.generate(newPassWord.trim())
       updateUser(user, callback)
@@ -1154,13 +1124,17 @@ function changeEmail(user, passWord, newEmail, callback) {
     },
     function validateLegitimateEmailChange(userWithPassWord, callback) {
       if(!passwordHash.verify(trimmedPassword, userWithPassWord.passWord)) {
-        return callback({error: "The current password you entered does not match our records."}, null)
+        var error = utils.errors.formErrorObject(utils.errors.errorTypes.updatePassword,
+          utils.errors.errorCodes.oldPasswordDoesNotMatchTheCurrentPassword, null, null)
+        return callback(error, null)
       }
       models.user.getByQuery({userName: cleanedNewEmail}, utils.firstInArrayCallback(callback))
     },
     function changeEmail(userFoundInDb, callback) {
       if(utils._.isValidNonBlank(userFoundInDb)) {
-        return callback({error: "an account already exists with email address"}, null)
+        var error = utils.errors.formErrorObject(utils.errors.errorTypes.updateEmail,
+          utils.errors.errorCodes.emailIsAlreadyTaken, null, null)
+        return callback(error, null)
       }
 
       user.userName = cleanedNewEmail
@@ -1173,7 +1147,9 @@ function refreshHelmet(user, callback) {
   var primaryConsole = utils.primaryConsole(user)
   if(utils._.isInvalidOrBlank(primaryConsole)) {
     utils.l.s("user does not have a primary console", user)
-    return callback({error: "Something went wrong. Please try again later."}, null)
+    var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.internalServerError, null, null)
+    return callback(error, null)
   }
 
   var summonerName = primaryConsole.consoleId

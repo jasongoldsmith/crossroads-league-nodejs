@@ -360,9 +360,11 @@ function getUserBySummonerProfile(consoleId, region, gamePlatformId, callback) {
     }
   }
   User.find(query).exec(utils.firstInArrayCallback(function (err, users) {
+    var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.internalServerError, null, null)
     if(err) {
       utils.l.s("Something went wrong in getting summonerProfile from DB", err)
-      return callback({error: "Something went wrong. Please try again later"}, null)
+      return callback(error, null)
     } else {
       return callback (err, users)
     }
@@ -376,12 +378,14 @@ function createUserFromData(data, callback) {
 
 function getUserByIdWithPassword(userId, callback) {
   User.findOne({_id: userId}, function (err, user) {
+    var error = utils.errors.formErrorObject(utils.errors.errorTypes.all,
+      utils.errors.errorCodes.internalServerError, null, null)
     if(err) {
       utils.l.s("Error in getting user by id", err)
-      return callback({error: "Something went wrong. Please try again later"}, null)
+      return callback(error, null)
     } else if(!user) {
       utils.l.d("no user found")
-      return callback({ error: "This user no longer exists"}, null)
+      return callback(error, null)
     } else {
       utils.l.d("found user: " + utils.l.userLog(user))
       return callback(null, user)

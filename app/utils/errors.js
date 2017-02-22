@@ -41,11 +41,11 @@ var errorCodes = {
     title: "Invalid Password Provided",
     message: "Please enter a password with more than 4 characters."
   },
-  emailIsAlreadyTaken : {
+  emailIsAlreadyTaken: {
     code: 4,
     types: [errorTypes.signUp, errorTypes.updateEmail],
     title: "Email is already taken",
-    message: "An account already exists with that email address. Try logging in."
+    message: "An account with that email already exists."
   },
   noUserFoundWithTheEmailProvided: {
     code: 5,

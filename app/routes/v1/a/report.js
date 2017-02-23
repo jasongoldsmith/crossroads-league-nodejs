@@ -13,7 +13,7 @@ function createReport(req, res) {
         routeUtils.handleAPIError(req, res, err, err)
         return
     }
-    var subject = "League of Legend Contact Us"
+    var subject = "League of Legends Contact Us"
 
     service.reportService.createReport(email, subject, req.body.reportDetails, req.adata['$os'],
       req.adata['$os_version'], function(err, report) {

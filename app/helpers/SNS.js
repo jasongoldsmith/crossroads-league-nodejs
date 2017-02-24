@@ -531,7 +531,7 @@ function publishToSNSTopic(consoleType, groupId, customPayload, alert,callback) 
         aps: {
           alert: alert,
           sound: 'default',
-          badge: 1
+          badge: 0
         }
       }
 
@@ -606,7 +606,7 @@ function sendPush() {
           aps: {
             alert: 'Hello World',
             sound: 'default',
-            badge: 1
+            badge: 0
           }
         }
       }

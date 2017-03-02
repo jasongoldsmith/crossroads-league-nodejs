@@ -57,19 +57,19 @@ function sendMultiplePushNotificationsForUsers(notification, data, clanId) {
   if(utils._.isValidNonBlank(notification.recipients)
     && utils._.isValidNonBlank(notification.recipients.type)
     && notification.recipients.type == "SNS") {
-    utils.l.d("notification recipients is blank")
+    utils.l.d("notification recipients is SNS")
     var payload = getPayload(data, notification, clanId)
     utils.l.d("payload to be sent to sns", payload)
     sns.publishToSNSTopic(payload.eventConsole, payload.eventClanId, payload, notification.message, function (err, result) {
       if(err) {
-        utils.l.d('err', err)
+        utils.l.s('error in sending push notification via SNS', err)
       }
       else {
-        utils.l.d("push notification sent successfully for " , result)
+        utils.l.d("push notification sent successfully for ", result)
       }
     })
   } else {
-    utils.l.d("notification recipients is not blank")
+    utils.l.d("notification recipients is not SNS")
     notification.recipients = utils._.filter(notification.recipients, 'isLoggedIn')
     utils.async.map(notification.recipients, models.installation.getInstallationByUser, function(err, installations) {
       sendMultiplePushNotifications(installations, data, notification.message, notification, clanId)

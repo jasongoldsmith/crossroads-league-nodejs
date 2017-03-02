@@ -574,15 +574,7 @@ function publishToSNSTopic(consoleType, groupId, customPayload, alert,callback) 
 
       sns.publish(params, callback)
     }
-  ],
-    function(err, data) {
-      if (err) {
-        console.log(err.stack)
-        return
-      }
-      console.log('push sent')
-      console.log(data)
-    })
+  ], callback)
 }
 
 function sendPush() {

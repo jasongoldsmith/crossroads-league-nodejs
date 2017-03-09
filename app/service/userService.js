@@ -15,6 +15,7 @@ var request = require('request')
 var passwordHash = require('password-hash')
 var temporal = require('temporal')
 var fs = require('fs')
+var urlencode = require('urlencode')
 
 function preUserTimeout(notifTrigger,sysConfig){
   utils.l.d("Starting preUserTimeout")
@@ -1033,7 +1034,7 @@ function getSummonerInfoFromSummonerInfoResponse(summonerInfoResponse) {
 }
 
 function getSummonerInfo(region, summonerName, callback) {
-  var url = "/by-name/" + summonerName
+  var url = "/by-name/" + urlencode(summonerName)
   var baseUrlPlaceHolder = "https://#REGION_ABBR#.api.pvp.net/api/lol/#REGION_ABBR#/v1.4/summoner"
   request({
       baseUrl: baseUrlPlaceHolder

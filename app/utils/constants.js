@@ -235,6 +235,10 @@ var SES_EMAIL_SENDER = "support@crossroadsapp.co"
 
 var WELCOME_EMAIL_HTML_TEMPLATE_PATH = 'app/views/account/welcomeEmail.ejs'
 
+var languagesForOnBoarding = {
+  "en": "en"
+}
+
 module.exports = {
   l: lodash,
   reportListStatus: reportListStatus,
@@ -268,5 +272,6 @@ module.exports = {
   accountVerificationStatusTypes: accountVerificationStatusTypes,
   reviewPromptCardStatusTypes: reviewPromptCardStatusTypes,
   SES_EMAIL_SENDER: SES_EMAIL_SENDER,
-  WELCOME_EMAIL_HTML_TEMPLATE_PATH: WELCOME_EMAIL_HTML_TEMPLATE_PATH
+  WELCOME_EMAIL_HTML_TEMPLATE_PATH: WELCOME_EMAIL_HTML_TEMPLATE_PATH,
+  languagesForOnBoarding: languagesForOnBoarding
 }

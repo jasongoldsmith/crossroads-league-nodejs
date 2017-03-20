@@ -17,6 +17,7 @@ var eventInvitationModel = require('./eventInvitationModel')
 var pendingEventInvitationModel = require('./pendingEventInvitationModel')
 var groupsModel = require('./groupModel')
 var roundRobinCounterModel = require('./roundRobinCounterModel')
+var onBoardingModel = require('./onBoardingModel')
 
 module.exports = {
   user: user,
@@ -37,5 +38,6 @@ module.exports = {
   eventInvitation: eventInvitationModel,
   pendingEventInvitation: pendingEventInvitationModel,
   groups: groupsModel,
-  roundRobinCounterModel: roundRobinCounterModel
+  roundRobinCounterModel: roundRobinCounterModel,
+  onBoarding: onBoardingModel
 }

@@ -30,7 +30,7 @@ function listConfigs(req, res) {
       getLoLRegions(callback)
     },
     function(LoLRegions, callback) {
-      configs.LolRegions = LoLRegions
+      configs.LolRegions = LoLRegions.value
       getOnBoardingScreens(null, function(err, onBoardingScreens) {
         configs.onBoardingScreens = onBoardingScreens
         return callback(null, configs)

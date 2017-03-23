@@ -17,10 +17,6 @@ function isInvalidOrBlank(value) {
   return lodash.isUndefined(value) || lodash.isNull(value) || ustr.isBlank(value);
 }
 
-function isInvalidOrEmpty(value) {
-  return lodash.isUndefined(value) || lodash.isNull(value) || lodash.isEmpty(value);
-}
-
 function isValid(value) {
   return !isInvalid(value);
 }

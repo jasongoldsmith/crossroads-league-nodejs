@@ -74,7 +74,8 @@ var UserSchema = new Schema({
   reviewPromptCard: {
     status: reviewPromptCardStatusEnum,
     cardId: {type: Schema.Types.ObjectId, ref: 'ReviewPromptCard'}
-  }
+  },
+  hasCompletedOnBoarding: {type: Boolean, default: false}
 })
 
 UserSchema.index({'userName': 1}, {unique: true})

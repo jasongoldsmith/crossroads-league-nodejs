@@ -346,6 +346,18 @@ function refreshHelmet(req, res) {
   })
 }
 
+function completeOnBoarding(req, res) {
+  utils.l.d("complete on boarding request" + JSON.stringify(req.user))
+  req.user.hasCompletedOnBoarding = true
+  service.userService.updateUser(req.user, function(err, resp){
+    if (err) {
+      routeUtils.handleAPIError(req, res, err, err)
+    } else {
+      routeUtils.handleAPISuccess(req, res, {value: resp})
+    }
+  })
+}
+
 routeUtils.rGet(router, '/self', 'GetSelfUser', getSelfUser)
 routeUtils.rGet(router, '/list', 'list', list)
 routeUtils.rPost(router, '/listById', 'listById', listById)
@@ -366,4 +378,5 @@ routeUtils.rPost(router, '/changePassword', 'changePassword', changePassword)
 routeUtils.rPost(router, '/changeEmail', 'changeEmail', changeEmail)
 routeUtils.rPost(router, '/changeUserCredentials', 'changeUserCredentials', changeUserCredentials)
 routeUtils.rGet(router, '/refreshHelmet', 'refreshHelmet', refreshHelmet)
+routeUtils.rPost(router, '/completeOnBoarding', 'completeOnBoarding', completeOnBoarding)
 module.exports = router
